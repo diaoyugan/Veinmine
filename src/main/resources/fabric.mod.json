@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "vein_mine",
+  "version": "${version}",
+  "name": "vein mine",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "GPL-3.0",
+  "icon": "assets/vein_mine/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "top.diaoyugan.vein_mine.client.vein_mineClient"
+    ],
+    "main": [
+      "top.diaoyugan.vein_mine.vein_mine"
+    ]
+  },
+  "mixins": [
+    "vein_mine.mixins.json",
+    {
+      "config": "vein_mine.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
