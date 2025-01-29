@@ -33,7 +33,7 @@ public final class NetworkingKeybindPacket implements ModInitializer {
 
 		// 创建文本消息
 		Text message = Text.literal("So you pressed ")
-				.append(Text.keybind("key.vm.switch").styled(style -> style.withFormatting(Formatting.BLUE)))
+				.append(Text.literal("key.vm.switch").styled(style -> style.withFormatting(Formatting.BLUE)))
 				.append(Text.literal(" The switch is now: "))
 				.append(Text.literal(currentState ? "ON" : "OFF").styled(style -> style.withFormatting(currentState ? Formatting.GREEN : Formatting.RED)));
 

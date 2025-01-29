@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.diaoyugan.vein_mine.keybindreciever.NetworkingKeybindPacket;
+import top.diaoyugan.vein_mine.utils.Utils;
 
 
 public class PlayerBreakBlock {
@@ -58,11 +59,13 @@ public class PlayerBreakBlock {
                             BlockState targetState = world.getBlockState(targetPos);
                             if (targetState.getBlock() == state.getBlock()) {
                                 ItemStack dropStack = new ItemStack(targetState.getBlock());
-                                if (player.isInCreativeMode()) {
+                                if (player.isInCreativeMode()|| !Utils.isToolSuitable(targetState, player)) {
                                     world.breakBlock(targetPos, false);
+                                    destroyedCount++;
                                 } else if(isSilktouch(player)){
                                     world.breakBlock(targetPos, false);
                                     Block.dropStack(world, targetPos, dropStack);
+                                    destroyedCount++;
                                 }else
                                 {
                                     // 破坏该方块
