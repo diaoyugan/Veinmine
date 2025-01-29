@@ -3,7 +3,7 @@
 
 *.iml
 *.ipr
-*.iws
+*.iw
 
 # IntelliJ
 out/
