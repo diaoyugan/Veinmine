@@ -2,8 +2,8 @@ package top.diaoyugan.vein_mine.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -27,10 +27,10 @@ public class Utils {
         }
     }
 
-    public static boolean shoudBreakWithoutDrop(BlockState targetState, PlayerEntity player, World world, BlockPos targetPos) {
+    public static boolean shouldBreakWithoutDrop(BlockState targetState, PlayerEntity player, World world, BlockPos targetPos) {
         return player.isInCreativeMode() ||
                 !Utils.isToolSuitable(targetState, player) ||
-                shouldNotDropItem(targetState, world, targetPos);
+                shouldDropItem(targetState, world, targetPos);
     }
 
     public static boolean isSilktouch(PlayerEntity player) {
@@ -39,7 +39,7 @@ public class Utils {
         return tool.getEnchantments().toString().contains("minecraft:silk_touch");
     }
 
-    public static boolean shouldNotDropItem(BlockState state, World world, BlockPos pos){ // 判断方块是否应该掉落物品
+    public static boolean shouldDropItem(BlockState state, World world, BlockPos pos){ // 判断方块是否应该掉落物品
         state.getBlock();
         return Block.getDroppedStacks(state, (ServerWorld) world, pos, null).isEmpty();
     }

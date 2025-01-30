@@ -34,7 +34,7 @@ public class PlayerBreakBlock {
                         Block targetBlock = targetState.getBlock();
                         if (targetBlock != state.getBlock()) continue;
 
-                        if (shoudBreakWithoutDrop(targetState, player, world, targetPos)) {
+                        if (shouldBreakWithoutDrop(targetState, player, world, targetPos)) {
                             world.breakBlock(targetPos, false);
                         } else if (isContainer(targetState)) {
                             world.breakBlock(targetPos, true);
