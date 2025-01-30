@@ -7,8 +7,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import top.diaoyugan.vein_mine.keybindreciever.NetworkingKeybindPacket;
 import top.diaoyugan.vein_mine.utils.Logger;
+import top.diaoyugan.vein_mine.utils.Utils;
 
 import static top.diaoyugan.vein_mine.utils.Utils.*;
 
@@ -23,7 +23,7 @@ public class PlayerBreakBlock {
 
         int radius = 1;  // 设置搜索半径，1表示上下左右斜对角的8个方块，再加上中心方块
         int destroyedCount = 0;
-        if (NetworkingKeybindPacket.getSwitchState()) {
+        if (Utils.getVeinMineSwitchState()) {
             for (int x = -radius; x <= radius; x++) {
                 for (int y = -radius; y <= radius; y++) {
                     for (int z = -radius; z <= radius; z++) {

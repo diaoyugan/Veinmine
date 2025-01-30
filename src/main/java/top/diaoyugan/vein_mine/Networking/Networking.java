@@ -1,9 +1,9 @@
-package top.diaoyugan.vein_mine;
+package top.diaoyugan.vein_mine.Networking;
 
 import net.minecraft.util.Identifier;
-import static top.diaoyugan.vein_mine.utils.Logger.ID;
 
 public final class Networking {
+	public static final String ID = "veinmine";
 	public static Identifier id(String name) {
 		return Identifier.of(ID, name);
 	}

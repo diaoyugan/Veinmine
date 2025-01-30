@@ -2,7 +2,6 @@ package top.diaoyugan.vein_mine.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -10,6 +9,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class Utils {
+    // 连锁开关状态
+    private static boolean veinMineSwitchState = false; // 初始为关
+    // 切换开关状态的方法
+    public static boolean toggleVeinMineSwitchState() {
+        veinMineSwitchState = !veinMineSwitchState;
+        return veinMineSwitchState;
+    }
+
+
+    // 获取当前开关状态
+    public static boolean getVeinMineSwitchState() {
+        return veinMineSwitchState;
+    }
+
     public static boolean isToolSuitable(BlockState blockState, PlayerEntity player){
         ItemStack tool = player.getMainHandStack();
         if (blockState.isToolRequired()){
@@ -17,6 +30,7 @@ public class Utils {
         }
         return true;
     }
+
     public static void applyToolDurabilityDamage(PlayerEntity player, int blockCount) {
         // 获取玩家主手工具
         ItemStack tool = player.getMainHandStack();
