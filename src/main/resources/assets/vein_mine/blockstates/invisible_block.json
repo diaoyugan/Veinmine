@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "vein_mine:block/invisible_block"
+    }
+  }
+}
