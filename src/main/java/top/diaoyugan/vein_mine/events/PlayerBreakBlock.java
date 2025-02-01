@@ -9,7 +9,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import top.diaoyugan.vein_mine.utils.Logger;
 import top.diaoyugan.vein_mine.utils.SmartVein;
 import top.diaoyugan.vein_mine.utils.Utils;
 
@@ -48,6 +47,7 @@ public class PlayerBreakBlock {
                 }
 
                 destroyedCount++;
+                Utils.applyToolDurabilityDamage(player, destroyedCount);
             }
         }
     }
