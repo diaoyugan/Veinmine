@@ -4,8 +4,12 @@
   "version": "${version}",
   "name": "vein mine",
   "description": "",
-  "authors": [],
-  "contact": {},
+  "authors": ["钓鱼竿呀(diaoyugan)","momo(HarukaB)"],
+  "contact": {
+    "sources": "https://github.com/diaoyugan/Veinmine",
+    "issues": "https://github.com/diaoyugan/Veinmineissues",
+    "email": "diaoyugan666@qq.com"
+  },
   "license": "GPL-3.0",
   "icon": "assets/vein_mine/icon.png",
   "environment": "*",
@@ -26,7 +30,7 @@
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",
-    "fabric": "*",
+    "fabric": ">=0.115.0",
     "minecraft": "${minecraft_version}"
   }
 }
