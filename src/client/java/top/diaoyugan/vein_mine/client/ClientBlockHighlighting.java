@@ -2,21 +2,27 @@ package top.diaoyugan.vein_mine.client;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import top.diaoyugan.vein_mine.Networking.HighlightBlock;
-import top.diaoyugan.vein_mine.utils.Logger;
-
 
 
 public class ClientBlockHighlighting {
 
-    //在完成高亮共享前 不要注册这个
-    public static final Identifier ID = HighlightBlock.HIGHLIGHT_PACKET_ID;
-
-    // 在客户端初始化时注册监听器
-    public static void register() {
-        ClientPlayNetworking.registerGlobalReceiver(HighlightBlock.BlockHighlightPayload.ID, (payload, context) -> {
-            Logger.throwLog("info", "Received highlight pos" + payload.blockPos());
-        });
+    public static void checkPlayerLooking(ClientPlayerEntity player) {
+        // 获取玩家视线方向
+        HitResult hitResult = player.raycast(10, 0, false);
+        if (hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockPos blockPos = ((BlockHitResult) hitResult).getBlockPos();
+            sendHighlightPacket(blockPos);
+        }
     }
+
+    public static void sendHighlightPacket(BlockPos blockPos) {
+        ClientPlayNetworking.send(new HighlightBlock.BlockHighlightPayload(blockPos));
+    }
+
 }

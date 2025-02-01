@@ -9,14 +9,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class Utils {
+    public static int searchRadius = 1; // 搜索半径，1表示上下左右斜对角的8个方块，再加上中心方块
+    public static int bfsLimit = 20; // 连锁搜索最大数量 超过就使用普通搜索
+
+
     // 连锁开关状态
     private static boolean veinMineSwitchState = false; // 初始为关
+
     // 切换开关状态的方法
     public static boolean toggleVeinMineSwitchState() {
         veinMineSwitchState = !veinMineSwitchState;
         return veinMineSwitchState;
     }
-
 
     // 获取当前开关状态
     public static boolean getVeinMineSwitchState() {
