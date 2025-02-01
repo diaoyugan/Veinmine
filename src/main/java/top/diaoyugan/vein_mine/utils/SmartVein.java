@@ -13,7 +13,7 @@ public class SmartVein {
 
     private static final int SEARCH_RADIUS = Utils.searchRadius;
     private static final int MAX_CONNECTED_BLOCKS = Utils.bfsLimit;
-    //TODO 删了这个玩意 用不上了
+    //留着 以后可能用来自定义计算方法
     private static final Set<String> IGNORED_BLOCKS = Set.of(
             "minecraft:air"
     );
