@@ -25,11 +25,10 @@ public class PlayerBreakBlock {
     }
 
     private static void veinmine(World world, PlayerEntity player, BlockPos pos, BlockState state){
-
         int destroyedCount = 0;
-        if (Utils.getVeinMineSwitchState()) {
+        if (getVeinMineSwitchState(player)) {  // 使用玩家的开关状态
             Identifier startBlockID = Registries.BLOCK.getId(state.getBlock());
-            List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos,startBlockID);
+            List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos, startBlockID);
             for (BlockPos targetPos : blocksToBreak) {
                 if (targetPos.equals(pos)) continue; // 排除中心方块
 
@@ -51,12 +50,6 @@ public class PlayerBreakBlock {
                 destroyedCount++;
             }
         }
-
-            // 处理工具耐久
-            if (!player.isInCreativeMode() && destroyedCount > 0) {
-                applyToolDurabilityDamage(player, destroyedCount);
-            }
-
-        Logger.newLogBlockBroken(state, pos, world, destroyedCount);
     }
+
 }

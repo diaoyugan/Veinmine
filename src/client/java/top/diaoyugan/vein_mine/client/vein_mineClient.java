@@ -23,7 +23,7 @@ public class vein_mineClient implements ClientModInitializer {
     public void onInitializeClient() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.getNetworkHandler() != null) {
-                if (Utils.getVeinMineSwitchState()) {
+                if (client.player != null && Utils.getVeinMineSwitchState(client.player)) {
                     if (client.player != null) {
                         ClientBlockHighlighting.checkPlayerLooking(client.player);
                     }

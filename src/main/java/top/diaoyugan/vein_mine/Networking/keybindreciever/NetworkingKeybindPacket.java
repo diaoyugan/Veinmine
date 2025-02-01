@@ -15,7 +15,7 @@ public final class NetworkingKeybindPacket implements ModInitializer {
 	// 接收按键包的逻辑
 	private static void receive(KeybindPayload payload, ServerPlayNetworking.Context context) {
 		// 切换状态
-		boolean currentState = Utils.toggleVeinMineSwitchState();
+		boolean currentState = Utils.toggleVeinMineSwitchState(context.player());
 		Text message = Text.translatable("vm.switch_state").append(": ")
 				.append(Text.translatable(currentState ? "options.on" : "options.off").styled(style -> style.withFormatting(currentState ? Formatting.GREEN : Formatting.RED)));
 		Messages.sendMessage(context.player(), message,true);

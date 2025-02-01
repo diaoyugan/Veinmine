@@ -8,23 +8,28 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class Utils {
     public static int searchRadius = 1; // 搜索半径，1表示上下左右斜对角的8个方块，再加上中心方块
     public static int bfsLimit = 20; // 连锁搜索最大数量 超过就使用普通搜索
 
+    // 创建一个Map来存储每个玩家的开关状态
+    private static final Map<UUID, Boolean> playerVeinMineSwitchState = new HashMap<>();
 
-    // 连锁开关状态
-    private static boolean veinMineSwitchState = false; // 初始为关
-
-    // 切换开关状态的方法
-    public static boolean toggleVeinMineSwitchState() {
-        veinMineSwitchState = !veinMineSwitchState;
-        return veinMineSwitchState;
+    // 切换特定玩家的开关状态
+    public static boolean toggleVeinMineSwitchState(PlayerEntity player) {
+        UUID playerId = player.getUuid();
+        boolean newState = !playerVeinMineSwitchState.getOrDefault(playerId, false);
+        playerVeinMineSwitchState.put(playerId, newState);
+        return newState;
     }
 
-    // 获取当前开关状态
-    public static boolean getVeinMineSwitchState() {
-        return veinMineSwitchState;
+    // 获取特定玩家的当前开关状态
+    public static boolean getVeinMineSwitchState(PlayerEntity player) {
+        return playerVeinMineSwitchState.getOrDefault(player.getUuid(), false);
     }
 
     public static boolean isToolSuitable(BlockState blockState, PlayerEntity player){

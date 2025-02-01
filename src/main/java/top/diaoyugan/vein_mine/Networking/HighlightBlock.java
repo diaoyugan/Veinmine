@@ -12,6 +12,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.decoration.DisplayEntity;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -19,6 +20,7 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.MinecraftServer;
 
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 
@@ -31,9 +33,7 @@ import top.diaoyugan.vein_mine.utils.Logger;
 import top.diaoyugan.vein_mine.utils.SmartVein;
 import top.diaoyugan.vein_mine.utils.Utils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public class HighlightBlock implements ModInitializer {
@@ -51,67 +51,91 @@ public class HighlightBlock implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        //PayloadTypeRegistry.playS2C().register(BlockHighlightPayload.ID, BlockHighlightPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(BlockHighlightPayload.ID, BlockHighlightPayload.CODEC);
         ServerPlayConnectionEvents.INIT.register((handler, server) -> ServerPlayNetworking.registerReceiver(handler, BlockHighlightPayload.ID, HighlightBlock::receive));
     }
 
-    private static final Set<BlockPos> activeGlowingBlocks = new HashSet<>();
+    private static final Map<UUID, Set<BlockPos>> playerGlowingBlocks = new HashMap<>();
+
     private static void receive(BlockHighlightPayload payload, ServerPlayNetworking.Context context) {
         BlockPos pos = payload.blockPos();
-
-        ServerWorld world = context.player().getServerWorld();
+        PlayerEntity player = context.player();
+        ServerWorld world = (ServerWorld) player.getWorld();
         BlockState state = world.getBlockState(pos);
+
         // 获取方块的命名空间 ID
         Identifier blockID = Registries.BLOCK.getId(state.getBlock());
         String BlockID = blockID.toString();
-        Set<String> IGNORED_BLOCKS = Set.of(
-                "minecraft:air"
-        );
+        Set<String> IGNORED_BLOCKS = Set.of("minecraft:air");
 
         Set<BlockPos> newGlowingBlocks = new HashSet<>();
 
-        if (Utils.getVeinMineSwitchState()) {
-            if(IGNORED_BLOCKS.contains(BlockID)){
+        if (Utils.getVeinMineSwitchState(player)) {
+            if (IGNORED_BLOCKS.contains(BlockID)) {
                 tryRemoveGlowingBlock(world.getServer());
-            }else{
-            List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos);
+            } else {
+                List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos);
                 for (BlockPos targetPos : blocksToBreak) {
                     newGlowingBlocks.add(targetPos);
-                    spawnGlowingBlock(world, targetPos);
+                    spawnGlowingBlock(world, targetPos, player);
                 }
             }
         }
 
         // 移除不在新列表中的实体
-        removeUnusedGlowingBlocks(world, newGlowingBlocks);
+        removeUnusedGlowingBlocks(world, newGlowingBlocks, player);
 
         // 更新存储的活跃实体
-        activeGlowingBlocks.clear();
-        activeGlowingBlocks.addAll(newGlowingBlocks);
+        Set<BlockPos> playerGlowingPos = playerGlowingBlocks.computeIfAbsent(player.getUuid(), k -> new HashSet<>());
+        playerGlowingPos.clear();
+        playerGlowingPos.addAll(newGlowingBlocks);
     }
 
 
+
     public static void tryRemoveGlowingBlock(MinecraftServer server) {
-        if (!Utils.getVeinMineSwitchState()) {
-            for (ServerWorld world : server.getWorlds()) {
-                for (BlockPos pos : activeGlowingBlocks) {
-                    world.getEntitiesByType(EntityType.BLOCK_DISPLAY, entity ->
-                            entity.getBlockPos().equals(pos)).forEach(entity -> {
-                        entity.remove(Entity.RemovalReason.DISCARDED);
-                        Logger.throwLog("info", "Removed entity at " + pos + " in world " + world.getRegistryKey().getValue());
-                    });
+        for (ServerWorld world : server.getWorlds()) {
+            for (PlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                Set<BlockPos> glowingBlocks = playerGlowingBlocks.get(player.getUuid());
+                if (glowingBlocks != null && !Utils.getVeinMineSwitchState(player)) {
+                    for (BlockPos pos : glowingBlocks) {
+                        world.getEntitiesByType(EntityType.BLOCK_DISPLAY, entity -> entity.getBlockPos().equals(pos)).forEach(entity -> {
+                            entity.remove(Entity.RemovalReason.DISCARDED);
+                            Logger.throwLog("info", "Removed entity at " + pos + " in world " + world.getRegistryKey().getValue());
+                        });
+                    }
+                    glowingBlocks.clear(); // 清空该玩家已移除的实体位置
                 }
             }
-            activeGlowingBlocks.clear(); // 清空已移除的实体位置
+        }
+    }
+    // 清理断开连接玩家的高亮方块
+    public static void tryRemoveGlowingBlocks(ServerPlayerEntity player) {
+        MinecraftServer server = player.getServer();
+        if (server != null) {
+            for (ServerWorld world : server.getWorlds()) {
+                Set<BlockPos> glowingBlocks = playerGlowingBlocks.get(player.getUuid());
+                if (glowingBlocks != null) {
+                    for (BlockPos pos : glowingBlocks) {
+                        world.getEntitiesByType(EntityType.BLOCK_DISPLAY, entity -> entity.getBlockPos().equals(pos)).forEach(entity -> {
+                            entity.remove(Entity.RemovalReason.DISCARDED);
+                            Logger.throwLog("info", "Removed entity at " + pos + " in world " + world.getRegistryKey().getValue());
+                        });
+                    }
+                    glowingBlocks.clear(); // 清空该玩家已移除的实体位置
+                }
+            }
         }
     }
 
 
-
-
-    public static void spawnGlowingBlock(ServerWorld world, BlockPos pos) {
+    public static void spawnGlowingBlock(ServerWorld world, BlockPos pos, PlayerEntity player) {
         String entityName = "invisible_block_entity_" + pos.asLong();
+
+        // 获取玩家的UUID并更新其高亮方块位置集合
+        UUID playerId = player.getUuid();
+        Set<BlockPos> playerGlowingPos = playerGlowingBlocks.computeIfAbsent(playerId, k -> new HashSet<>());
+        playerGlowingPos.add(pos);
 
         DisplayEntity existingEntity = world.getEntitiesByType(EntityType.BLOCK_DISPLAY, entity ->
                         entity.getCustomName() != null && entity.getCustomName().getString().equals(entityName))
@@ -138,16 +162,25 @@ public class HighlightBlock implements ModInitializer {
         Logger.throwLog("info", "Created entity at " + pos);
     }
 
-    private static void removeUnusedGlowingBlocks(ServerWorld world, Set<BlockPos> newGlowingBlocks) {
-        for (DisplayEntity entity : world.getEntitiesByType(EntityType.BLOCK_DISPLAY, e -> e.getCustomName() != null)) {
-            BlockPos entityPos = entity.getBlockPos();
-            String entityName = "invisible_block_entity_" + entityPos.asLong();
 
-            if (!newGlowingBlocks.contains(entityPos)) {
-                entity.remove(Entity.RemovalReason.DISCARDED);
-                Logger.throwLog("info", "Removed unused entity at " + entityPos);
+
+    private static void removeUnusedGlowingBlocks(ServerWorld world, Set<BlockPos> newGlowingBlocks, PlayerEntity player) {
+        UUID playerId = player.getUuid();
+        Set<BlockPos> playerGlowingPos = playerGlowingBlocks.get(playerId);
+
+        if (playerGlowingPos != null) {
+            for (DisplayEntity entity : world.getEntitiesByType(EntityType.BLOCK_DISPLAY, e -> e.getCustomName() != null)) {
+                BlockPos entityPos = entity.getBlockPos();
+                String entityName = "invisible_block_entity_" + entityPos.asLong() + "_" + playerId.toString();
+
+                if (!newGlowingBlocks.contains(entityPos)) {
+                    entity.remove(Entity.RemovalReason.DISCARDED);
+                    Logger.throwLog("info", "Removed unused entity at " + entityPos + " for player " + player.getName());
+                }
             }
         }
     }
+
+
 
 }
