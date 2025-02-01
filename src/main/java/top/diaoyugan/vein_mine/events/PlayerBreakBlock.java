@@ -30,25 +30,33 @@ public class PlayerBreakBlock {
             List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos, startBlockID);
             for (BlockPos targetPos : blocksToBreak) {
                 if (targetPos.equals(pos)) continue; // 排除中心方块
-
+                //这的顺序不能改！！！
                 BlockState targetState = world.getBlockState(targetPos);
                 Block targetBlock = targetState.getBlock();
                 if (targetBlock != state.getBlock()) continue;
 
-                if (shouldBreakWithoutDrop(targetState, player, world, targetPos)) {
+                if (player.isInCreativeMode()) {
                     world.breakBlock(targetPos, false);
-                } else if (isContainer(targetState)) {
+                } else if(!Utils.isToolSuitable(targetState, player)){
+                    world.breakBlock(targetPos, false);
+                    destroyedCount++;
+                } else if(Utils.shouldNotDropItem(targetState, world, targetPos)){
+                    world.breakBlock(targetPos, false);
+                    destroyedCount++;
+                }else if (isContainer(targetState)) {
                     world.breakBlock(targetPos, true);
+                    destroyedCount++;
                 } else if (isSilktouch(player)) {
                     world.breakBlock(targetPos, false);
                     Block.dropStack(world, targetPos, new ItemStack(targetBlock));
+                    destroyedCount++;
                 } else {
                     world.breakBlock(targetPos, true);
+                    destroyedCount++;
                 }
 
-                destroyedCount++;
-                Utils.applyToolDurabilityDamage(player, destroyedCount);
             }
+            Utils.applyToolDurabilityDamage(player, destroyedCount);
         }
     }
 
