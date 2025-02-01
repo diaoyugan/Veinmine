@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class Utils {
     public static int searchRadius = 1; // 搜索半径，1表示上下左右斜对角的8个方块，再加上中心方块
-    public static int bfsLimit = 20; // 连锁搜索最大数量 超过就使用普通搜索
+    public static int bfsLimit = 50; // 连锁搜索最大数量 超过就使用普通搜索
 
     // 创建一个Map来存储每个玩家的开关状态
     private static final Map<UUID, Boolean> playerVeinMineSwitchState = new HashMap<>();
