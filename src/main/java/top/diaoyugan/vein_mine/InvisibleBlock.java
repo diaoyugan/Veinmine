@@ -10,7 +10,8 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
-import top.diaoyugan.vein_mine.Networking.Networking;
+
+import static top.diaoyugan.vein_mine.vein_mine.ID;
 
 public class InvisibleBlock {
     public static Block register(Block block, RegistryKey<Block> blockKey, boolean shouldRegisterItem) {
@@ -31,7 +32,7 @@ public class InvisibleBlock {
 
     public static final RegistryKey<Block> INVISIBLE_BLOCK_KEY = RegistryKey.of(
             RegistryKeys.BLOCK,
-            Identifier.of(Networking.ID, "invisible_block")
+            Identifier.of(ID, "invisible_block")
     );
 
     public static final Block CONDENSED_DIRT = register(

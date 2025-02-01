@@ -5,10 +5,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import top.diaoyugan.vein_mine.utils.Logger;
+import top.diaoyugan.vein_mine.utils.SmartVein;
 import top.diaoyugan.vein_mine.utils.Utils;
+
+import java.util.List;
 
 import static top.diaoyugan.vein_mine.utils.Utils.*;
 
@@ -21,40 +26,36 @@ public class PlayerBreakBlock {
 
     private static void veinmine(World world, PlayerEntity player, BlockPos pos, BlockState state){
 
-        int radius = 1;  // 设置搜索半径，1表示上下左右斜对角的8个方块，再加上中心方块
         int destroyedCount = 0;
         if (Utils.getVeinMineSwitchState()) {
-            for (int x = -radius; x <= radius; x++) {
-                for (int y = -radius; y <= radius; y++) {
-                    for (int z = -radius; z <= radius; z++) {
-                        BlockPos targetPos = pos.add(x, y, z);
-                        if (targetPos.equals(pos)) continue; // 排除中心方块
+            Identifier startBlockID = Registries.BLOCK.getId(state.getBlock());
+            List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos,startBlockID);
+            for (BlockPos targetPos : blocksToBreak) {
+                if (targetPos.equals(pos)) continue; // 排除中心方块
 
-                        BlockState targetState = world.getBlockState(targetPos);
-                        Block targetBlock = targetState.getBlock();
-                        if (targetBlock != state.getBlock()) continue;
+                BlockState targetState = world.getBlockState(targetPos);
+                Block targetBlock = targetState.getBlock();
+                if (targetBlock != state.getBlock()) continue;
 
-                        if (shouldBreakWithoutDrop(targetState, player, world, targetPos)) {
-                            world.breakBlock(targetPos, false);
-                        } else if (isContainer(targetState)) {
-                            world.breakBlock(targetPos, true);
-                        } else if (isSilktouch(player)) {
-                            world.breakBlock(targetPos, false);
-                            Block.dropStack(world, targetPos, new ItemStack(targetBlock));
-                        } else {
-                            world.breakBlock(targetPos, true);
-                        }
-
-                        destroyedCount++;
-                    }
+                if (shouldBreakWithoutDrop(targetState, player, world, targetPos)) {
+                    world.breakBlock(targetPos, false);
+                } else if (isContainer(targetState)) {
+                    world.breakBlock(targetPos, true);
+                } else if (isSilktouch(player)) {
+                    world.breakBlock(targetPos, false);
+                    Block.dropStack(world, targetPos, new ItemStack(targetBlock));
+                } else {
+                    world.breakBlock(targetPos, true);
                 }
+
+                destroyedCount++;
             }
+        }
 
             // 处理工具耐久
             if (!player.isInCreativeMode() && destroyedCount > 0) {
                 applyToolDurabilityDamage(player, destroyedCount);
             }
-        }
 
         Logger.newLogBlockBroken(state, pos, world, destroyedCount);
     }

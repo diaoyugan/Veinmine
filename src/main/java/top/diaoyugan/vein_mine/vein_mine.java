@@ -11,7 +11,7 @@ import static top.diaoyugan.vein_mine.Networking.HighlightBlock.tryRemoveGlowing
 
 
 public class vein_mine implements ModInitializer {
-
+    public static final String ID = "vein_mine";
     @Override
     public void onInitialize() {
         // 注册

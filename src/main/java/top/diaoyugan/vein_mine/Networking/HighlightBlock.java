@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.MinecraftServer;
 
 import net.minecraft.server.world.ServerWorld;
@@ -27,6 +28,7 @@ import net.minecraft.util.math.Vec3d;
 
 import top.diaoyugan.vein_mine.utils.Logger;
 
+import top.diaoyugan.vein_mine.utils.SmartVein;
 import top.diaoyugan.vein_mine.utils.Utils;
 
 import java.util.HashSet;
@@ -57,23 +59,26 @@ public class HighlightBlock implements ModInitializer {
     private static final Set<BlockPos> activeGlowingBlocks = new HashSet<>();
     private static void receive(BlockHighlightPayload payload, ServerPlayNetworking.Context context) {
         BlockPos pos = payload.blockPos();
-        int radius = 1;  // 搜索范围
 
         ServerWorld world = context.player().getServerWorld();
-        Block targetBlock = world.getBlockState(pos).getBlock();
+        BlockState state = world.getBlockState(pos);
+        // 获取方块的命名空间 ID
+        Identifier blockID = Registries.BLOCK.getId(state.getBlock());
+        String BlockID = blockID.toString();
+        Set<String> IGNORED_BLOCKS = Set.of(
+                "minecraft:air"
+        );
 
         Set<BlockPos> newGlowingBlocks = new HashSet<>();
 
         if (Utils.getVeinMineSwitchState()) {
-            for (int x = -radius; x <= radius; x++) {
-                for (int y = -radius; y <= radius; y++) {
-                    for (int z = -radius; z <= radius; z++) {
-                        BlockPos targetPos = pos.add(x, y, z);
-                        if (world.getBlockState(targetPos).getBlock() == targetBlock) {
-                            newGlowingBlocks.add(targetPos);
-                            spawnGlowingBlock(world, targetPos);
-                        }
-                    }
+            if(IGNORED_BLOCKS.contains(BlockID)){
+                tryRemoveGlowingBlock(world.getServer());
+            }else{
+            List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos);
+                for (BlockPos targetPos : blocksToBreak) {
+                    newGlowingBlocks.add(targetPos);
+                    spawnGlowingBlock(world, targetPos);
                 }
             }
         }

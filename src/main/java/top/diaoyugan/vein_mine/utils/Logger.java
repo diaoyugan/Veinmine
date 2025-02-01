@@ -5,7 +5,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.slf4j.LoggerFactory;
 
-import static top.diaoyugan.vein_mine.Networking.Networking.ID;
+import static top.diaoyugan.vein_mine.vein_mine.ID;
+
 
 public class Logger {
 
