@@ -164,5 +164,4 @@ public class Config {
             Logger.throwLog("error", "Failed to save config file.\n" + e);
         }
     }
-
 }

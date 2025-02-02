@@ -1,5 +1,6 @@
 {
   "key.category.vm.switch": "vein mine",
   "key.vm.switch": "switch vein mine",
-  "vm.switch_state": "vein mine is"
+  "vm.switch_state": "vein mine is",
+  "vm.config.screen.title": "Veinmine configuration"
 }

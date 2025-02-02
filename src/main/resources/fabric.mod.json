@@ -19,6 +19,9 @@
     ],
     "main": [
       "top.diaoyugan.vein_mine.vein_mine"
+    ],
+    "modmenu": [
+      "top.diaoyugan.vein_mine.client.config.ModMenuIntegration"
     ]
   },
   "mixins": [
@@ -31,6 +34,13 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": ">=0.115.0",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${minecraft_version}",
+    "modmenu": ">=13.0.0",
+    "cloth-config": ">=17.0.0"
+  },
+  "custom": {
+    "modmenu": {
+      "update_checker": true
+    }
   }
 }

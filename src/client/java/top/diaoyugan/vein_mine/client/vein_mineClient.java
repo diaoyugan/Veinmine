@@ -21,6 +21,7 @@ public class vein_mineClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.getNetworkHandler() != null) {
                 if (client.player != null && Utils.getVeinMineSwitchState(client.player)) {
