@@ -29,6 +29,9 @@ public class Config {
 
     // 初始化配置（用于初次启动）
     public static void initialize() {
+        if (currentConfig == null) {
+            currentConfig = new Config();  // 创建新的配置实例
+        }
         currentConfig = load();  // 加载配置
         System.out.println("Configuration loaded successfully on initial start.");
         printConfig();  // 打印当前配置
