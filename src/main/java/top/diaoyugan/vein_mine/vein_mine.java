@@ -11,6 +11,8 @@ import top.diaoyugan.vein_mine.Networking.keybindreciever.NetworkingKeybindPacke
 
 public class vein_mine implements ModInitializer {
     public static final String ID = "vein_mine";
+    public static Config config;
+
     @Override
     public void onInitialize() {
         // 注册
@@ -23,5 +25,13 @@ public class vein_mine implements ModInitializer {
             // 当玩家断开连接时清除该玩家的高亮方块
             HighlightBlock.tryRemoveGlowingBlocks(handler.getPlayer());
         });
+        config = Config.load();
+        System.out.println("配置加载成功！当前设置：");
+        System.out.println("搜索半径: " + config.searchRadius);
+        System.out.println("BFS 限制: " + config.BFSLimit);
+        System.out.println("BFS忽略的方块: " + config.ignoredBlocks);
+        System.out.println("使用 BFS: " + config.useBFS);
+        System.out.println("使用半径搜索: " + config.useRadiusSearch);
+        System.out.println("达到BFS限制时使用半径搜索: " + config.useRadiusSearchWhenReachBFSLimit);
     }
 }
