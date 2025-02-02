@@ -17,6 +17,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -27,6 +28,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
+import net.minecraft.world.World;
 import top.diaoyugan.vein_mine.utils.Logger;
 
 import top.diaoyugan.vein_mine.utils.SmartVein;
@@ -95,39 +97,61 @@ public class HighlightBlock implements ModInitializer {
 
 
     public static void tryRemoveGlowingBlock(MinecraftServer server) {
-        for (ServerWorld world : server.getWorlds()) {
-            for (PlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                Set<BlockPos> glowingBlocks = playerGlowingBlocks.get(player.getUuid());
-                if (glowingBlocks != null && !Utils.getVeinMineSwitchState(player)) {
-                    for (BlockPos pos : glowingBlocks) {
-                        world.getEntitiesByType(EntityType.BLOCK_DISPLAY, entity -> entity.getBlockPos().equals(pos)).forEach(entity -> {
+        // 创建一个 Map 来缓存所有世界
+        Map<RegistryKey<World>, ServerWorld> worldsMap = new HashMap<>();
+        server.getWorlds().forEach(svWorld -> {
+            worldsMap.put(svWorld.getRegistryKey(), svWorld);
+        });
+
+        // 遍历所有玩家
+        for (PlayerEntity player : server.getPlayerManager().getPlayerList()) {
+            Set<BlockPos> glowingBlocks = playerGlowingBlocks.get(player.getUuid());
+            if (glowingBlocks != null && !Utils.getVeinMineSwitchState(player)) {
+                // 遍历玩家的高亮方块
+                for (BlockPos pos : glowingBlocks) {
+                    // 遍历所有世界并移除匹配的实体
+                    worldsMap.values().forEach(svWorld -> {
+                        svWorld.getEntitiesByType(EntityType.BLOCK_DISPLAY, entity -> entity.getBlockPos().equals(pos)).forEach(entity -> {
+                            // 移除实体
                             entity.remove(Entity.RemovalReason.DISCARDED);
-                            Logger.throwLog("info", "Removed entity at " + pos + " in world " + world.getRegistryKey().getValue());
+                            Logger.throwLog("info", "Removed entity at " + entity.getBlockPos() + " in world " + svWorld.getRegistryKey().getValue());
                         });
-                    }
-                    glowingBlocks.clear(); // 清空该玩家已移除的实体位置
+                    });
                 }
+                glowingBlocks.clear(); // 清空该玩家已移除的实体位置
             }
         }
     }
+
     // 清理断开连接玩家的高亮方块
     public static void tryRemoveGlowingBlocks(ServerPlayerEntity player) {
         MinecraftServer server = player.getServer();
         if (server != null) {
-            for (ServerWorld world : server.getWorlds()) {
-                Set<BlockPos> glowingBlocks = playerGlowingBlocks.get(player.getUuid());
-                if (glowingBlocks != null) {
+            // 创建一个 Map 来存储所有世界
+            Map<RegistryKey<World>, ServerWorld> worldsMap = new HashMap<>();
+            server.getWorlds().forEach(world -> {
+                worldsMap.put(world.getRegistryKey(), world);
+            });
+
+            // 获取玩家的高亮方块
+            Set<BlockPos> glowingBlocks = playerGlowingBlocks.get(player.getUuid());
+            if (glowingBlocks != null) {
+                // 遍历所有世界
+                worldsMap.values().forEach(world -> {
+                    // 遍历玩家的所有高亮方块
                     for (BlockPos pos : glowingBlocks) {
+                        // 查找并移除在该位置的 BLOCK_DISPLAY 实体
                         world.getEntitiesByType(EntityType.BLOCK_DISPLAY, entity -> entity.getBlockPos().equals(pos)).forEach(entity -> {
                             entity.remove(Entity.RemovalReason.DISCARDED);
                             Logger.throwLog("info", "Removed entity at " + pos + " in world " + world.getRegistryKey().getValue());
                         });
                     }
-                    glowingBlocks.clear(); // 清空该玩家已移除的实体位置
-                }
+                });
+                glowingBlocks.clear(); // 清空该玩家已移除的实体位置
             }
         }
     }
+
 
 
     public static void spawnGlowingBlock(ServerWorld world, BlockPos pos, PlayerEntity player) {
@@ -170,9 +194,8 @@ public class HighlightBlock implements ModInitializer {
         Set<BlockPos> playerGlowingPos = playerGlowingBlocks.get(playerId);
 
         if (playerGlowingPos != null) {
-            for (DisplayEntity entity : world.getEntitiesByType(EntityType.BLOCK_DISPLAY, e -> e.getCustomName() != null)) {
+            for (DisplayEntity entity : world.getEntitiesByType(EntityType.BLOCK_DISPLAY, e -> Objects.requireNonNull(e.getCustomName()).getString().contains("invisible_block_entity_"))) {
                 BlockPos entityPos = entity.getBlockPos();
-                String entityName = "invisible_block_entity_" + entityPos.asLong() + "_" + playerId.toString();
 
                 if (!newGlowingBlocks.contains(entityPos)) {
                     entity.remove(Entity.RemovalReason.DISCARDED);
