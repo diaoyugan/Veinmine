@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -75,9 +74,11 @@ public class HighlightBlock implements ModInitializer {
                 tryRemoveGlowingBlock(world.getServer());
             } else {
                 List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos);
-                for (BlockPos targetPos : blocksToBreak) {
-                    newGlowingBlocks.add(targetPos);
-                    spawnGlowingBlock(world, targetPos, player);
+                if(blocksToBreak != null) {
+                    for (BlockPos targetPos : blocksToBreak) {
+                        newGlowingBlocks.add(targetPos);
+                        spawnGlowingBlock(world, targetPos, player);
+                    }
                 }
             }
         }

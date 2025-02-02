@@ -35,7 +35,7 @@ public class PlayerBreakBlock {
         Identifier startBlockID = Registries.BLOCK.getId(state.getBlock());
         List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos, startBlockID);
         List<ItemStack> drops = new ArrayList<>();
-
+        if (blocksToBreak != null){
         for (BlockPos targetPos : blocksToBreak) {
             if (targetPos.equals(pos)) continue; // 排除中心方块
 
@@ -83,6 +83,7 @@ public class PlayerBreakBlock {
 
         // 扣除耐久
         Utils.applyToolDurabilityDamage(player, destroyedCount);
+    }
     }
 
 

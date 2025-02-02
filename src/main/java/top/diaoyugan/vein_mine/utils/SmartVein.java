@@ -26,7 +26,7 @@ public class SmartVein {
         String startBlockID = blockID.toString();
 
         // 如果是排除列表中的方块，或者bfs被禁用，使用旧的范围查找
-        if (IGNORED_BLOCKS.contains(startBlockID)||vein_mine.config.useBFS) {
+        if (IGNORED_BLOCKS.contains(startBlockID)||!vein_mine.config.useBFS) {
             return findBlocksInCube(world, startPos, startState);
         } else {
             // 否则，使用智能查找
@@ -36,7 +36,7 @@ public class SmartVein {
     // 重载方法：接受原始方块ID
     public static List<BlockPos> findBlocks(World world, BlockPos startPos, Identifier startBlockID) {
         // 如果是排除列表中的方块，或者bfs被禁用，使用旧的范围查找
-        if (IGNORED_BLOCKS.contains(String.valueOf(startBlockID))||vein_mine.config.useBFS) {
+        if (IGNORED_BLOCKS.contains(String.valueOf(startBlockID))||!vein_mine.config.useBFS) {
             return findBlocksInCube(world, startPos, startBlockID);
         } else {
             // 否则，使用智能查找
@@ -46,7 +46,7 @@ public class SmartVein {
 
     //立方体查找（用于常见方块）
     private static List<BlockPos> findBlocksInCube(World world, BlockPos pos, BlockState targetState) {
-        if (!vein_mine.config.useRadiusSearch) {
+        if (vein_mine.config.useRadiusSearch) {
             List<BlockPos> foundBlocks = new ArrayList<>();
 
             for (int x = -SmartVein.SEARCH_RADIUS; x <= SmartVein.SEARCH_RADIUS; x++) {
@@ -67,7 +67,7 @@ public class SmartVein {
 
     // 重载方法：接收方块 ID 来进行立方体查找
     private static List<BlockPos> findBlocksInCube(World world, BlockPos pos, Identifier startBlockID) {
-        if (!vein_mine.config.useRadiusSearch) {
+        if (vein_mine.config.useRadiusSearch) {
             List<BlockPos> foundBlocks = new ArrayList<>();
 
             // 获取方块对象
