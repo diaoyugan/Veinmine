@@ -140,8 +140,6 @@ public class Config {
                 field.set(this, newValue);
             }
 
-            // 保存修改后的配置并尝试热重载
-            save();
 
             Logger.throwLog("info", "Configuration updated: " + fieldName + " = " + newValue);
 
