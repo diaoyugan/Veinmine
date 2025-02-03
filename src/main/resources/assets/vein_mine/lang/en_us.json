@@ -2,5 +2,7 @@
   "key.category.vm.switch": "vein mine",
   "key.vm.switch": "switch vein mine",
   "vm.switch_state": "vein mine is",
-  "vm.config.screen.title": "Veinmine configuration"
+  "vm.config.screen.title": "Veinmine Configuration",
+  "vm.config.search_radius": "Search Radius",
+  "vm.config.search_radius.tooltip": "The radius of the search area",
 }

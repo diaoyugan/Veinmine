@@ -8,6 +8,8 @@ import net.minecraft.client.gui.screen.Screen;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import top.diaoyugan.vein_mine.Config;
@@ -21,10 +23,10 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
     }
     @Override
     protected void init() {
-        config = Config.load();
+        this.config = Config.load();
         ConfigBuilder cb = ConfigBuilder.create().setParentScreen(this.parent).setTitle(Text.translatable("vm.config.screen.title"));
         cb.setSavingRunnable(config::save);
-        Screen screen = initConfigScreen(cb);
+        Screen screen = initConfigScreen(cb, config);
         this.client.setScreen(screen);
     }
 
@@ -41,15 +43,47 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
             return Optional.empty();
         }
     }
-    private Screen initConfigScreen(ConfigBuilder cb){
-
-        ConfigCategory mainConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.mining"));
+    private Screen initConfigScreen(ConfigBuilder cb, Config config){
+        ConfigCategory mainConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.main"));
         ConfigEntryBuilder entryBuilder = cb.entryBuilder();
+        /* Search Radius */
         mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.search_radius"), Config.getCurrentConfig().searchRadius, 1, 10)
                 .setTooltip(Text.translatable("vm.config.search_radius.tooltip"))
                 .setDefaultValue(1)
-                .setSaveConsumer(i -> config.modify("searchRadius", i, ""))
+                .setSaveConsumer(i -> config.modify("searchRadius", i))
                 .build());
+        /* BFS Limit */
+        mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.bfs_limit"), Config.getCurrentConfig().BFSLimit, 1, 128)
+                .setDefaultValue(50)
+                .setSaveConsumer(i -> config.modify("BFSLimit", i))
+                .build());
+
+        /* Ignored Blocks */
+        List<String> ignoredBlocks = new ArrayList<>(Config.getCurrentConfig().ignoredBlocks);
+        mainConfig.addEntry(entryBuilder.startStrList(Text.translatable("vm.config.ignored_blocks"), ignoredBlocks)
+                .setSaveConsumer(strings -> {
+                    Set<String> newIgnoredBlocks = Set.copyOf(strings);
+                    config.modify("ignoredBlocks", newIgnoredBlocks);
+                })
+                .build());
+        /* Use BFS */
+        mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.use_bfs"), Config.getCurrentConfig().useBFS)
+                .setDefaultValue(true)
+                .setSaveConsumer(b -> config.modify("useBFS", b))
+                .build());
+        /* Use Radius Search */
+        mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.use_radius_search"), Config.getCurrentConfig().useRadiusSearch)
+                .setTooltip(Text.translatable("vm.config.use_radius_search.tooltip"))
+                .setDefaultValue(true)
+                .setSaveConsumer(b -> config.modify("useRadiusSearch", b))
+                .build());
+        /* Use Radius Search When Reach BFS Limit */
+        mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.use_radius_search_when_reach_bfs_limit"), Config.getCurrentConfig().useRadiusSearchWhenReachBFSLimit)
+                .setTooltip(Text.translatable("vm.config.use_radius_search_when_reach_bfs_limit.tooltip"))
+                .setDefaultValue(true)
+                .setSaveConsumer(b -> config.modify("useRadiusSearchWhenReachBFSLimit", b))
+                .build());
+
         return cb.build();
     }
 }
