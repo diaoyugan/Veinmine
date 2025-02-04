@@ -16,5 +16,14 @@
   "vm.config.use_radius_search": "範囲検索モードを有効にする",
   "vm.config.use_radius_search.tooltip": "範囲検索モードを有効にするか設定します。無効にした場合、範囲検索は一切行われません。",
   "vm.config.use_radius_search_when_reach_bfs_limit": "連鎖上限に達したら範囲モードを使用する",
-  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "目標ブロックが連鎖モードの上限を超えた場合、自動的に範囲モードに切り替えるかどうかを設定します。無効にした場合、上限を超えても連鎖採掘は行われません。"
+  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "目標ブロックが連鎖モードの上限を超えた場合、自動的に範囲モードに切り替えるかどうかを設定します。無効にした場合、上限を超えても連鎖採掘は行われません。",
+  "vm.warn.breakthroughs": "警告！ツールが壊れかけています！チェーン採掘は続行されません。",
+  "vm.config.protect_tools": "ツール保護",
+  "vm.config.protect_tools.tooltip": "ツールが壊れかけた際に警告を表示し、チェーン破壊を停止するかどうかを設定します。\n無効にすると、ツールが壊れてもチェーン採掘は続行されます。",
+  "vm.config.protected_tools": "保護されたツール",
+  "vm.config.protected_tools.tooltip": "保護されたツールはツール保護を発動します。\n形式は名前空間:パスで記述してください。例：minecraft:diamond_pickaxe。",
+  "vm.config.protect_allValuable_tools": "すべての貴重なツールを自動保護",
+  "vm.config.protect_allValuable_tools.tooltip": "すべての貴重なツールを自動で保護するかどうか設定します。オンにすると、金、ダイヤモンド、ネザーライトツールが保護されます。",
+  "vm.config.durability_threshold": "耐久度警告閾値",
+  "vm.config.durability_threshold.tooltip": "チェーン採掘後の耐久度がこの値を下回ると、ツール保護が発動します。"
 }

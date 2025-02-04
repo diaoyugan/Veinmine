@@ -79,6 +79,32 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 .setDefaultValue(true)
                 .setSaveConsumer(b -> configItems.useRadiusSearchWhenReachBFSLimit = b)
                 .build());
+        /* Protect Tools */
+        mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.protect_tools"), ci.protectTools)
+                .setTooltip(Text.translatable("vm.config.protect_tools.tooltip"))
+                .setDefaultValue(true)
+                .setSaveConsumer(b -> configItems.protectTools = b)
+                .build());
+        /* Protected Tools */
+        List<String> protectedTools = new ArrayList<>(ci.protectedTools);
+        mainConfig.addEntry(entryBuilder.startStrList(Text.translatable("vm.config.protected_tools"), protectedTools)
+                .setTooltip(Text.translatable("vm.config.protected_tools.tooltip"))
+                .setSaveConsumer(strings -> {
+                    configItems.protectedTools = Set.copyOf(strings);
+                })
+                .build());
+        /* Protect All Valuable Tools */
+        mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.protect_allValuable_tools"), ci.protectAllValuableTools)
+                .setTooltip(Text.translatable("vm.config.protect_allValuable_tools.tooltip"))
+                .setDefaultValue(true)
+                .setSaveConsumer(b -> configItems.protectAllValuableTools = b)
+                .build());
+        /* Durability Threshold */
+        mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.durability_threshold"), ci.durabilityThreshold, 1, 256)
+                .setTooltip(Text.translatable("vm.config.durability_threshold.tooltip"))
+                .setDefaultValue(10)
+                .setSaveConsumer(i -> configItems.durabilityThreshold = i)
+                .build());
 
         return cb.build();
     }

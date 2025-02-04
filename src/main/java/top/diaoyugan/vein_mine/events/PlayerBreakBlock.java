@@ -9,12 +9,18 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import top.diaoyugan.vein_mine.Config;
+import top.diaoyugan.vein_mine.ConfigItems;
+import top.diaoyugan.vein_mine.utils.Messages;
 import top.diaoyugan.vein_mine.utils.SmartVein;
 import top.diaoyugan.vein_mine.utils.Utils;
 
@@ -23,6 +29,7 @@ import java.util.List;
 import static top.diaoyugan.vein_mine.utils.Utils.*;
 
 public class PlayerBreakBlock {
+    static ConfigItems config = new Config().getConfigItems();
 
     public static void register() {
         // 注册事件
@@ -36,9 +43,21 @@ public class PlayerBreakBlock {
         Identifier startBlockID = Registries.BLOCK.getId(state.getBlock());
         List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos, startBlockID);
         if (blocksToBreak != null){
+            if (config.protectTools){
+                if (!player.isInCreativeMode()) {
+                    int totalDurabilityCost = Utils.calculateTotalDurabilityCost(blocksToBreak, player, state);
+                    // 检查玩家工具的当前耐久是否足够
+                    if (!Utils.hasEnoughDurability(player, totalDurabilityCost)) {
+                        Text message = Text.translatable("vm.warn.breakthroughs").styled(style -> style.withFormatting(Formatting.RED));
+                        Messages.sendMessage((ServerPlayerEntity) player, message,true);
+                        return; // 如果工具耐久不足，直接返回
+                    }
+                }
+            }
+
             for (BlockPos targetPos : blocksToBreak) {
                 if (targetPos.equals(pos)) continue; // 排除中心方块
-                //这的顺序不能改！！！
+                //这的顺序不能改！！！Unless is ness
                 BlockState targetState = world.getBlockState(targetPos);
                 Block targetBlock = targetState.getBlock();
                 if (targetBlock != state.getBlock()) continue;
@@ -76,9 +95,7 @@ public class PlayerBreakBlock {
 
         // 扣除耐久
         Utils.applyToolDurabilityDamage(player, destroyedCount);
+        }
     }
-    }
-
-
 
 }

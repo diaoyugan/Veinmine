@@ -12,4 +12,8 @@ public class ConfigItems {
     public boolean useBFS = true;
     public boolean useRadiusSearch = true;
     public boolean useRadiusSearchWhenReachBFSLimit = true;
+    public boolean protectTools = true;
+    public Set<String> protectedTools = new HashSet<>();
+    public int durabilityThreshold = 10;
+    public boolean protectAllValuableTools = true;
 }

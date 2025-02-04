@@ -16,5 +16,14 @@
   "vm.config.use_radius_search": "",
   "vm.config.use_radius_search.tooltip": "",
   "vm.config.use_radius_search_when_reach_bfs_limit": "",
-  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": ""
+  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "",
+  "vm.warn.breakthroughs": "",
+  "vm.config.protect_tools": "",
+  "vm.config.protect_tools.tooltip": "",
+  "vm.config.protected_tools": "",
+  "vm.config.protected_tools.tooltip": "",
+  "vm.config.protect_allValuable_tools": "",
+  "vm.config.protect_allValuable_tools.tooltip": "",
+  "vm.config.durability_threshold": "",
+  "vm.config.durability_threshold.tooltip": ""
 }

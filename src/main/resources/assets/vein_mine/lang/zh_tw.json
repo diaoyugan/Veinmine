@@ -16,5 +16,14 @@
   "vm.config.use_radius_search": "啟用範圍搜尋模式",
   "vm.config.use_radius_search.tooltip": "設置是否啟用範圍搜尋，關閉後，無論何時都不會使用範圍搜尋",
   "vm.config.use_radius_search_when_reach_bfs_limit": "超出連鎖上限後使用範圍模式",
-  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "目標方塊超出連鎖模式上限後是否會自動切換為範圍模式\n如果關閉,超出上限後將不進行連鎖挖掘"
+  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "目標方塊超出連鎖模式上限後是否會自動切換為範圍模式\n如果關閉,超出上限後將不進行連鎖挖掘",
+  "vm.warn.breakthroughs": "警告！工具即將損壞！不進行連鎖挖掘",
+  "vm.config.protect_tools": "工具保護",
+  "vm.config.protect_tools.tooltip": "設置是否在工具即將損壞時彈出警告並不進行連鎖破壞\n如果關閉,工具即使會損壞也會繼續連鎖採集",
+  "vm.config.protected_tools": "受保護的工具",
+  "vm.config.protected_tools.tooltip": "受保護的工具將會觸發工具保護\n格式應為：命名空間:路徑 如minecraft:diamond_pickaxe",
+  "vm.config.protect_allValuable_tools": "自動保護所有貴重工具",
+  "vm.config.protect_allValuable_tools.tooltip": "是否自動保護所有貴重工具，如果開啟，將會自動保護黃金、鑽石和下界合金工具",
+  "vm.config.durability_threshold": "損壞警告閾值",
+  "vm.config.durability_threshold.tooltip": "若連鎖後的耐久將會低於此值，則觸發工具保護"
 }
