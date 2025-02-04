@@ -18,6 +18,9 @@ public class SmartVein {
     private static final int MAX_CONNECTED_BLOCKS = Utils.bfsLimit;
 
     private static final Set<String> IGNORED_BLOCKS = config.ignoredBlocks;
+    static {
+        IGNORED_BLOCKS.add("minecraft:air");
+    }
 
     public static List<BlockPos> findBlocks(World world, BlockPos startPos) {
         BlockState startState = world.getBlockState(startPos);

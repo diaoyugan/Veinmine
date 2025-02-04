@@ -1,8 +1,20 @@
 {
+  "modmenu.nameTranslation.vein_mine": "vein mine",
   "key.category.vm.switch": "vein mine",
   "key.vm.switch": "switch vein mine",
   "vm.switch_state": "vein mine is",
-  "vm.config.screen.title": "Veinmine Configuration",
+  "vm.config.config_screen_title": "",
+  "vm.config.screen.title": "Vein mine Configuration",
   "vm.config.search_radius": "Search Radius",
   "vm.config.search_radius.tooltip": "The radius of the search area",
+  "vm.config.bfs_limit": "",
+  "vm.config.bfs_limit.tooltip": "",
+  "vm.config.ignored_blocks": "",
+  "vm.config.ignored_blocks.tooltip": "",
+  "vm.config.use_bfs": "",
+  "vm.config.use_bfs.tooltip": "",
+  "vm.config.use_radius_search": "",
+  "vm.config.use_radius_search.tooltip": "",
+  "vm.config.use_radius_search_when_reach_bfs_limit": "",
+  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": ""
 }

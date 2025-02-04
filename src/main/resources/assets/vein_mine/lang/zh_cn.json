@@ -1,5 +1,20 @@
 {
+  "modmenu.nameTranslation.vein_mine": "连锁挖掘",
   "key.category.vm.switch": "连锁挖掘",
   "key.vm.switch": "切换激活",
-  "vm.switch_state": "连锁挖掘状态"
+  "vm.switch_state": "连锁挖掘状态",
+  "vm.config.config_screen_title": "连锁挖掘设置菜单",
+  "vm.config.screen.title": "连锁挖掘设置菜单",
+  "vm.config.search_radius": "范围模式搜索范围",
+  "vm.config.search_radius.tooltip": "范围模式搜索半径，1表示上下左右斜对角的8个方块，再算上前后两层各9个，再加上中心方块",
+  "vm.config.bfs_limit": "连锁模式搜索上限",
+  "vm.config.bfs_limit.tooltip": "设置连锁模式搜索的方块上限",
+  "vm.config.ignored_blocks": "连锁模式忽略方块",
+  "vm.config.ignored_blocks.tooltip": "被连锁模式忽略的方块将会使用范围搜索\n格式应为：命名空间:路径 如minecraft:air",
+  "vm.config.use_bfs": "启用连锁搜索模式",
+  "vm.config.use_bfs.tooltip": "设置是否启用连锁搜索，如果关闭，搜索任何方块将使用范围搜索模式",
+  "vm.config.use_radius_search": "启用范围搜索模式",
+  "vm.config.use_radius_search.tooltip": "设置是否启用范围搜索，关闭后，无论何时都不会使用范围搜索",
+  "vm.config.use_radius_search_when_reach_bfs_limit": "超出连锁上限后使用范围模式",
+  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "目标方块超出连锁模式上限后是否会自动切换为范围模式\n如果关闭,超出上限后将不进行连锁挖掘"
 }

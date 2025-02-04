@@ -1,5 +1,20 @@
 {
+  "modmenu.nameTranslation.vein_mine": "連鎖挖掘",
   "key.category.vm.switch": "連鎖挖掘",
   "key.vm.switch": "切換啟動",
-  "vm.switch_state": "連鎖挖掘狀態"
+  "vm.switch_state": "連鎖挖掘狀態",
+  "vm.config.config_screen_title": "連鎖挖掘設置菜單",
+  "vm.config.screen.title": "連鎖挖掘設置菜單",
+  "vm.config.search_radius": "範圍模式搜尋範圍",
+  "vm.config.search_radius.tooltip": "範圍模式搜尋半徑，1表示上下左右斜對角的8個方塊，再算上前後兩層各9個，再加上中心方塊",
+  "vm.config.bfs_limit": "連鎖模式搜尋上限",
+  "vm.config.bfs_limit.tooltip": "設置連鎖模式搜尋的方塊上限",
+  "vm.config.ignored_blocks": "連鎖模式忽略方塊",
+  "vm.config.ignored_blocks.tooltip": "被連鎖模式忽略的方塊將會使用範圍搜尋\n格式應為：命名空間:路徑 如minecraft:air",
+  "vm.config.use_bfs": "啟用連鎖搜尋模式",
+  "vm.config.use_bfs.tooltip": "設置是否啟用連鎖搜尋，如果關閉，搜尋任何方塊將使用範圍搜尋模式",
+  "vm.config.use_radius_search": "啟用範圍搜尋模式",
+  "vm.config.use_radius_search.tooltip": "設置是否啟用範圍搜尋，關閉後，無論何時都不會使用範圍搜尋",
+  "vm.config.use_radius_search_when_reach_bfs_limit": "超出連鎖上限後使用範圍模式",
+  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "目標方塊超出連鎖模式上限後是否會自動切換為範圍模式\n如果關閉,超出上限後將不進行連鎖挖掘"
 }

@@ -1,0 +1,20 @@
+{
+  "modmenu.nameTranslation.vein_mine": "連鎖採掘",
+  "key.category.vm.switch": "連鎖採掘",
+  "key.vm.switch": "切り替え有効化",
+  "vm.switch_state": "連鎖採掘の状態",
+  "vm.config.config_screen_title": "連鎖採掘設定メニュー",
+  "vm.config.screen.title": "連鎖採掘設定メニュー",
+  "vm.config.search_radius": "範囲モード検索範囲",
+  "vm.config.search_radius.tooltip": "範囲モードの検索半径。1は中心を囲む8つの対角線上のブロック、さらに上下2層の各9つのブロック、および中心のブロックを含みます。",
+  "vm.config.bfs_limit": "連鎖モード検索上限",
+  "vm.config.bfs_limit.tooltip": "連鎖モードで検索できるブロックの上限を設定します。",
+  "vm.config.ignored_blocks": "連鎖モードで無視するブロック",
+  "vm.config.ignored_blocks.tooltip": "連鎖モードで無視されるブロックは範囲検索で検索されます。\n形式は「名前空間:パス」のように記述します。例: minecraft:air。",
+  "vm.config.use_bfs": "連鎖検索モードを有効にする",
+  "vm.config.use_bfs.tooltip": "連鎖検索モードを有効にするか設定します。無効にした場合、どのブロックも範囲検索モードを使用します。",
+  "vm.config.use_radius_search": "範囲検索モードを有効にする",
+  "vm.config.use_radius_search.tooltip": "範囲検索モードを有効にするか設定します。無効にした場合、範囲検索は一切行われません。",
+  "vm.config.use_radius_search_when_reach_bfs_limit": "連鎖上限に達したら範囲モードを使用する",
+  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "目標ブロックが連鎖モードの上限を超えた場合、自動的に範囲モードに切り替えるかどうかを設定します。無効にした場合、上限を超えても連鎖採掘は行われません。"
+}

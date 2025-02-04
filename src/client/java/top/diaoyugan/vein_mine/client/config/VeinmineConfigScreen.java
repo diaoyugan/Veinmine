@@ -48,6 +48,7 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 .build());
         /* BFS Limit */
         mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.bfs_limit"), ci.BFSLimit, 1, 128)
+                .setTooltip(Text.translatable("vm.config.bfs_limit.tooltip"))
                 .setDefaultValue(50)
                 .setSaveConsumer(i -> configItems.BFSLimit = i)
                 .build());
@@ -55,12 +56,14 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
         /* Ignored Blocks */
         List<String> ignoredBlocks = new ArrayList<>(ci.ignoredBlocks);
         mainConfig.addEntry(entryBuilder.startStrList(Text.translatable("vm.config.ignored_blocks"), ignoredBlocks)
+                .setTooltip(Text.translatable("vm.config.ignored_blocks.tooltip"))
                 .setSaveConsumer(strings -> {
                     configItems.ignoredBlocks = Set.copyOf(strings);
                 })
                 .build());
         /* Use BFS */
         mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.use_bfs"), ci.useBFS)
+                .setTooltip(Text.translatable("vm.config.use_bfs.tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(b -> configItems.useBFS = b)
                 .build());
