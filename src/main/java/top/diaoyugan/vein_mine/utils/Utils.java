@@ -8,13 +8,14 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import top.diaoyugan.vein_mine.Config;
+import top.diaoyugan.vein_mine.ConfigItems;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class Utils {
-    static Config config = Config.getCurrentConfig();
+    static ConfigItems config = new Config().getConfigItems();
     public static int searchRadius = config.searchRadius; // 搜索半径，1表示上下左右斜对角的8个方块，再加上中心方块
     public static int bfsLimit = config.BFSLimit;// 连锁搜索最大数量 超过就使用普通搜索
 

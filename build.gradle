@@ -1,6 +1,7 @@
 plugins {
     id 'fabric-loom' version '1.9-SNAPSHOT'
     id 'maven-publish'
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 version = project.mod_version
@@ -29,6 +30,7 @@ repositories {
     // for more information about repositories.
     maven { url 'https://maven.terraformersmc.com/releases' }
     maven { url 'https://maven.shedaniel.me/' }
+    mavenCentral()
 }
 
 dependencies {
@@ -41,6 +43,7 @@ dependencies {
     }
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}" // Modmenu integration
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 processResources {
@@ -101,4 +104,7 @@ publishing {
         // The repositories here will be used for publishing your artifact, not for
         // retrieving dependencies.
     }
+}
+kotlin {
+    jvmToolchain(23)
 }

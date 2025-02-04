@@ -7,12 +7,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import top.diaoyugan.vein_mine.Config;
+import top.diaoyugan.vein_mine.ConfigItems;
 
 import java.util.*;
 
 
 public class SmartVein {
-    static Config config = Config.getCurrentConfig();
+    static ConfigItems config = new Config().getConfigItems();
     private static final int SEARCH_RADIUS = Utils.searchRadius;
     private static final int MAX_CONNECTED_BLOCKS = Utils.bfsLimit;
 
