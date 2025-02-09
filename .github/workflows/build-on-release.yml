@@ -1,20 +1,40 @@
 name: Build on Release
-on: [workflow_dispatch, push: {tags: ['v*']}]
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   build:
+    name: Build on Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
       - name: Check Mod Version
-        run:
+        run: |
+          MOD_VERSION="$(grep "mod_version" gradle.properties | cut -d '=' -f 2)"
+          COMMIT_MOD_VERSION="$(git describe --tags --exact-match | cut -d 'v' -f 2)"
+          if [ "$MOD_VERSION" != "$COMMIT_MOD_VERSION" ]; then
+          echo "Version in gradle.properties ($MOD_VERSION) does not match the version in the commit message ($COMMIT_MOD_VERSION)"
+          echo "Aborting compilation, please fix the version in gradle.properties or the commit message"
+          exit 1
+          fi
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 21
+          java-version: 23
+      - name: Grant execute permissions for Gradle
+        run: chmod +x gradlew
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Upload Fabric Mod JAR
+        uses: actions/upload-artifact@v3
+        with:
+           name: Fabric-Mod-Build
+           path: build/libs/*.jar
