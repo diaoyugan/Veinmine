@@ -1,38 +1,69 @@
-name: Build on Release
+name: Build and Release
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'v*'
 
 jobs:
-  build:
-    name: Build on Release
+  build-and-release:
+    name: Build and Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 需要写入权限来创建Release
+
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取完整的提交历史用于版本检查
+
       - name: Check Mod Version
         run: |
-          MOD_VERSION="$(grep "mod_version" gradle.properties | cut -d '=' -f 2)"
-          COMMIT_MOD_VERSION="$(git describe --tags --exact-match | cut -d 'v' -f 2)"
-          if [ "$MOD_VERSION" != "$COMMIT_MOD_VERSION" ]; then
-          echo "Version in gradle.properties ($MOD_VERSION) does not match the version in the commit message ($COMMIT_MOD_VERSION)"
-          echo "Aborting compilation, please fix the version in gradle.properties or the commit message"
-          exit 1
-          fi
+            MOD_VERSION="$(grep "mod_version" gradle.properties | cut -d '=' -f 2 | tr -d ' ')"
+            COMMIT_MOD_VERSION="$(git describe --tags --exact-match 2>/dev/null | cut -d 'v' -f 2)"
+            EVENT_NAME="${{ github.event_name }}" 
+            
+            if [[ "$MOD_VERSION" != "$COMMIT_MOD_VERSION" && "$EVENT_NAME" != "workflow_dispatch" ]]; then
+              echo "::error::Version mismatch！gradle.properties ($MOD_VERSION) vs tag ($COMMIT_MOD_VERSION)"
+              exit 1
+            fi
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 23
-      - name: Grant execute permissions for Gradle
+
+      - name: Make Gradle executable
         run: chmod +x gradlew
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Upload Fabric Mod JAR
-        uses: actions/upload-artifact@v4
+
+      - name: Extract Release Notes
+        id: extract-release-info
+        run: |
+          # 提取提交标题（首行）和正文（剩余内容）
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          RELEASE_TITLE=$(echo "$COMMIT_MSG" | head -n1)
+          RELEASE_BODY=$(echo "$COMMIT_MSG" | tail -n +2 | sed ':a;N;$!ba;s/\n/\\n/g')
+          
+          echo "title=$RELEASE_TITLE" >> $GITHUB_OUTPUT
+          echo "body=$RELEASE_BODY" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: Fabric-Mod-Build
-          path: build/libs/*.jar
+          tag_name: ${{ github.ref_name }}
+          name: ${{ steps.extract-release-info.outputs.title }}
+          body: ${{ steps.extract-release-info.outputs.body }}
+          files: |
+            build/libs/*.jar
+            build/libs/*.json
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
