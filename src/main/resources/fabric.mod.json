@@ -3,7 +3,7 @@
   "id": "vein_mine",
   "version": "${version}",
   "name": "vein mine",
-  "description": "",
+  "description": "A mod that allows you to mine veins of ores",
   "authors": ["钓鱼竿呀(diaoyugan)","momo(HarukaB)"],
   "contact": {
     "sources": "https://github.com/diaoyugan/Veinmine",
