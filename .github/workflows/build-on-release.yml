@@ -1,10 +1,8 @@
 name: Build on Release
 on:
   push:
-    branches:
-      - master
     tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'v*'
 
 jobs:
   build:
@@ -34,7 +32,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
       - name: Upload Fabric Mod JAR
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-           name: Fabric-Mod-Build
-           path: build/libs/*.jar
+          name: Fabric-Mod-Build
+          path: build/libs/*.jar
