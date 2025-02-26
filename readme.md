@@ -1,16 +1,55 @@
-TODO:
+# Vein Mine - Minecraft Mod
+English [简体中文](readme_zhcn.md)
 
-* [ ] 重构项目结构(第三次)
-* [ ] 添加一个设置 是否将不同颜色的潜影盒（或者其他有不同颜色方块）视为同一类
-* [X] 将一些方块排除在连锁目标之外 最好可以由用户进行设置
-* [X] 添加工具保护 对于黄金 钻石 合金工具进行耐久保护 也就是当耐久度不足以承担此次连锁带来的损耗时 不进行连锁破坏(应由用户自行设置是否开启)
-* [ ] 对于mod menu的支持 以及模组设置页面和保存设置
-* [X] 解决潜影盒 生物头颅（包括玩家)等（需要更多测试） 被破坏时任何工具都被视为不合适采集工具的问题（应该将任何都视为合适）并且将其排除在精准采集判定目标之外（因为可能会导致nbt存储数据被覆盖）
-* [X] 原版中原本不会掉落 但是会被精准采集掉落的方块 同上 但是要算在精准采集连锁目标之内
-* [X] 还有原版任何时候都不会被掉落 但是具有合适工具属性的方块 比如刷怪笼 它应在任何时候都不掉落
-* [X] 以及可被任何工具(包括空手)破坏的 连锁工具判定全部给出不合适的问题
-* [X] 无论如何都不掉落物品的方块 写个shouddrop方法来判定吧
-* [X] 重构项目结构 目前代码存放的位置并不规范
-* [X] 完成代码中的TODO
-* [X] 在快捷键激活时启动 高亮即将被连锁的方块 以及玩家准备破坏的方块（准星对准的）
-* [X] **重要！！！连锁算法的优化 目前只是一个范围对范围内方块暴力搜索（希望更改成智能计算应该被连锁的范围 （比如矿脉）然后优化搜索方法） 找一个新类来放 此算法多个方法需要使用！！**
+## Introduction
+Vein Mine is a Minecraft mod that allows players to efficiently mine connected blocks of the same type. Whether you're mining ores, chopping trees, or gathering resources, this mod makes the process faster and more convenient!
+
+## Features
+- **Vein Mining:** Break an entire vein of ores or a group of connected blocks with a single action.
+- **Configurable Settings:** Adjust the mining range, block types, and activation methods through an intuitive settings menu.
+- **Keybind Support:** Toggle vein mining on/off with a customizable key.
+- **Whitelist & Blacklist:** Control which blocks can be vein-mined.
+- **Compatibility:** Works seamlessly with other mods and custom blocks.
+
+## Installation
+### Requirements
+- Minecraft **1.21.4**
+- Fabric API **0.115.0** ([Download](https://modrinth.com/mod/fabric-api))
+- Fabric Loader ([Download](https://fabricmc.net/use/))
+
+### Steps
+1. Install [Fabric Loader](https://fabricmc.net/use/).
+2. Download and install [Fabric API](https://modrinth.com/mod/fabric-api).
+3. Download the latest version of Vein Mine from [GitHub Release](https://github.com/Veinmine/releases).
+4. Place the mod file into the `mods` folder of your Minecraft directory.
+5. Launch the game and enjoy!
+
+## Configuration
+- Open the **modmenu** to customize Vein Mine's behavior.
+- Edit the configuration file located in `.minecraft/config/veinmine.json` for advanced customization.
+
+## Controls
+- **Hold ~ (default)** while mining to activate Vein Mine.
+- Change the activation keybind in the in-game controls settings.
+
+## Support & Feedback
+If you encounter any issues or have suggestions, feel free to open an issue on our [GitHub Issues](https://github.com/Veinmine/issues) page.
+
+## License
+This mod is licensed under the GNU GPLv3 License. See [LICENSE](LICENSE) for details.
+
+## TODO:
+* [ ] Add a setting to determine whether different-colored shulker boxes (or other colored blocks) should be considered the same type.
+* [X] Exclude certain blocks from vein mining, preferably configurable by the user.
+* [X] Implement tool durability protection: prevent vein mining when the tool's durability is insufficient to sustain the mining damage (configurable by the user).
+* [X] Support Mod Menu and provide a mod settings page with saving functionality.
+* [X] Fix an issue where shulker boxes, mob heads (including player heads), etc. (needs more testing) were considered to have an inappropriate mining tool. They should always be considered as having an appropriate tool and be excluded from silk touch logic (to prevent NBT data loss).
+* [X] Ensure that blocks that normally do not drop in vanilla but drop with silk touch are included in the silk touch vein mining list.
+* [X] Ensure that blocks that never drop in vanilla, even with the correct tool (e.g., spawners), should never drop.
+* [X] Fix an issue where blocks that can be broken with any tool (including bare hands) were always considered as having an inappropriate tool for vein mining.
+* [X] Implement a `shouldDrop` method to determine whether a block should drop items under any condition.
+* [X] Refactor the project structure as the current code placement is not well-organized.
+* [X] Complete all TODOs in the code.
+* [X] Highlight blocks that will be vein-mined when the activation key is pressed, as well as the block the player is targeting.
+* [X] **Important!!! Optimize the vein mining algorithm. The current implementation uses brute force block searching within a range. Improve the algorithm to intelligently determine the vein-mining area (e.g., ore veins) and optimize the search method. Create a new class for this algorithm, as multiple methods will need to use it!**
+
