@@ -38,12 +38,12 @@ public class Config {
             Logger.throwLog("error","",e);
         }
     }
-    public void apply(){ // Event
-
-    }
-    public void updateConfigVersion(){
-        // Not yet implemented
-    }
+//    public void apply(){ // Event
+//
+//    }
+//    public void updateConfigVersion(){
+//        // Not yet implemented
+//    }
     public void load() {
         try (Reader reader = Files.newBufferedReader(configFilePath)) {
             ConfigItems loadedConfig = jsonProcessor.fromJson(reader, ConfigItems.class);
