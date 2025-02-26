@@ -9,7 +9,7 @@ Vein Mine 是一个 Minecraft 模组，允许玩家高效地挖掘相连的相�
 - **连锁挖矿**：一次性破坏整个矿脉或一组相连方块。
 - **可配置设置**：可通过直观的设置菜单调整挖矿范围、方块类型和激活方式。
 - **按键绑定**：使用可自定义的快捷键启用或禁用连锁挖矿。
-- **白名单 & 黑名单**：控制哪些方块可以被连锁挖掘。
+- **黑名单**：控制哪些方块可以被连锁挖掘。
 - **兼容性**：与其他模组及自定义方块兼容。
 
 ## 安装
@@ -23,14 +23,14 @@ Vein Mine 是一个 Minecraft 模组，允许玩家高效地挖掘相连的相�
 2. 下载并安装 [Fabric API](https://modrinth.com/mod/fabric-api)。
 3. 从 [GitHub Release](https://github.com/Veinmine/releases) 下载 Vein Mine 的最新版本。
 4. 将模组文件放入 Minecraft 目录下的 `mods` 文件夹。
-5. 启动游戏并享受模组的乐趣！
+5. 启动游戏并享受！
 
 ## 配置
 - 打开 **modmenu** 自定义 Vein Mine 的行为。
-- 高级用户可以编辑 `.minecraft/config/veinmine.json` 文件进行手动配置。
+- 或者可以编辑 `.minecraft/config/veinmine.json`进行设置。
 
 ## 控制
-- **按住 ~（默认）** 进行连锁挖矿。
+- **按下 `(~)（默认）** 切换激活连锁挖掘。
 - 在游戏内的控制设置中修改快捷键。
 
 ## 支持与反馈

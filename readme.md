@@ -8,7 +8,7 @@ Vein Mine is a Minecraft mod that allows players to efficiently mine connected b
 - **Vein Mining:** Break an entire vein of ores or a group of connected blocks with a single action.
 - **Configurable Settings:** Adjust the mining range, block types, and activation methods through an intuitive settings menu.
 - **Keybind Support:** Toggle vein mining on/off with a customizable key.
-- **Whitelist & Blacklist:** Control which blocks can be vein-mined.
+- **Blacklist:** Control which blocks can be vein-mined.
 - **Compatibility:** Works seamlessly with other mods and custom blocks.
 
 ## Installation
@@ -25,11 +25,10 @@ Vein Mine is a Minecraft mod that allows players to efficiently mine connected b
 5. Launch the game and enjoy!
 
 ## Configuration
-- Open the **modmenu** to customize Vein Mine's behavior.
-- Edit the configuration file located in `.minecraft/config/veinmine.json` for advanced customization.
-
+- Open the **modmenu** to customize Vein Mine's behavior. OR
+- Edit the configuration file located in `.minecraft/config/veinmine.json`.
 ## Controls
-- **Hold ~ (default)** while mining to activate Vein Mine.
+- **Press `(~) (default)** to activate Vein Mine.
 - Change the activation keybind in the in-game controls settings.
 
 ## Support & Feedback
