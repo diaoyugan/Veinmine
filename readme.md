@@ -17,6 +17,9 @@ Vein Mine is a Minecraft mod that allows players to efficiently mine connected b
 - Fabric API **0.115.0** ([Download](https://modrinth.com/mod/fabric-api))
 - Fabric Loader ([Download](https://fabricmc.net/use/))
 
+## Recommends
+Recommend installing **ModMenu** and **Cloth Config API** for better mod management and configuration.
+
 ### Steps
 1. Install [Fabric Loader](https://fabricmc.net/use/).
 2. Download and install [Fabric API](https://modrinth.com/mod/fabric-api).
