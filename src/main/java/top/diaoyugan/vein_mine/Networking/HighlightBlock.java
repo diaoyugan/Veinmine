@@ -99,9 +99,7 @@ public class HighlightBlock implements ModInitializer {
     public static void tryRemoveGlowingBlock(MinecraftServer server) {
         // 创建一个 Map 来缓存所有世界
         Map<RegistryKey<World>, ServerWorld> worldsMap = new HashMap<>();
-        server.getWorlds().forEach(svWorld -> {
-            worldsMap.put(svWorld.getRegistryKey(), svWorld);
-        });
+        server.getWorlds().forEach(svWorld -> worldsMap.put(svWorld.getRegistryKey(), svWorld));
 
         // 遍历所有玩家
         for (PlayerEntity player : server.getPlayerManager().getPlayerList()) {
@@ -110,13 +108,11 @@ public class HighlightBlock implements ModInitializer {
                 // 遍历玩家的高亮方块
                 for (BlockPos pos : glowingBlocks) {
                     // 遍历所有世界并移除匹配的实体
-                    worldsMap.values().forEach(svWorld -> {
-                        svWorld.getEntitiesByType(EntityType.BLOCK_DISPLAY, entity -> entity.getBlockPos().equals(pos)).forEach(entity -> {
-                            // 移除实体
-                            entity.remove(Entity.RemovalReason.DISCARDED);
-                            Logger.throwLog("info", "Removed entity at " + entity.getBlockPos() + " in world " + svWorld.getRegistryKey().getValue());
-                        });
-                    });
+                    worldsMap.values().forEach(svWorld -> svWorld.getEntitiesByType(EntityType.BLOCK_DISPLAY, entity -> entity.getBlockPos().equals(pos)).forEach(entity -> {
+                        // 移除实体
+                        entity.remove(Entity.RemovalReason.DISCARDED);
+                        Logger.throwLog("info", "Removed entity at " + entity.getBlockPos() + " in world " + svWorld.getRegistryKey().getValue());
+                    }));
                 }
                 glowingBlocks.clear(); // 清空该玩家已移除的实体位置
             }
@@ -129,9 +125,7 @@ public class HighlightBlock implements ModInitializer {
         if (server != null) {
             // 创建一个 Map 来存储所有世界
             Map<RegistryKey<World>, ServerWorld> worldsMap = new HashMap<>();
-            server.getWorlds().forEach(world -> {
-                worldsMap.put(world.getRegistryKey(), world);
-            });
+            server.getWorlds().forEach(world -> worldsMap.put(world.getRegistryKey(), world));
 
             // 获取玩家的高亮方块
             Set<BlockPos> glowingBlocks = playerGlowingBlocks.get(player.getUuid());

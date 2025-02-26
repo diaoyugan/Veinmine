@@ -28,7 +28,7 @@ public class Config {
             }
             load();
         } catch (Exception e) {
-            Logger.throwLog("error","初始化配置失败",e);
+            Logger.throwLog("error","Failed to initialize the configuration",e);
         }
     }
     public void save() {
@@ -55,11 +55,11 @@ public class Config {
                 save();
             }
         } catch (JsonSyntaxException e) {
-            Logger.throwLog("error","配置文件格式错误，重置为默认配置");
+            Logger.throwLog("error","The configuration file is malformed, reset to the default configuration");
             configItems = new ConfigItems();
             save();
         } catch (IOException e) {
-            Logger.throwLog("error","读取配置文件失败，使用默认配置");
+            Logger.throwLog("error","Failed to read the configuration file, using the default configuration");
             configItems = new ConfigItems();
         }
     }
