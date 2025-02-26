@@ -32,7 +32,7 @@ Vein Mine is a Minecraft mod that allows players to efficiently mine connected b
 - Change the activation keybind in the in-game controls settings.
 
 ## Support & Feedback
-If you encounter any issues or have suggestions, feel free to open an issue on our [GitHub Issues](https://github.com/Veinmine/issues) page.
+s
 
 ## License
 This mod is licensed under the GNU GPLv3 License. See [LICENSE](LICENSE) for details.
