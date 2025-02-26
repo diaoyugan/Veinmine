@@ -22,9 +22,9 @@ public class Logger {
         }
     }
 
-    public static void newLogBlockBroken(BlockState state, BlockPos pos, World world, int destroyedCount) {
-        throwLog("info", "Block {} broken at {}, {}, {} (client-side = {})",
-                state.getBlock(), pos.getX(), pos.getY(), pos.getZ(), world.isClient());
-        throwLog("info", "共破坏了 {} 个相邻的相同类型方块。", destroyedCount);
-    }
+//    public static void newLogBlockBroken(BlockState state, BlockPos pos, World world, int destroyedCount) {
+//        throwLog("info", "Block {} broken at {}, {}, {} (client-side = {})",
+//                state.getBlock(), pos.getX(), pos.getY(), pos.getZ(), world.isClient());
+//        throwLog("info", "共破坏了 {} 个相邻的相同类型方块。", destroyedCount);
+//    }
 }
