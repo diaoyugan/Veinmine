@@ -20,7 +20,7 @@ Vein Mine is a Minecraft mod that allows players to efficiently mine connected b
 ### Steps
 1. Install [Fabric Loader](https://fabricmc.net/use/).
 2. Download and install [Fabric API](https://modrinth.com/mod/fabric-api).
-3. Download the latest version of Vein Mine from [GitHub Release](https://github.com/Veinmine/releases).
+3. Download the latest version of Vein Mine from [GitHub Release](https://github.com/diaoyugan/Veinmine/releases).
 4. Place the mod file into the `mods` folder of your Minecraft directory.
 5. Launch the game and enjoy!
 
@@ -32,7 +32,7 @@ Vein Mine is a Minecraft mod that allows players to efficiently mine connected b
 - Change the activation keybind in the in-game controls settings.
 
 ## Support & Feedback
-If you encounter any issues or have suggestions, feel free to open an issue on our [GitHub Issues](https://github.com/Veinmine/issues](https://github.com/diaoyugan/Veinmine/issues) page.
+If you encounter any issues or have suggestions, feel free to open an issue on our [GitHub Issues](https://github.com/diaoyugan/Veinmine/issues) page.
 
 ## License
 This mod is licensed under the GNU GPLv3 License. See [LICENSE](LICENSE) for details.

@@ -21,7 +21,7 @@ Vein Mine 是一个 Minecraft 模组，允许玩家高效地挖掘相连的相�
 ### 步骤
 1. 安装 [Fabric Loader](https://fabricmc.net/use/)。
 2. 下载并安装 [Fabric API](https://modrinth.com/mod/fabric-api)。
-3. 从 [GitHub Release](https://github.com/Veinmine/releases) 下载 Vein Mine 的最新版本。
+3. 从 [GitHub Release](https://github.com/diaoyugan/Veinmine/releases) 下载 Vein Mine 的最新版本。
 4. 将模组文件放入 Minecraft 目录下的 `mods` 文件夹。
 5. 启动游戏并享受！
 
@@ -34,7 +34,7 @@ Vein Mine 是一个 Minecraft 模组，允许玩家高效地挖掘相连的相�
 - 在游戏内的控制设置中修改快捷键。
 
 ## 支持与反馈
-如果遇到问题或有建议，请在 [GitHub Issues](https://github.com/Veinmine/issues) 页面提交问题。
+如果遇到问题或有建议，请在 [GitHub Issues](https://github.com/diaoyugan/Veinmine/issues) 页面提交问题。
 
 ## 许可证
 本模组基于 GNU GPLv3 许可证发布。详见 [LICENSE](LICENSE)。
