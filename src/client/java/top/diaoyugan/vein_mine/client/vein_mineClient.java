@@ -8,7 +8,6 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import top.diaoyugan.vein_mine.InvisibleBlock;
 import top.diaoyugan.vein_mine.Networking.keybindreciever.KeybindPayload;
 import top.diaoyugan.vein_mine.utils.Utils;
 
