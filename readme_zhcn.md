@@ -18,7 +18,7 @@ Vein Mine 是一个 Minecraft 模组，允许玩家高效地挖掘相连的相�
 - Fabric API **0.115.0** ([下载](https://modrinth.com/mod/fabric-api))
 - Fabric Loader ([下载](https://fabricmc.net/use/))
 ## 推荐安装
-推荐安装 **ModMenu** 和 **Cloth Config API** 以便更好地管理和配置模组。
+推荐安装 [**ModMenu**](https://modrinth.com/mod/modmenu) 和 [**Cloth Config API**](https://www.curseforge.com/minecraft/mc-mods/cloth-config) 以便更好地管理和配置模组。
 
 ### 步骤
 1. 安装 [Fabric Loader](https://fabricmc.net/use/)。

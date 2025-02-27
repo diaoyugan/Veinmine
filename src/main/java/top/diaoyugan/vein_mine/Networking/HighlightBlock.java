@@ -111,7 +111,7 @@ public class HighlightBlock implements ModInitializer {
                     worldsMap.values().forEach(svWorld -> svWorld.getEntitiesByType(EntityType.BLOCK_DISPLAY, entity -> entity.getBlockPos().equals(pos)).forEach(entity -> {
                         // 移除实体
                         entity.remove(Entity.RemovalReason.DISCARDED);
-                        Logger.throwLog("info", "Removed entity at " + entity.getBlockPos() + " in world " + svWorld.getRegistryKey().getValue());
+                        //Logger.throwLog("info", "Removed entity at " + entity.getBlockPos() + " in world " + svWorld.getRegistryKey().getValue());
                     }));
                 }
                 glowingBlocks.clear(); // 清空该玩家已移除的实体位置
@@ -137,7 +137,7 @@ public class HighlightBlock implements ModInitializer {
                         // 查找并移除在该位置的 BLOCK_DISPLAY 实体
                         world.getEntitiesByType(EntityType.BLOCK_DISPLAY, entity -> entity.getBlockPos().equals(pos)).forEach(entity -> {
                             entity.remove(Entity.RemovalReason.DISCARDED);
-                            Logger.throwLog("info", "Removed entity at " + pos + " in world " + world.getRegistryKey().getValue());
+                            //Logger.throwLog("info", "Removed entity at " + pos + " in world " + world.getRegistryKey().getValue());
                         });
                     }
                 });
@@ -178,7 +178,7 @@ public class HighlightBlock implements ModInitializer {
         displayEntity.setGlowing(true);
 
         world.spawnEntity(displayEntity);
-        Logger.throwLog("info", "Created entity at " + pos);
+        //Logger.throwLog("info", "Created entity at " + pos);
     }
 
 
@@ -193,7 +193,7 @@ public class HighlightBlock implements ModInitializer {
 
                 if (!newGlowingBlocks.contains(entityPos)) {
                     entity.remove(Entity.RemovalReason.DISCARDED);
-                    Logger.throwLog("info", "Removed unused entity at " + entityPos + " for player " + player.getName());
+                    //Logger.throwLog("info", "Removed unused entity at " + entityPos + " for player " + player.getName());
                 }
             }
         }
