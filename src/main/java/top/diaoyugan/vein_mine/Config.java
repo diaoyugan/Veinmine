@@ -18,7 +18,17 @@ public class Config {
     private final Path configFilePath = Paths.get("config/vein_mine.json");
     private final Gson jsonProcessor = new GsonBuilder().setPrettyPrinting().create();
     private ConfigItems configItems = new ConfigItems();
-    public Config() {
+    
+    private static Config instance;
+    
+    public static Config getInstance() {
+        if (instance == null) {
+            instance = new Config();
+        }
+        return instance;
+    }
+    
+    private Config() {
         try {
             // Make sure the config directory exists
             Files.createDirectories(configFilePath.getParent());
@@ -38,12 +48,13 @@ public class Config {
             Logger.throwLog("error","",e);
         }
     }
-//    public void apply(){ // Event
-//
-//    }
-//    public void updateConfigVersion(){
-//        // Not yet implemented
-//    }
+    
+    public void apply() {
+        // 重新加载配置
+        load();
+        Logger.log("info", "Reloaded and applied config!");
+    }
+    
     public void load() {
         try (Reader reader = Files.newBufferedReader(configFilePath)) {
             ConfigItems loadedConfig = jsonProcessor.fromJson(reader, ConfigItems.class);
@@ -66,6 +77,8 @@ public class Config {
     public ConfigItems getConfigItems(){
         return configItems;
     }
+
+    
 }
 
 /* Logic

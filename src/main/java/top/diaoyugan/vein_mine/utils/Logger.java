@@ -21,6 +21,16 @@ public class Logger {
             default -> LOGGER.info(message, params);
         }
     }
+    
+    // 简单日志方法，不需要异常参数
+    public static void log(String type, String message) {
+        switch (type) {
+            case "warn" -> LOGGER.warn(message);
+            case "error" -> LOGGER.error(message);
+            case "debug" -> LOGGER.debug(message);
+            default -> LOGGER.info(message);
+        }
+    }
 
 //    public static void newLogBlockBroken(BlockState state, BlockPos pos, World world, int destroyedCount) {
 //        throwLog("info", "Block {} broken at {}, {}, {} (client-side = {})",

@@ -24,5 +24,6 @@ public class vein_mine implements ModInitializer {
             // 当玩家断开连接时清除该玩家的高亮方块
             HighlightBlock.tryRemoveGlowingBlocks(handler.getPlayer());
         });
+
     }
 }

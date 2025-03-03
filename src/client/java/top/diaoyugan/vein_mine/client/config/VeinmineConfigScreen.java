@@ -23,7 +23,7 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
     }
     @Override
     protected void init() {
-        this.config = new Config();
+        this.config = Config.getInstance();
         configItems = config.getConfigItems();
         ConfigBuilder cb = ConfigBuilder.create().setParentScreen(this.parent).setTitle(Text.translatable("vm.config.screen.title"));
         cb.setSavingRunnable(config::save);
@@ -93,11 +93,11 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                     configItems.protectedTools = Set.copyOf(strings);
                 })
                 .build());
-        /* Protect All Valuable Tools */
-        mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.protect_allValuable_tools"), ci.protectAllValuableTools)
+        /* Protect All Default Valuable Tools */
+        mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.protect_allValuable_tools"), ci.protectAllDefaultValuableTools)
                 .setTooltip(Text.translatable("vm.config.protect_allValuable_tools.tooltip"))
                 .setDefaultValue(true)
-                .setSaveConsumer(b -> configItems.protectAllValuableTools = b)
+                .setSaveConsumer(b -> configItems.protectAllDefaultValuableTools = b)
                 .build());
         /* Durability Threshold */
         mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.durability_threshold"), ci.durabilityThreshold, 1, 256)
