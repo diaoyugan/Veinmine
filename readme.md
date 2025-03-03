@@ -1,3 +1,5 @@
+
+
 # Vein Mine - Minecraft Mod
 English [简体中文](readme_zhcn.md)
 
@@ -8,22 +10,22 @@ Vein Mine is a Minecraft mod that allows players to efficiently mine connected b
 - **Vein Mining:** Break an entire vein of ores or a group of connected blocks with a single action.
 - **Configurable Settings:** Adjust the mining range, block types, and activation methods through an intuitive settings menu.
 - **Keybind Support:** Toggle vein mining on/off with a customizable key.
-- **Blacklist:** Control which blocks can be vein-mined.
+- **Blacklist:** Control which blocks can't be vein-mined.
 - **Compatibility:** Works seamlessly with other mods and custom blocks.
 
 ## Installation
 ### Requirements
-- Minecraft **1.21.4**
-- Fabric API **0.115.0** ([Download](https://modrinth.com/mod/fabric-api))
+- Minecraft
+- Fabric API ([Download](https://modrinth.com/mod/fabric-api))
 - Fabric Loader ([Download](https://fabricmc.net/use/))
 
 ## Recommends
-Recommend installing [**ModMenu**](https://modrinth.com/mod/modmenu) and [**Cloth Config API**](https://www.curseforge.com/minecraft/mc-mods/cloth-config) for better mod management and configuration.
+It's recommended to install [**ModMenu**](https://modrinth.com/mod/modmenu) and [**Cloth Config API**](https://www.curseforge.com/minecraft/mc-mods/cloth-config) for better mod management and easier configuration.
 
 ### Steps
 1. Install [Fabric Loader](https://fabricmc.net/use/).
 2. Download and install [Fabric API](https://modrinth.com/mod/fabric-api).
-3. Download the latest version of Vein Mine from [GitHub Release](https://github.com/diaoyugan/Veinmine/releases).
+3. Download the latest version that's compatible with your game version of Vein Mine.
 4. Place the mod file into the `mods` folder of your Minecraft directory.
 5. Launch the game and enjoy!
 
@@ -31,14 +33,16 @@ Recommend installing [**ModMenu**](https://modrinth.com/mod/modmenu) and [**Clot
 - Open the **modmenu** to customize Vein Mine's behavior. OR
 - Edit the configuration file located in `.minecraft/config/veinmine.json`.
 ## Controls
-- **Press `(~) (default)** to activate Vein Mine.
+- **Press `(~) (default)** to toggle Vein Mine.
 - Change the activation keybind in the in-game controls settings.
 
 ## Support & Feedback
-If you encounter any issues or have suggestions, feel free to open an issue on our [GitHub Issues](https://github.com/diaoyugan/Veinmine/issues) page.
+If you encounter any issues or have any suggestions, feel free to open an issue on our [GitHub Issues](https://github.com/diaoyugan/Veinmine/issues) page.
+Or, if you're interested in contribution to our code, welcome to open a PR on GitHub!
 
 ## License
-This mod is licensed under the GNU GPLv3 License. See [LICENSE](LICENSE) for details.
+This mod is licensed under the GNU General Public License Version 3. See [LICENSE](LICENSE) for details.
+
 
 ## TODO:
 * [ ] Add a setting to determine whether different-colored shulker boxes (or other colored blocks) should be considered the same type.
