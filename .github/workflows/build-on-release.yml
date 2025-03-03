@@ -59,8 +59,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: vein_mine-${{ github.ref_name }}.jar
-          path: build/libs/vein_mine-${{ github.ref_name }}.jar
+          path: build/libs/*.jar
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
