@@ -1,5 +1,6 @@
 # User-specific stuff
 .idea/
+.vscode/
 
 *.iml
 *.ipr
@@ -58,6 +59,8 @@ Icon
 
 # Thumbnails
 ._*
+
+bin/
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100

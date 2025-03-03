@@ -7,18 +7,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.item.ItemStack;    
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import top.diaoyugan.vein_mine.Config;
 import top.diaoyugan.vein_mine.ConfigItems;
 import top.diaoyugan.vein_mine.utils.Messages;
 import top.diaoyugan.vein_mine.utils.SmartVein;
@@ -29,7 +28,6 @@ import java.util.List;
 import static top.diaoyugan.vein_mine.utils.Utils.*;
 
 public class PlayerBreakBlock {
-    static ConfigItems config = new Config().getConfigItems();
 
     public static void register() {
         // 注册事件
@@ -43,6 +41,7 @@ public class PlayerBreakBlock {
         Identifier startBlockID = Registries.BLOCK.getId(state.getBlock());
         List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos, startBlockID);
         if (blocksToBreak != null){
+            ConfigItems config = Utils.getConfig();
             if (config.protectTools){
                 if (!player.isInCreativeMode()) {
                     int totalDurabilityCost = Utils.calculateTotalDurabilityCost(blocksToBreak, player, state);
@@ -69,7 +68,7 @@ public class PlayerBreakBlock {
                 } else if(Utils.shouldNotDropItem(targetState, world, targetPos)){
                     world.breakBlock(targetPos, false);
                     destroyedCount++;
-                }else if (isContainer(targetState)) {
+                } else if (isContainer(targetState)) {
                     world.breakBlock(targetPos, true);
                     destroyedCount++;
                 } else if (isSilktouch(player)) {

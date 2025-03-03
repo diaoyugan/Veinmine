@@ -13,13 +13,8 @@ import java.util.*;
 
 
 public class SmartVein {
-    static ConfigItems config = new Config().getConfigItems();
-    private static final int SEARCH_RADIUS = Utils.searchRadius;
-    private static final int MAX_CONNECTED_BLOCKS = Utils.bfsLimit;
-
-    private static final Set<String> IGNORED_BLOCKS = config.ignoredBlocks;
     static {
-        IGNORED_BLOCKS.add("minecraft:air");
+        Utils.getConfig().ignoredBlocks.add("minecraft:air");
     }
 
     public static List<BlockPos> findBlocks(World world, BlockPos startPos) {
@@ -30,7 +25,7 @@ public class SmartVein {
         String startBlockID = blockID.toString();
 
         // 如果是排除列表中的方块，或者bfs被禁用，使用旧的范围查找
-        if (IGNORED_BLOCKS.contains(startBlockID)||!config.useBFS) {
+        if (Utils.getConfig().ignoredBlocks.contains(startBlockID) || !Utils.getConfig().useBFS) {
             return findBlocksInCube(world, startPos, startState);
         } else {
             // 否则，使用智能查找
@@ -40,7 +35,7 @@ public class SmartVein {
     // 重载方法：接受原始方块ID
     public static List<BlockPos> findBlocks(World world, BlockPos startPos, Identifier startBlockID) {
         // 如果是排除列表中的方块，或者bfs被禁用，使用旧的范围查找
-        if (IGNORED_BLOCKS.contains(String.valueOf(startBlockID))||!config.useBFS) {
+        if (Utils.getConfig().ignoredBlocks.contains(String.valueOf(startBlockID)) || !Utils.getConfig().useBFS) {
             return findBlocksInCube(world, startPos, startBlockID);
         } else {
             // 否则，使用智能查找
@@ -50,12 +45,12 @@ public class SmartVein {
 
     //立方体查找（用于常见方块）
     private static List<BlockPos> findBlocksInCube(World world, BlockPos pos, BlockState targetState) {
-        if (config.useRadiusSearch) {
+        if (Utils.getConfig().useRadiusSearch) {
             List<BlockPos> foundBlocks = new ArrayList<>();
 
-            for (int x = -SmartVein.SEARCH_RADIUS; x <= SmartVein.SEARCH_RADIUS; x++) {
-                for (int y = -SmartVein.SEARCH_RADIUS; y <= SmartVein.SEARCH_RADIUS; y++) {
-                    for (int z = -SmartVein.SEARCH_RADIUS; z <= SmartVein.SEARCH_RADIUS; z++) {
+            for (int x = -Utils.getConfig().searchRadius; x <= Utils.getConfig().searchRadius; x++) {
+                for (int y = -Utils.getConfig().searchRadius; y <= Utils.getConfig().searchRadius; y++) {
+                    for (int z = -Utils.getConfig().searchRadius; z <= Utils.getConfig().searchRadius; z++) {
                         BlockPos targetPos = pos.add(x, y, z);
                         if (world.getBlockState(targetPos).getBlock() == targetState.getBlock()) {
                             foundBlocks.add(targetPos);
@@ -71,15 +66,15 @@ public class SmartVein {
 
     // 重载方法：接收方块 ID 来进行立方体查找
     private static List<BlockPos> findBlocksInCube(World world, BlockPos pos, Identifier startBlockID) {
-        if (config.useRadiusSearch) {
+        if (Utils.getConfig().useRadiusSearch) {
             List<BlockPos> foundBlocks = new ArrayList<>();
 
             // 获取方块对象
             Block block = Registries.BLOCK.get(startBlockID);
 
-            for (int x = -SmartVein.SEARCH_RADIUS; x <= SmartVein.SEARCH_RADIUS; x++) {
-                for (int y = -SmartVein.SEARCH_RADIUS; y <= SmartVein.SEARCH_RADIUS; y++) {
-                    for (int z = -SmartVein.SEARCH_RADIUS; z <= SmartVein.SEARCH_RADIUS; z++) {
+            for (int x = -Utils.getConfig().searchRadius; x <= Utils.getConfig().searchRadius; x++) {
+                for (int y = -Utils.getConfig().searchRadius; y <= Utils.getConfig().searchRadius; y++) {
+                    for (int z = -Utils.getConfig().searchRadius; z <= Utils.getConfig().searchRadius; z++) {
                         BlockPos targetPos = pos.add(x, y, z);
                         if (world.getBlockState(targetPos).getBlock() == block) {
                             foundBlocks.add(targetPos);
@@ -110,9 +105,8 @@ public class SmartVein {
             foundBlocks.add(current);
             connectedCount++; // 每找到一个相同方块，计数器加1
 
-            // 如果查找到的相同方块超过MAX_CONNECTED_BLOCKS个，跳出并进行立方体查找
-            if (connectedCount > MAX_CONNECTED_BLOCKS) {
-                if(config.useRadiusSearchWhenReachBFSLimit){
+            if (connectedCount > Utils.getConfig().BFSLimit) {
+                if(Utils.getConfig().useRadiusSearchWhenReachBFSLimit){
                 // 调用立方体查找方法，返回结果
                 return findBlocksInCube(world, startPos,targetState);
                 }else{
@@ -156,8 +150,8 @@ public class SmartVein {
             connectedCount++; // 每找到一个相同方块，计数器加1
 
             // 如果查找到的相同方块超过MAX_CONNECTED_BLOCKS个，跳出并进行立方体查找
-            if (connectedCount > MAX_CONNECTED_BLOCKS) {
-                if(config.useRadiusSearchWhenReachBFSLimit){
+            if (connectedCount > Utils.getConfig().BFSLimit) {
+                if(Utils.getConfig().useRadiusSearchWhenReachBFSLimit){
                 // 调用立方体查找方法，返回结果
                 return findBlocksInCube(world, startPos, startBlockID);
                 }else{
