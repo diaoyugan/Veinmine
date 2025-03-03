@@ -1,13 +1,10 @@
-name: Build and Release
+name: Manual Build
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*'
 
 jobs:
-  build-and-release:
-    name: Build and Release
+  build-and-upload-artifacts:
+    name: Build and Upload Artifacts
     runs-on: ubuntu-latest
     permissions:
       contents: write  # 需要写入权限来创建Release
@@ -45,32 +42,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Extract Release Notes
-        id: extract-release-info
-        run: |
-          # 提取提交标题（首行）和正文（剩余内容）
-          COMMIT_MSG=$(git log -1 --pretty=%B)
-          RELEASE_TITLE=$(echo "$COMMIT_MSG" | head -n1)
-          RELEASE_BODY=$(echo "$COMMIT_MSG" | tail -n +2 | sed ':a;N;$!ba;s/\n/\\n/g')
-          
-          echo "title=$RELEASE_TITLE" >> $GITHUB_OUTPUT
-          echo "body=$RELEASE_BODY" >> $GITHUB_OUTPUT
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: vein_mine-${{ github.ref_name }}.jar
           path: build/libs/vein_mine-${{ github.ref_name }}.jar
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: ${{ steps.extract-release-info.outputs.title }}
-          body: ${{ steps.extract-release-info.outputs.body }}
-          files: |
-            build/libs/*.jar
-            build/libs/*.json
-          draft: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
