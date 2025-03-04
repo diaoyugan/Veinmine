@@ -13,7 +13,7 @@ import top.diaoyugan.vein_mine.utils.Utils;
 
 
 public class vein_mineClient implements ClientModInitializer {
-    public static final KeyBinding TEST_BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.vm.switch",
+    public static final KeyBinding BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.vm.switch",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_GRAVE_ACCENT,
             "key.category.vm.switch"));
@@ -28,7 +28,7 @@ public class vein_mineClient implements ClientModInitializer {
                         ClientBlockHighlighting.checkPlayerLooking(client.player);
                     }
                 }
-                if (TEST_BINDING.wasPressed()) {
+                if (BINDING.wasPressed()) {
                     ClientPlayNetworking.send(KeybindPayload.INSTANCE);
                 }
             }

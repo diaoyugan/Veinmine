@@ -25,5 +25,7 @@
   "vm.config.protect_allValuable_tools": "すべての貴重なツールを自動保護",
   "vm.config.protect_allValuable_tools.tooltip": "すべての貴重なツールを自動で保護するかどうか設定します。オンにすると、金、ダイヤモンド、ネザーライトツールが保護されます。",
   "vm.config.durability_threshold": "耐久度警告閾値",
-  "vm.config.durability_threshold.tooltip": "チェーン採掘後の耐久度がこの値を下回ると、ツール保護が発動します。"
+  "vm.config.durability_threshold.tooltip": "チェーン採掘後の耐久度がこの値を下回ると、ツール保護が発動します。",
+  "key.vein_mine.function_switch": "連鎖採掘スイッチ",
+  "vm.config.screen.main": "メイン設定"
 }
