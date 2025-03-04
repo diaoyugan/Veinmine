@@ -52,7 +52,7 @@ public class Config {
     public void apply() {
         // 重新加载配置
         load();
-        Logger.log("info", "Reloaded and applied config!");
+        Logger.throwLog("info", "Reloaded and applied config!");
     }
     
     public void load() {

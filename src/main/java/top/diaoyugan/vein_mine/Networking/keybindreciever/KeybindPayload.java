@@ -9,7 +9,7 @@ import top.diaoyugan.vein_mine.Networking.Networking;
 
 public class KeybindPayload implements CustomPayload {
 	public static final KeybindPayload INSTANCE = new KeybindPayload();
-	public static final Id<KeybindPayload> ID = new Id<>(Networking.id("keybind_press_test"));
+	public static final Id<KeybindPayload> ID = new Id<>(Networking.id("keybind_press"));
 	public static final PacketCodec<RegistryByteBuf, KeybindPayload> CODEC = PacketCodec.unit(INSTANCE);
 
 	private KeybindPayload() { }

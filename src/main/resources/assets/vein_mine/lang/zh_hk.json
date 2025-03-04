@@ -10,7 +10,7 @@
   "vm.config.bfs_limit": "連鎖模式搜尋上限",
   "vm.config.bfs_limit.tooltip": "設置連鎖模式搜尋的方塊上限",
   "vm.config.ignored_blocks": "連鎖模式忽略方塊",
-  "vm.config.ignored_blocks.tooltip": "被連鎖模式忽略的方塊將會使用範圍搜尋\n格式應為：命名空間:路徑 如minecraft:air",
+  "vm.config.ignored_blocks.tooltip": "被連鎖模式忽略的方塊將會使用範圍搜尋\n格式應為：\n命名空間:路徑\n如minecraft:air",
   "vm.config.use_bfs": "啟用連鎖搜尋模式",
   "vm.config.use_bfs.tooltip": "設置是否啟用連鎖搜尋，如果關閉，搜尋任何方塊將使用範圍搜尋模式",
   "vm.config.use_radius_search": "啟用範圍搜尋模式",
@@ -21,9 +21,11 @@
   "vm.config.protect_tools": "工具保護",
   "vm.config.protect_tools.tooltip": "設置是否在工具即將損壞時彈出警告並不進行連鎖破壞\n如果關閉,工具即使會損壞也會繼續連鎖採集",
   "vm.config.protected_tools": "受保護的工具",
-  "vm.config.protected_tools.tooltip": "受保護的工具將會觸發工具保護\n格式應為：命名空間:路徑 如minecraft:diamond_pickaxe",
+  "vm.config.protected_tools.tooltip": "受保護的工具將會觸發工具保護\n格式應為：\n命名空間:路徑\n如minecraft:diamond_pickaxe",
   "vm.config.protect_allValuable_tools": "自動保護所有貴重工具",
   "vm.config.protect_allValuable_tools.tooltip": "是否自動保護所有貴重工具，如果開啟，將會自動保護黃金、鑽石和下界合金工具",
   "vm.config.durability_threshold": "損壞警告閾值",
-  "vm.config.durability_threshold.tooltip": "若連鎖後的耐久將會低於此值，則觸發工具保護"
+  "vm.config.durability_threshold.tooltip": "若連鎖後的耐久將會低於此值，則觸發工具保護",
+  "key.vein_mine.function_switch": "切換連鎖挖掘",
+  "vm.config.screen.main": "主要設置"
 }
