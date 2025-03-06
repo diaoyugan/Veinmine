@@ -1,5 +1,7 @@
 {
   "modmenu.nameTranslation.vein_mine": "Vein Mine",
+  "modmenu.descriptionTranslation.modmenu": "A mod that allows you to mine veins of blocks",
+  "modmenu.summaryTranslation.modmenu": "A mod that allows you to mine veins of blocks",
   "key.category.vm.switch": "Vein Mine",
   "key.vm.switch": "Toggle Activation",
   "key.vein_mine.function_switch": "Toggle Vein Mining",
