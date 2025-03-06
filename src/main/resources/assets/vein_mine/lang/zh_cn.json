@@ -2,10 +2,10 @@
   "modmenu.nameTranslation.vein_mine": "连锁挖掘",
   "key.category.vm.switch": "连锁挖掘",
   "key.vm.switch": "切换激活",
-  "key.vein_mine.function_switch": "连锁采集开关",
-  "vm.switch_state": "连锁采集",
-  "vm.config.config_screen_title": "连锁采集 配置",
-  "vm.config.screen.title": "连锁采集 配置",
+  "key.vein_mine.function_switch": "连锁挖掘开关",
+  "vm.switch_state": "连锁挖掘",
+  "vm.config.config_screen_title": "连锁挖掘 配置",
+  "vm.config.screen.title": "连锁挖掘 配置",
   "vm.config.screen.main": "主要设置",
   "vm.config.search_radius": "范围搜索半径",
   "vm.config.search_radius.tooltip": "范围模式搜索半径\n1表示上下左右斜对角的8个方块\n再算上前后两层各9个，再加上中心方块",
@@ -27,5 +27,7 @@
   "vm.config.protect_allValuable_tools": "保护所有贵重工具",
   "vm.config.protect_allValuable_tools.tooltip": "是否自动保护所有贵重工具\n如果开启，将会自动保护黄金、钻石\n和下界合金工具",
   "vm.config.durability_threshold": "耐久度保护阈值",
-  "vm.config.durability_threshold.tooltip": "若连锁后的耐久将会低于此值\n则触发工具保护"
+  "vm.config.durability_threshold.tooltip": "若连锁后的耐久将会低于此值\n则触发工具保护",
+  "vm.config.value.block": "%d 个方块",
+  "vm.config.value.durability": "%d 点耐久度"
 }

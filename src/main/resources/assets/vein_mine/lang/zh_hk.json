@@ -27,5 +27,7 @@
   "vm.config.durability_threshold": "損壞警告閾值",
   "vm.config.durability_threshold.tooltip": "若連鎖後的耐久將會低於此值，則觸發工具保護",
   "key.vein_mine.function_switch": "切換連鎖挖掘",
-  "vm.config.screen.main": "主要設置"
+  "vm.config.screen.main": "主要設置",
+  "vm.config.value.block": "%d 個方塊",
+  "vm.config.value.durability": "%d 點耐久度"
 }

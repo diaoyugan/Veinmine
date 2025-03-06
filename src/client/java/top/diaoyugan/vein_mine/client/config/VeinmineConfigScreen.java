@@ -45,12 +45,14 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 .setTooltip(Text.translatable("vm.config.search_radius.tooltip"))
                 .setDefaultValue(1)
                 .setSaveConsumer(i -> configItems.searchRadius = i)
+                .setTextGetter(value -> Text.translatable("vm.config.value.block", value))
                 .build());
         /* BFS Limit */
         mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.bfs_limit"), ci.BFSLimit, 1, 128)
                 .setTooltip(Text.translatable("vm.config.bfs_limit.tooltip"))
                 .setDefaultValue(50)
                 .setSaveConsumer(i -> configItems.BFSLimit = i)
+                .setTextGetter(value -> Text.translatable("vm.config.value.block", value))
                 .build());
 
         /* Ignored Blocks */
@@ -104,6 +106,7 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 .setTooltip(Text.translatable("vm.config.durability_threshold.tooltip"))
                 .setDefaultValue(10)
                 .setSaveConsumer(i -> configItems.durabilityThreshold = i)
+                .setTextGetter(value -> Text.translatable("vm.config.value.durability", value))
                 .build());
 
         return cb.build();
