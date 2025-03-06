@@ -25,5 +25,9 @@
   "vm.config.protected_tools": "蒙護之器",
   "vm.config.protected_tools.tooltip": "蒙護之器將啟護持之制\n式當如：命名之域:徑道 若minecraft:diamond_pickaxe",
   "vm.config.durability_threshold": "損敝閾限",
-  "vm.config.durability_threshold.tooltip": "若連綴後之耐久低於此數，則啟護持之制"
+  "vm.config.durability_threshold.tooltip": "若連綴後之耐久低於此數，則啟護持之制",
+  "vm.config.value.block": "%d 塊",
+  "vm.config.value.durability": "%d 耐久",
+  "key.vein_mine.function_switch": "轉啟樞機",
+  "vm.config.screen.main": "主設制單"
 }

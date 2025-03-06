@@ -27,5 +27,7 @@
   "vm.config.durability_threshold": "耐久度警告閾値",
   "vm.config.durability_threshold.tooltip": "チェーン採掘後の耐久度がこの値を下回ると、ツール保護が発動します。",
   "key.vein_mine.function_switch": "連鎖採掘スイッチ",
-  "vm.config.screen.main": "メイン設定"
+  "vm.config.screen.main": "メイン設定",
+  "vm.config.value.block": "%d 個のブロック",
+  "vm.config.value.durability": "%d 耐久度"
 }
