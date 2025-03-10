@@ -59,7 +59,7 @@ public class HighlightBlock implements ModInitializer {
 
     private static void receive(BlockHighlightPayload payload, ServerPlayNetworking.Context context) {
         BlockPos pos = payload.blockPos();
-        PlayerEntity player = context.player();
+        ServerPlayerEntity player = context.player();
         ServerWorld world = (ServerWorld) player.getWorld();
         BlockState state = world.getBlockState(pos);
 
@@ -75,12 +75,23 @@ public class HighlightBlock implements ModInitializer {
                 tryRemoveGlowingBlock(world.getServer());
             } else {
                 List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos);
-                if(blocksToBreak != null) {
+                if (blocksToBreak != null) {
+                    Set<BlockPos> oldSentBlocks = playerGlowingBlocks.getOrDefault(player.getUuid(), Set.of());
+                    Set<BlockPos> newBlockSet = new HashSet<>(blocksToBreak);
+
+                    boolean shouldSend = !newBlockSet.equals(oldSentBlocks);
+
                     for (BlockPos targetPos : blocksToBreak) {
                         newGlowingBlocks.add(targetPos);
-                        spawnGlowingBlock(world, targetPos, player);
+                        //spawnGlowingBlock(world, targetPos, player);
+
+                        // ✨ 如果坐标改变了才发给客户端
+                        if (shouldSend) {
+                            ServerPlayNetworking.send(player, new BlockHighlightPayload(targetPos));
+                        }
                     }
                 }
+
             }
         }
 
