@@ -17,10 +17,10 @@ public class ClientBlockHighlighting {
     public static final Set<BlockPos> HIGHLIGHTED_BLOCKS = new HashSet<>();
 
     public static void onInitialize() {
-        // 注册接收来自服务器的消息，改为接收 BlockHighlightPayloadS2C 类型的数据
-        PayloadTypeRegistry.playS2C().register(HighlightBlock.BlockHighlightPayloadS2C.ID, HighlightBlock.BlockHighlightPayloadS2C.CODEC);
+        // 注册客户端接收处理器
         ClientPlayNetworking.registerGlobalReceiver(HighlightBlock.BlockHighlightPayloadS2C.ID, ClientBlockHighlighting::receiveCL);
     }
+
 
     public static void checkPlayerLooking(ClientPlayerEntity player) {
         // 获取玩家视线方向

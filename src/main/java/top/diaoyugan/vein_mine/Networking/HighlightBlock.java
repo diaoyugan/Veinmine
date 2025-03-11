@@ -25,10 +25,11 @@ import java.util.*;
 
 
 public class HighlightBlock implements ModInitializer {
-    public static final Identifier HIGHLIGHT_PACKET_ID = Networking.id("block_highlight");
+    public static final Identifier HIGHLIGHT_PACKET_ID = Networking.id("block_highlight"); // 请求包的 ID
+    public static final Identifier HIGHLIGHT_PACKET_RESPONSE_ID = Networking.id("block_highlight_response"); // 响应包的 ID
 
     public record BlockHighlightPayloadC2S(BlockPos blockPos) implements CustomPayload {
-        public static final Id<BlockHighlightPayloadC2S> ID = new CustomPayload.Id<>(HighlightBlock.HIGHLIGHT_PACKET_ID);
+        public static final Id<BlockHighlightPayloadC2S> ID = new CustomPayload.Id<>(HighlightBlock.HIGHLIGHT_PACKET_ID); // 请求包的 ID
         public static final PacketCodec<PacketByteBuf, BlockHighlightPayloadC2S> CODEC = PacketCodec.tuple(BlockPos.PACKET_CODEC, BlockHighlightPayloadC2S::blockPos, BlockHighlightPayloadC2S::new);
 
         @Override
@@ -36,8 +37,9 @@ public class HighlightBlock implements ModInitializer {
             return ID;
         }
     }
+
     public record BlockHighlightPayloadS2C(ArrayList<BlockPos> arrayList) implements CustomPayload {
-        public static final Id<BlockHighlightPayloadS2C> ID = new CustomPayload.Id<>(HighlightBlock.HIGHLIGHT_PACKET_ID);
+        public static final Id<BlockHighlightPayloadS2C> ID = new CustomPayload.Id<>(HighlightBlock.HIGHLIGHT_PACKET_RESPONSE_ID); // 响应包的 ID
 
         // 创建一个自定义的 PacketCodec 用于编码和解码 ArrayList<BlockPos>
         public static final PacketCodec<PacketByteBuf, BlockHighlightPayloadS2C> CODEC = new PacketCodec<>() {
@@ -66,9 +68,12 @@ public class HighlightBlock implements ModInitializer {
         }
     }
 
+
     @Override
     public void onInitialize() {
         PayloadTypeRegistry.playC2S().register(BlockHighlightPayloadC2S.ID, BlockHighlightPayloadC2S.CODEC);
+        PayloadTypeRegistry.playS2C().register(HighlightBlock.BlockHighlightPayloadS2C.ID, HighlightBlock.BlockHighlightPayloadS2C.CODEC);
+
         ServerPlayConnectionEvents.INIT.register((handler, server) -> ServerPlayNetworking.registerReceiver(handler, BlockHighlightPayloadC2S.ID, HighlightBlock::receive));
     }
 
