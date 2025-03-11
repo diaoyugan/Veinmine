@@ -33,6 +33,9 @@ public class vein_mineClient implements ClientModInitializer {
                     ClientPlayNetworking.send(KeybindPayload.INSTANCE);
                 }
             }
+            if (client.player != null && !Utils.getVeinMineSwitchState(client.player)) {
+                ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.clear();
+            }
         });
     }
 }

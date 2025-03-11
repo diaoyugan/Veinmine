@@ -27,9 +27,38 @@ import java.util.*;
 public class HighlightBlock implements ModInitializer {
     public static final Identifier HIGHLIGHT_PACKET_ID = Networking.id("block_highlight");
 
-    public record BlockHighlightPayload(BlockPos blockPos) implements CustomPayload {
-        public static final Id<BlockHighlightPayload> ID = new CustomPayload.Id<>(HighlightBlock.HIGHLIGHT_PACKET_ID);
-        public static final PacketCodec<PacketByteBuf, BlockHighlightPayload> CODEC = PacketCodec.tuple(BlockPos.PACKET_CODEC, BlockHighlightPayload::blockPos, BlockHighlightPayload::new);
+    public record BlockHighlightPayloadC2S(BlockPos blockPos) implements CustomPayload {
+        public static final Id<BlockHighlightPayloadC2S> ID = new CustomPayload.Id<>(HighlightBlock.HIGHLIGHT_PACKET_ID);
+        public static final PacketCodec<PacketByteBuf, BlockHighlightPayloadC2S> CODEC = PacketCodec.tuple(BlockPos.PACKET_CODEC, BlockHighlightPayloadC2S::blockPos, BlockHighlightPayloadC2S::new);
+
+        @Override
+        public Id<? extends CustomPayload> getId() {
+            return ID;
+        }
+    }
+    public record BlockHighlightPayloadS2C(ArrayList<BlockPos> arrayList) implements CustomPayload {
+        public static final Id<BlockHighlightPayloadS2C> ID = new CustomPayload.Id<>(HighlightBlock.HIGHLIGHT_PACKET_ID);
+
+        // 创建一个自定义的 PacketCodec 用于编码和解码 ArrayList<BlockPos>
+        public static final PacketCodec<PacketByteBuf, BlockHighlightPayloadS2C> CODEC = new PacketCodec<>() {
+            @Override
+            public BlockHighlightPayloadS2C decode(PacketByteBuf buf) {
+                int size = buf.readInt();
+                ArrayList<BlockPos> arrayList = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    arrayList.add(BlockPos.fromLong(buf.readLong()));
+                }
+                return new BlockHighlightPayloadS2C(arrayList);
+            }
+
+            @Override
+            public void encode(PacketByteBuf buf, BlockHighlightPayloadS2C value) {
+                buf.writeInt(value.arrayList.size()); // 写入列表的大小
+                for (BlockPos pos : value.arrayList) {
+                    buf.writeLong(pos.asLong()); // 将每个 BlockPos 编码成 long 类型
+                }
+            }
+        };
 
         @Override
         public Id<? extends CustomPayload> getId() {
@@ -39,13 +68,13 @@ public class HighlightBlock implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        PayloadTypeRegistry.playC2S().register(BlockHighlightPayload.ID, BlockHighlightPayload.CODEC);
-        ServerPlayConnectionEvents.INIT.register((handler, server) -> ServerPlayNetworking.registerReceiver(handler, BlockHighlightPayload.ID, HighlightBlock::receive));
+        PayloadTypeRegistry.playC2S().register(BlockHighlightPayloadC2S.ID, BlockHighlightPayloadC2S.CODEC);
+        ServerPlayConnectionEvents.INIT.register((handler, server) -> ServerPlayNetworking.registerReceiver(handler, BlockHighlightPayloadC2S.ID, HighlightBlock::receive));
     }
 
     private static final Map<UUID, Set<BlockPos>> playerGlowingBlocks = new HashMap<>();
 
-    private static void receive(BlockHighlightPayload payload, ServerPlayNetworking.Context context) {
+    private static void receive(BlockHighlightPayloadC2S payload, ServerPlayNetworking.Context context) {
         BlockPos pos = payload.blockPos();
         ServerPlayerEntity player = context.player();
         ServerWorld world = (ServerWorld) player.getWorld();
@@ -54,23 +83,22 @@ public class HighlightBlock implements ModInitializer {
         Set<BlockPos> newGlowingBlocks = new HashSet<>();
 
         if (Utils.getVeinMineSwitchState(player)) {
-                List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos);
-                if (blocksToBreak != null) {
-                    Set<BlockPos> oldSentBlocks = playerGlowingBlocks.getOrDefault(player.getUuid(), Set.of());
-                    Set<BlockPos> newBlockSet = new HashSet<>(blocksToBreak);
+            List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos);
+            if (blocksToBreak != null) {
+                Set<BlockPos> oldSentBlocks = playerGlowingBlocks.getOrDefault(player.getUuid(), Set.of());
+                Set<BlockPos> newBlockSet = new HashSet<>(blocksToBreak);
 
-                    boolean shouldSend = !newBlockSet.equals(oldSentBlocks);
+                boolean shouldSend = !newBlockSet.equals(oldSentBlocks);
 
-                    for (BlockPos targetPos : blocksToBreak) {
-                        newGlowingBlocks.add(targetPos);
-                        //spawnGlowingBlock(world, targetPos, player);
+                // 收集所有需要发送的方块
+                newGlowingBlocks.addAll(blocksToBreak);
 
-                        // ✨ 如果坐标改变了才发给客户端
-                        if (shouldSend) {
-                            ServerPlayNetworking.send(player, new BlockHighlightPayload(targetPos));
-                        }
-                    }
+                // 如果方块集合有变动才发送
+                if (shouldSend) {
+                    // 这里一次性发送所有需要高亮的方块
+                    ServerPlayNetworking.send(player, new BlockHighlightPayloadS2C(new ArrayList<>(newGlowingBlocks)));
                 }
+            }
         }
 
         // 更新存储的活跃实体
@@ -78,6 +106,7 @@ public class HighlightBlock implements ModInitializer {
         playerGlowingPos.clear();
         playerGlowingPos.addAll(newGlowingBlocks);
     }
+
 
 
 }
