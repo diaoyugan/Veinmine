@@ -10,7 +10,7 @@ public record KeybindPayloadResponse(boolean state) implements CustomPayload {
     public static final Id<KeybindPayloadResponse> ID = new Id<>(Networking.id("keybind_response"));
 
     // 自定义PacketCodec
-    public static final PacketCodec<RegistryByteBuf, KeybindPayloadResponse> CODEC = new PacketCodec<RegistryByteBuf, KeybindPayloadResponse>() {
+    public static final PacketCodec<RegistryByteBuf, KeybindPayloadResponse> CODEC = new PacketCodec<>() {
         @Override
         public void encode(RegistryByteBuf buf, KeybindPayloadResponse packet) {
             buf.writeBoolean(packet.state);  // 将状态写入缓冲区
