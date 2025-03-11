@@ -1,131 +1,104 @@
 package top.diaoyugan.vein_mine.client.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.gl.GlUsage;
-import net.minecraft.client.gl.ShaderProgramKeys;
-import net.minecraft.client.gl.VertexBuffer;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.lwjgl.opengl.GL11;
 import top.diaoyugan.vein_mine.client.ClientBlockHighlighting;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static net.minecraft.util.math.MathHelper.cos;
-import static net.minecraft.util.math.MathHelper.sin;
-
+import java.util.Objects;
+import java.util.OptionalDouble;
 
 public class RenderOutlines {
-    private static VertexBuffer vertexBuffer;
-    public static AtomicBoolean requestedRefresh = new AtomicBoolean(false);
+    public static void onInitialize(){
+        WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
+            if (MinecraftClient.getInstance().world == null) return;
 
-
-    public static synchronized void render(WorldRenderContext context) {
-
-        if (vertexBuffer == null || requestedRefresh.get()) {
-            requestedRefresh.set(false);
-            vertexBuffer = new VertexBuffer(GlUsage.STATIC_WRITE);
-
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR);
-
-
-            for (BlockPos pos : ClientBlockHighlighting.highlightedBlocks) {
-                renderBlock(buffer, pos);  // 调用 renderBlock 方法来渲染每个 BlockPos
-            }
-
-            vertexBuffer.bind();
-            vertexBuffer.upload(buffer.endNullable());
-            VertexBuffer.unbind();
-        }
-
-        if (vertexBuffer != null) {
             Camera camera = context.camera();
-            Vec3d cameraPos = camera.getPos();
+            Vec3d camPos = camera.getPos();
+            RenderSystem.disableDepthTest();
 
-            MatrixStack poseStack = context.matrixStack();
+            OutlineVertexConsumerProvider buffer = MinecraftClient.getInstance().getBufferBuilders().getOutlineVertexConsumers();
 
-            RenderSystem.depthMask(false);
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-
-            if (poseStack != null) {
-                poseStack.push();
+            for (BlockPos pos : ClientBlockHighlighting.HIGHLIGHTED_BLOCKS) {
+                drawOutlineBox(Objects.requireNonNull(context.matrixStack()), buffer.getBuffer(RenderLayer.getLines()), pos, camPos);
             }
 
+            buffer.draw(); // 提交渲染
+            RenderSystem.enableDepthTest();
+        });
+//        WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
+//            MinecraftClient client = MinecraftClient.getInstance();
+//            if (client.world == null || client.cameraEntity == null) return;
+//
+//            Camera camera = context.camera();
+//            Vec3d camPos = camera.getPos();
+//
+//            MatrixStack matrices = context.matrixStack();
+//
+//            // 💡就在这里获取 buffer 和 consumer
+//            VertexConsumerProvider.Immediate buffer = client.getBufferBuilders().getEntityVertexConsumers();
+//            VertexConsumer consumer = buffer.getBuffer(OUTLINE_LINES); // 使用定义的 RenderLayer
+//
+//            for (BlockPos pos : ClientBlockHighlighting.HIGHLIGHTED_BLOCKS) {
+//                    drawOutlineBox(matrices, consumer, pos, camPos);
+//            }
+//
+//            buffer.draw(); // 提交绘制
+//        });
 
-            RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
-            RenderSystem.depthFunc(GL11.GL_ALWAYS);
+    }
+    private static void drawOutlineBox(MatrixStack matrices, VertexConsumer consumer, BlockPos pos, Vec3d cameraPos) {
+        double x = pos.getX() - cameraPos.x;
+        double y = pos.getY() - cameraPos.y;
+        double z = pos.getZ() - cameraPos.z;
 
-            Matrix4f matrix4f = new Matrix4f(context.projectionMatrix());
+        float r = 1.0f, g = 1.0f, b = 1.0f, a = 1.0f;//这是颜色
 
-            matrix4f.lookAt(cameraPos.toVector3f(), cameraPos.toVector3f().add(camera.getHorizontalPlane()), camera.getVerticalPlane());
+        Matrix4f matrix = matrices.peek().getPositionMatrix();
 
-            vertexBuffer.bind();
-            vertexBuffer.draw(poseStack.peek().getPositionMatrix(), matrix4f, RenderSystem.getShader());
-            VertexBuffer.unbind();
+        // 立方体的8个点
+        Vec3d[] corners = new Vec3d[]{
+                new Vec3d((float)x,     (float)y,     (float)z),
+                new Vec3d((float)x+1,   (float)y,     (float)z),
+                new Vec3d((float)x+1,   (float)y+1,   (float)z),
+                new Vec3d((float)x,     (float)y+1,   (float)z),
+                new Vec3d((float)x,     (float)y,     (float)z+1),
+                new Vec3d((float)x+1,   (float)y,     (float)z+1),
+                new Vec3d((float)x+1,   (float)y+1,   (float)z+1),
+                new Vec3d((float)x,     (float)y+1,   (float)z+1),
+        };
 
-            // Reset everything
-            RenderSystem.depthFunc(GL11.GL_LEQUAL);
-            RenderSystem.disableBlend();
-            RenderSystem.depthMask(true);
+        int[][] edges = {
+                {0,1},{1,2},{2,3},{3,0},
+                {4,5},{5,6},{6,7},{7,4},
+                {0,4},{1,5},{2,6},{3,7},
+        };
 
-            poseStack.pop();
+        for (int[] edge : edges) {
+            Vec3d p1 = corners[edge[0]];
+            Vec3d p2 = corners[edge[1]];
+            consumer.vertex(matrix, (float) p1.getX(), (float) p1.getY(), (float) p1.getZ()).color(r, g, b, a).normal(0,1,0);
+            consumer.vertex(matrix, (float) p2.getX(), (float) p2.getY(), (float) p2.getZ()).color(r, g, b, a).normal(0,1,0);
         }
     }
-
-    private static void renderBlock(BufferBuilder buffer, BlockPos blockPos) {
-        final float size = 1.0f;
-        final int x = blockPos.getX(), y = blockPos.getY(), z = blockPos.getZ();
-
-        final float red = 255f;
-        final float green = 255f;
-        final float blue = 255f;
-
-        final float opacity = 255f;
-        buffer.vertex(x, y + size, z).color(red, green, blue, opacity);
-        buffer.vertex(x + size, y + size, z).color(red, green, blue, opacity);
-        buffer.vertex(x + size, y + size, z).color(red, green, blue, opacity);
-        buffer.vertex(x + size, y + size, z + size).color(red, green, blue, opacity);
-        buffer.vertex(x + size, y + size, z + size).color(red, green, blue, opacity);
-        buffer.vertex(x, y + size, z + size).color(red, green, blue, opacity);
-        buffer.vertex(x, y + size, z + size).color(red, green, blue, opacity);
-        buffer.vertex(x, y + size, z).color(red, green, blue, opacity);
-
-        // BOTTOM
-        buffer.vertex(x + size, y, z).color(red, green, blue, opacity);
-        buffer.vertex(x + size, y, z + size).color(red, green, blue, opacity);
-        buffer.vertex(x + size, y, z + size).color(red, green, blue, opacity);
-        buffer.vertex(x, y, z + size).color(red, green, blue, opacity);
-        buffer.vertex(x, y, z + size).color(red, green, blue, opacity);
-        buffer.vertex(x, y, z).color(red, green, blue, opacity);
-        buffer.vertex(x, y, z).color(red, green, blue, opacity);
-        buffer.vertex(x + size, y, z).color(red, green, blue, opacity);
-
-        // Edge 1
-        buffer.vertex(x + size, y, z + size).color(red, green, blue, opacity);
-        buffer.vertex(x + size, y + size, z + size).color(red, green, blue, opacity);
-
-        // Edge 2
-        buffer.vertex(x + size, y, z).color(red, green, blue, opacity);
-        buffer.vertex(x + size, y + size, z).color(red, green, blue, opacity);
-
-        // Edge 3
-        buffer.vertex(x, y, z + size).color(red, green, blue, opacity);
-        buffer.vertex(x, y + size, z + size).color(red, green, blue, opacity);
-
-        // Edge 4
-        buffer.vertex(x, y, z).color(red, green, blue, opacity);
-        buffer.vertex(x, y + size, z).color(red, green, blue, opacity);
-    }
+    private static final RenderLayer OUTLINE_LINES = RenderLayer.of(
+            "outline_lines",
+            VertexFormats.LINES,
+            VertexFormat.DrawMode.LINES,
+            256,
+            false,
+            true,
+            RenderLayer.MultiPhaseParameters.builder()
+                    .lineWidth(new RenderPhase.LineWidth(OptionalDouble.of(2.0)))
+                    .transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
+                    .depthTest(RenderPhase.ALWAYS_DEPTH_TEST) // <<< 禁用深度测试，让线框穿墙
+                    .cull(RenderPhase.DISABLE_CULLING)
+                    .writeMaskState(RenderPhase.ALL_MASK)
+                    .build(true)
+    );
 }

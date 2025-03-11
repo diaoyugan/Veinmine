@@ -4,21 +4,17 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import top.diaoyugan.vein_mine.Networking.HighlightBlock;
-import top.diaoyugan.vein_mine.client.render.RenderOutlines;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 
 public class ClientBlockHighlighting {
-    public static Set<BlockPos> highlightedBlocks = new HashSet<>();
+    public static final Set<BlockPos> HIGHLIGHTED_BLOCKS = new HashSet<>();
 
     public static void onInitialize(){
         PayloadTypeRegistry.playS2C().register(HighlightBlock.BlockHighlightPayload.ID, HighlightBlock.BlockHighlightPayload.CODEC);
@@ -39,7 +35,7 @@ public class ClientBlockHighlighting {
     }
     private static void receiveCL(HighlightBlock.BlockHighlightPayload payload, ClientPlayNetworking.Context context) {
         System.out.println("[VeinMine] Received highlight block pos: " + payload.blockPos());
-        highlightedBlocks.add(payload.blockPos());
+        ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.add(payload.blockPos());
     }
 
 }
