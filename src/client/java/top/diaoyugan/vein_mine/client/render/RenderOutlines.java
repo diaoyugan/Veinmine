@@ -27,7 +27,7 @@ public class RenderOutlines {
             OutlineVertexConsumerProvider buffer = MinecraftClient.getInstance().getBufferBuilders().getOutlineVertexConsumers();
 
             for (BlockPos pos : ClientBlockHighlighting.HIGHLIGHTED_BLOCKS) {
-                drawOutlineBox(Objects.requireNonNull(context.matrixStack()), buffer.getBuffer(RenderLayer.getLines()), pos, camPos);
+                drawOutlineBox(Objects.requireNonNull(context.matrixStack()), buffer.getBuffer(VMRenderLayers.LINES_NO_DEPTH), pos, camPos);
             }
 
             buffer.draw(); // 提交渲染
