@@ -11,7 +11,6 @@ import org.joml.Matrix4f;
 import top.diaoyugan.vein_mine.client.ClientBlockHighlighting;
 
 import java.util.Objects;
-import java.util.OptionalDouble;
 
 public class RenderOutlines {
     public static void onInitialize(){
@@ -21,6 +20,9 @@ public class RenderOutlines {
             Camera camera = context.camera();
             Vec3d camPos = camera.getPos();
             RenderSystem.disableDepthTest();
+            RenderSystem.depthMask(false); // 禁止写入深度缓冲
+            RenderSystem.enableBlend(); // 开启混合
+            RenderSystem.defaultBlendFunc(); // 默认混合模式
 
             OutlineVertexConsumerProvider buffer = MinecraftClient.getInstance().getBufferBuilders().getOutlineVertexConsumers();
 
@@ -29,27 +31,11 @@ public class RenderOutlines {
             }
 
             buffer.draw(); // 提交渲染
+
+            RenderSystem.depthMask(true);
             RenderSystem.enableDepthTest();
+            RenderSystem.disableBlend();
         });
-//        WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
-//            MinecraftClient client = MinecraftClient.getInstance();
-//            if (client.world == null || client.cameraEntity == null) return;
-//
-//            Camera camera = context.camera();
-//            Vec3d camPos = camera.getPos();
-//
-//            MatrixStack matrices = context.matrixStack();
-//
-//            // 💡就在这里获取 buffer 和 consumer
-//            VertexConsumerProvider.Immediate buffer = client.getBufferBuilders().getEntityVertexConsumers();
-//            VertexConsumer consumer = buffer.getBuffer(OUTLINE_LINES); // 使用定义的 RenderLayer
-//
-//            for (BlockPos pos : ClientBlockHighlighting.HIGHLIGHTED_BLOCKS) {
-//                    drawOutlineBox(matrices, consumer, pos, camPos);
-//            }
-//
-//            buffer.draw(); // 提交绘制
-//        });
 
     }
     private static void drawOutlineBox(MatrixStack matrices, VertexConsumer consumer, BlockPos pos, Vec3d cameraPos) {
@@ -86,19 +72,4 @@ public class RenderOutlines {
             consumer.vertex(matrix, (float) p2.getX(), (float) p2.getY(), (float) p2.getZ()).color(r, g, b, a).normal(0,1,0);
         }
     }
-    private static final RenderLayer OUTLINE_LINES = RenderLayer.of(
-            "outline_lines",
-            VertexFormats.LINES,
-            VertexFormat.DrawMode.LINES,
-            256,
-            false,
-            true,
-            RenderLayer.MultiPhaseParameters.builder()
-                    .lineWidth(new RenderPhase.LineWidth(OptionalDouble.of(2.0)))
-                    .transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
-                    .depthTest(RenderPhase.ALWAYS_DEPTH_TEST) // <<< 禁用深度测试，让线框穿墙
-                    .cull(RenderPhase.DISABLE_CULLING)
-                    .writeMaskState(RenderPhase.ALL_MASK)
-                    .build(true)
-    );
 }

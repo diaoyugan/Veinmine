@@ -78,6 +78,7 @@ public class HighlightBlock implements ModInitializer {
     }
 
     private static final Map<UUID, Set<BlockPos>> playerGlowingBlocks = new HashMap<>();
+    public static Set<BlockPos> oldSentBlocks = null;
 
     private static void receive(BlockHighlightPayloadC2S payload, ServerPlayNetworking.Context context) {
         BlockPos pos = payload.blockPos();
@@ -90,7 +91,7 @@ public class HighlightBlock implements ModInitializer {
         if (Utils.getVeinMineSwitchState(player)) {
             List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos);
             if (blocksToBreak != null) {
-                Set<BlockPos> oldSentBlocks = playerGlowingBlocks.getOrDefault(player.getUuid(), Set.of());
+                oldSentBlocks = playerGlowingBlocks.getOrDefault(player.getUuid(), Set.of());
                 Set<BlockPos> newBlockSet = new HashSet<>(blocksToBreak);
 
                 boolean shouldSend = !newBlockSet.equals(oldSentBlocks);
