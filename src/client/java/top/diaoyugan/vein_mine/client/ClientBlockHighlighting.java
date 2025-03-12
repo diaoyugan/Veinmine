@@ -44,6 +44,5 @@ public class ClientBlockHighlighting {
             ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.addAll(newBlocks);
         }
 
-        System.out.println("[VeinMine] Received highlight block pos: " + newBlocks);
     }
 }
