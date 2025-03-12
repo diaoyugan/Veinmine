@@ -31,5 +31,15 @@
   "vm.config.durability_threshold": "Durability Protection Threshold",
   "vm.config.durability_threshold.tooltip": "If durability after mining\nwill be below this value\ntool protection will be triggered",
   "vm.config.value.block": "%d Blocks",
-  "vm.config.value.durability": "%d Durability"
+  "vm.config.value.durability": "%d Durability",
+  "vm.config.color_preview": "",
+  "vm.config.renderRed": "",
+  "vm.config.renderGreen": "",
+  "vm.config.renderBlue": "",
+  "vm.config.renderAlpha": "",
+  "vm.config.renderTime": "",
+  "vm.config.renderTime.tooltip": "",
+  "vm.config.value.times": "",
+  "vm.config.thickness": "",
+  "vm.config.thickness.tooltip": ""
 }

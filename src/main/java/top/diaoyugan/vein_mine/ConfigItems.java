@@ -16,6 +16,12 @@ public class ConfigItems {
     public Set<String> protectedTools = new HashSet<>();
     public int durabilityThreshold = 10;
     public boolean protectAllDefaultValuableTools = true;
+    public int red = 255;
+    public int green = 255;
+    public int blue = 255;
+    public int alpha = 255;
+    public float thickness = 0.00f;
+    public int renderTime = 1;
     public Set<String> defaultProtectedTools = Set.of( // No GUI for this, this is by design!
         // 黄金工具
         "minecraft:golden_pickaxe",

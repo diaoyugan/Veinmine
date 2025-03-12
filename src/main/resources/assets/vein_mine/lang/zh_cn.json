@@ -31,5 +31,15 @@
   "vm.config.durability_threshold": "耐久度保护阈值",
   "vm.config.durability_threshold.tooltip": "若连锁后的耐久将会低于此值\n则触发工具保护",
   "vm.config.value.block": "%d 个方块",
-  "vm.config.value.durability": "%d 点耐久度"
+  "vm.config.value.durability": "%d 点耐久度",
+  "vm.config.color_preview": "高亮颜色预览",
+  "vm.config.renderRed": "红色",
+  "vm.config.renderGreen": "绿色",
+  "vm.config.renderBlue": "蓝色",
+  "vm.config.renderAlpha": "不透明度",
+  "vm.config.renderTime": "渲染次数",
+  "vm.config.renderTime.tooltip": "提高渲染次数将会根据渲染间距进行多次绘制，可以显著提高边框的可见性，但会降低性能",
+  "vm.config.value.times": "%d 次",
+  "vm.config.thickness": "渲染间距",
+  "vm.config.thickness.tooltip": "渲染间距用于控制每次渲染间隔的距离，可根据数值的不同而提升高亮边框的可见性，过高可能会导致降低信息准确性，推荐值在0.03以内"
 }

@@ -6,15 +6,20 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import top.diaoyugan.vein_mine.Config;
-import top.diaoyugan.vein_mine.ConfigItems;
 
 import java.util.*;
 
 
 public class SmartVein {
     static {
-        Utils.getConfig().ignoredBlocks.add("minecraft:air");
+        try{
+            Utils.getConfig().ignoredBlocks.add("minecraft:air");
+        } catch (Exception e) { //find a better way to fix this
+            if (!(e instanceof UnsupportedOperationException)) {
+                Logger.throwLog("error", String.valueOf(e),e.fillInStackTrace());
+            }
+        }
+
     }
 
     public static List<BlockPos> findBlocks(World world, BlockPos startPos) {
