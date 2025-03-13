@@ -6,7 +6,6 @@
   "key.vm.switch": "Toggle Activation",
   "key.vein_mine.function_switch": "Toggle Vein Mining",
   "vm.switch_state": "Vein Mining",
-  "vm.config.config_screen_title": "Vein Mining Config",
   "vm.config.screen.title": "Vein Mining Config",
   "vm.config.screen.main": "Main Settings",
   "vm.config.search_radius": "Range Search Radius",

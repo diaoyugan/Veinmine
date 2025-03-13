@@ -5,7 +5,6 @@
   "key.category.vm.switch": "連鎖挖掘",
   "key.vm.switch": "切換啟動",
   "vm.switch_state": "連鎖挖掘狀態",
-  "vm.config.config_screen_title": "連鎖挖掘設置菜單",
   "vm.config.screen.title": "連鎖挖掘設置菜單",
   "vm.config.search_radius": "範圍模式搜尋範圍",
   "vm.config.search_radius.tooltip": "範圍模式搜尋半徑，1表示上下左右斜對角的8個方塊，再算上前後兩層各9個，再加上中心方塊",
@@ -31,5 +30,13 @@
   "key.vein_mine.function_switch": "切換連鎖挖掘",
   "vm.config.screen.main": "主要設置",
   "vm.config.value.block": "%d 個方塊",
-  "vm.config.value.durability": "%d 點耐久度"
+  "vm.config.value.durability": "%d 點耐久度",
+  "vm.config.color_preview": "高亮顏色預覽",
+  "vm.config.renderRed": "紅色",
+  "vm.config.renderGreen": "綠色",
+  "vm.config.renderBlue": "藍色",
+  "vm.config.renderAlpha": "不透明度",
+  "vm.config.renderTime": "渲染次數",
+  "vm.config.renderTime.tooltip": "提高渲染次數將會在距離上次渲染的一小段距離進行多次繪製，可以顯著提高邊框的可見性，但會降低效能",
+  "vm.config.value.times": "%d 次"
 }

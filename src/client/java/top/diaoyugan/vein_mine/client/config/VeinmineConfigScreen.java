@@ -18,7 +18,7 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
     private ConfigItems configItems;
     private final Screen parent;
     protected VeinmineConfigScreen(Screen parent) {
-        super(Text.translatable("vm.config.config_screen_title"));
+        super(Text.translatable("vm.config.screen.title"));
         this.parent = parent;
     }
     @Override
