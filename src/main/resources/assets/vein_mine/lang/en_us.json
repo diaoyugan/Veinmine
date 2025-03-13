@@ -39,7 +39,5 @@
   "vm.config.renderAlpha": "",
   "vm.config.renderTime": "",
   "vm.config.renderTime.tooltip": "",
-  "vm.config.value.times": "",
-  "vm.config.thickness": "",
-  "vm.config.thickness.tooltip": ""
+  "vm.config.value.times": ""
 }

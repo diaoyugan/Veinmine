@@ -71,7 +71,7 @@ public class RenderOutlines {
             Vec3d p2 = corners[edge[1]];
 //            consumer.vertex(matrix, (float) p1.getX(), (float) p1.getY(), (float) p1.getZ()).color(r, g, b, a).normal(0,1,0);
 //            consumer.vertex(matrix, (float) p2.getX(), (float) p2.getY(), (float) p2.getZ()).color(r, g, b, a).normal(0,1,0);
-            drawThickLine(consumer, matrix, p1, p2, Utils.getConfig().thickness, r, g, b, a);
+            drawThickLine(consumer, matrix, p1, p2, 0.01f , r, g, b, a);
         }
     }
     private static void drawThickLine(VertexConsumer consumer, Matrix4f matrix, Vec3d p1, Vec3d p2, float thickness, float r, float g, float b, float a) {

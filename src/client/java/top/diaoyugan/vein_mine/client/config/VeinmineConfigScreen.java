@@ -152,12 +152,6 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 .setTextGetter(value -> Text.translatable("vm.config.value.times", value))
                 .build());
 
-        mainConfig.addEntry(entryBuilder.startFloatField(Text.translatable("vm.config.thickness"), ci.thickness)
-                .setTooltip(Text.translatable("vm.config.thickness.tooltip"))
-                .setDefaultValue(0.01F)
-                .setSaveConsumer(i -> configItems.thickness = i)
-                .build());
-
         return cb.build();
     }
 }
