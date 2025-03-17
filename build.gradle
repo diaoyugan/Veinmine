@@ -12,14 +12,14 @@ base {
 }
 
 loom {
-    splitEnvironmentSourceSets()
+//    splitEnvironmentSourceSets()
 
     mods {
         "vein_mine" {
             sourceSet sourceSets.main
-            sourceSet sourceSets.client
         }
     }
+
 }
 
 repositories {
