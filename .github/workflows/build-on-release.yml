@@ -43,7 +43,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Stop last build
-        run: ./gradlew -cancle
+        run: ./gradlew -cancel
 
       - name: Build with Gradle
         run: ./gradlew build
