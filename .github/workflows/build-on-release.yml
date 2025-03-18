@@ -18,17 +18,17 @@ jobs:
         with:
           fetch-depth: 0  # 获取完整的提交历史用于版本检查
 
-      - name: Modify mod version
-        run: |
-            MOD_VERSION="$(grep "mod_version" gradle.properties | cut -d '=' -f 2 | tr -d ' ')"
-            COMMIT_MOD_VERSION="$(git describe --tags --exact-match 2>/dev/null | cut -d 'v' -f 2)"
-            EVENT_NAME="${{ github.event_name }}" 
+      # - name: Modify mod version
+      #   run: |
+      #       MOD_VERSION="$(grep "mod_version" gradle.properties | cut -d '=' -f 2 | tr -d ' ')"
+      #       COMMIT_MOD_VERSION="$(git describe --tags --exact-match 2>/dev/null | cut -d 'v' -f 2)"
+      #       EVENT_NAME="${{ github.event_name }}" 
             
-            if [[ "$MOD_VERSION" != "$COMMIT_MOD_VERSION" && "$EVENT_NAME" != "workflow_dispatch" ]]; then
-              echo "::warning::Version mismatch！gradle.properties ($MOD_VERSION) vs tag ($COMMIT_MOD_VERSION)"
-              echo "::warning::Mod version will be modified to $COMMIT_MOD_VERSION"
-              awk -v old="mod_version=$MOD_VERSION" -v new="mod_version=$COMMIT_MOD_VERSION" '{gsub(old, new)}1' gradle.properties > temp && mv temp gradle.properties
-            fi
+      #       if [[ "$MOD_VERSION" != "$COMMIT_MOD_VERSION" && "$EVENT_NAME" != "workflow_dispatch" ]]; then
+      #         echo "::warning::Version mismatch！gradle.properties ($MOD_VERSION) vs tag ($COMMIT_MOD_VERSION)"
+      #         echo "::warning::Mod version will be modified to $COMMIT_MOD_VERSION"
+      #         awk -v old="mod_version=$MOD_VERSION" -v new="mod_version=$COMMIT_MOD_VERSION" '{gsub(old, new)}1' gradle.properties > temp && mv temp gradle.properties
+      #       fi
 
       - name: Setup Java
         uses: actions/setup-java@v4
