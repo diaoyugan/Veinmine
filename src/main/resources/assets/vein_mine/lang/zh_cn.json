@@ -6,7 +6,6 @@
   "key.vm.switch": "切换激活",
   "key.vein_mine.function_switch": "连锁挖掘开关",
   "vm.switch_state": "连锁挖掘",
-  "vm.config.config_screen_title": "连锁挖掘 配置",
   "vm.config.screen.title": "连锁挖掘 配置",
   "vm.config.screen.main": "主要设置",
   "vm.config.search_radius": "范围搜索半径",
@@ -31,5 +30,13 @@
   "vm.config.durability_threshold": "耐久度保护阈值",
   "vm.config.durability_threshold.tooltip": "若连锁后的耐久将会低于此值\n则触发工具保护",
   "vm.config.value.block": "%d 个方块",
-  "vm.config.value.durability": "%d 点耐久度"
+  "vm.config.value.durability": "%d 点耐久度",
+  "vm.config.color_preview": "高亮颜色预览",
+  "vm.config.renderRed": "红色",
+  "vm.config.renderGreen": "绿色",
+  "vm.config.renderBlue": "蓝色",
+  "vm.config.renderAlpha": "不透明度",
+  "vm.config.renderTime": "渲染次数",
+  "vm.config.renderTime.tooltip": "提高渲染次数将会在距离上次渲染的一小点距离进行多次绘制，可以显著提高边框的可见性，但会降低性能",
+  "vm.config.value.times": "%d 次"
 }

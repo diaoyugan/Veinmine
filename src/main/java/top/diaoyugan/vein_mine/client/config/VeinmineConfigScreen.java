@@ -18,7 +18,7 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
     private ConfigItems configItems;
     private final Screen parent;
     protected VeinmineConfigScreen(Screen parent) {
-        super(Text.translatable("vm.config.config_screen_title"));
+        super(Text.translatable("vm.config.screen.title"));
         this.parent = parent;
     }
     @Override
@@ -107,6 +107,49 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 .setDefaultValue(10)
                 .setSaveConsumer(i -> configItems.durabilityThreshold = i)
                 .setTextGetter(value -> Text.translatable("vm.config.value.durability", value))
+                .build());
+
+        var redSlider = entryBuilder.startIntSlider(Text.translatable("vm.config.renderRed"), ci.red, 0, 255)
+                .setDefaultValue(255)
+                .setSaveConsumer(val -> configItems.red = val)
+                .setTextGetter(val -> Text.literal(String.valueOf(val)))
+                .build();
+
+        var greenSlider = entryBuilder.startIntSlider(Text.translatable("vm.config.renderGreen"), ci.green, 0, 255)
+                .setDefaultValue(255)
+                .setSaveConsumer(val -> configItems.green = val)
+                .setTextGetter(val -> Text.literal(String.valueOf(val)))
+                .build();
+
+        var blueSlider = entryBuilder.startIntSlider(Text.translatable("vm.config.renderBlue"), ci.blue, 0, 255)
+                .setDefaultValue(255)
+                .setSaveConsumer(val -> configItems.blue = val)
+                .setTextGetter(val -> Text.literal(String.valueOf(val)))
+                .build();
+
+
+        mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.renderAlpha"), ci.alpha, 0, 255)
+                .setDefaultValue(255)
+                .setTextGetter(val -> Text.literal(String.valueOf(val)))
+                .setSaveConsumer(val -> configItems.alpha = val)
+                .setTextGetter(value -> Text.literal(String.format("%.0f%%", value / 255.0 * 100)))
+                .build());
+
+        mainConfig.addEntry(redSlider);
+        mainConfig.addEntry(greenSlider);
+        mainConfig.addEntry(blueSlider);
+
+        mainConfig.addEntry(new ColorPreviewEntry(
+                redSlider::getValue,
+                greenSlider::getValue,
+                blueSlider::getValue
+        ));
+
+        mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.renderTime"), ci.renderTime, 1, 3)
+                .setTooltip(Text.translatable("vm.config.renderTime.tooltip"))
+                .setDefaultValue(1)
+                .setSaveConsumer(i -> configItems.renderTime = i)
+                .setTextGetter(value -> Text.translatable("vm.config.value.times", value))
                 .build());
 
         return cb.build();
