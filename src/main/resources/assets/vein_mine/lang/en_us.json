@@ -31,12 +31,12 @@
   "vm.config.durability_threshold.tooltip": "If durability after mining\nwill be below this value\ntool protection will be triggered",
   "vm.config.value.block": "%d Blocks",
   "vm.config.value.durability": "%d Durability",
-  "vm.config.color_preview": "",
-  "vm.config.renderRed": "",
-  "vm.config.renderGreen": "",
-  "vm.config.renderBlue": "",
-  "vm.config.renderAlpha": "",
-  "vm.config.renderTime": "",
-  "vm.config.renderTime.tooltip": "",
-  "vm.config.value.times": ""
+  "vm.config.color_preview": "Highlight Color Preview",
+  "vm.config.renderRed": "Red",
+  "vm.config.renderGreen": "Green",
+  "vm.config.renderBlue": "Blue",
+  "vm.config.renderAlpha": "Opacity",
+  "vm.config.renderTime": "Render Passes",
+  "vm.config.renderTime.tooltip": "Increasing render passes will draw multiple times at a small offset from the last render position, significantly improving border visibility but reducing performance",
+  "vm.config.value.times": "%d Times"
 }
