@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "top.diaoyugan.vein_mine.mixin.client",
+  "package": "top.diaoyugan.vein_mine.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
   ],
