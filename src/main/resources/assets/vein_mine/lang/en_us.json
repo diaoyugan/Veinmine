@@ -8,6 +8,8 @@
   "vm.switch_state": "Vein Mining",
   "vm.config.screen.title": "Vein Mining Config",
   "vm.config.screen.main": "Main Settings",
+  "vm.config.screen.highlights": "Highlights Settings",
+  "vm.config.transnote": "§7The translation may not be 100% accurate.",
   "vm.config.search_radius": "Range Search Radius",
   "vm.config.search_radius.tooltip": "Range mode search radius\n1 means 8 blocks in all directions\nplus 9 blocks in each layer, plus center",
   "vm.config.bfs_limit": "Chain Search Limit",

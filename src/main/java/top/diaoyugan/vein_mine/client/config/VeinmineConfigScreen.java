@@ -40,6 +40,11 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
     private Screen initConfigScreen(ConfigBuilder cb, ConfigItems ci){
         ConfigCategory mainConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.main"));
         ConfigEntryBuilder entryBuilder = cb.entryBuilder();
+
+        mainConfig.addEntry(entryBuilder
+                .startTextDescription(Text.translatable("vm.config.transnote"))
+                .build());
+
         /* Search Radius */
         mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.search_radius"), ci.searchRadius, 1, 10)
                 .setTooltip(Text.translatable("vm.config.search_radius.tooltip"))
@@ -109,43 +114,46 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 .setTextGetter(value -> Text.translatable("vm.config.value.durability", value))
                 .build());
 
-        var redSlider = entryBuilder.startIntSlider(Text.translatable("vm.config.renderRed"), ci.red, 0, 255)
+        ConfigCategory highlightsConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.highlights"));
+        ConfigEntryBuilder hlEntryBuilder = cb.entryBuilder();
+
+        var redSlider = hlEntryBuilder.startIntSlider(Text.translatable("vm.config.renderRed"), ci.red, 0, 255)
                 .setDefaultValue(255)
                 .setSaveConsumer(val -> configItems.red = val)
                 .setTextGetter(val -> Text.literal(String.valueOf(val)))
                 .build();
 
-        var greenSlider = entryBuilder.startIntSlider(Text.translatable("vm.config.renderGreen"), ci.green, 0, 255)
+        var greenSlider = hlEntryBuilder.startIntSlider(Text.translatable("vm.config.renderGreen"), ci.green, 0, 255)
                 .setDefaultValue(255)
                 .setSaveConsumer(val -> configItems.green = val)
                 .setTextGetter(val -> Text.literal(String.valueOf(val)))
                 .build();
 
-        var blueSlider = entryBuilder.startIntSlider(Text.translatable("vm.config.renderBlue"), ci.blue, 0, 255)
+        var blueSlider = hlEntryBuilder.startIntSlider(Text.translatable("vm.config.renderBlue"), ci.blue, 0, 255)
                 .setDefaultValue(255)
                 .setSaveConsumer(val -> configItems.blue = val)
                 .setTextGetter(val -> Text.literal(String.valueOf(val)))
                 .build();
 
 
-        mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.renderAlpha"), ci.alpha, 0, 255)
+        highlightsConfig.addEntry(new ColorPreviewEntry(
+                redSlider::getValue,
+                greenSlider::getValue,
+                blueSlider::getValue
+        ));
+
+        mainConfig.addEntry(hlEntryBuilder.startIntSlider(Text.translatable("vm.config.renderAlpha"), ci.alpha, 0, 255)
                 .setDefaultValue(255)
                 .setTextGetter(val -> Text.literal(String.valueOf(val)))
                 .setSaveConsumer(val -> configItems.alpha = val)
                 .setTextGetter(value -> Text.literal(String.format("%.0f%%", value / 255.0 * 100)))
                 .build());
 
-        mainConfig.addEntry(redSlider);
-        mainConfig.addEntry(greenSlider);
-        mainConfig.addEntry(blueSlider);
+        highlightsConfig.addEntry(redSlider);
+        highlightsConfig.addEntry(greenSlider);
+        highlightsConfig.addEntry(blueSlider);
 
-        mainConfig.addEntry(new ColorPreviewEntry(
-                redSlider::getValue,
-                greenSlider::getValue,
-                blueSlider::getValue
-        ));
-
-        mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.renderTime"), ci.renderTime, 1, 3)
+        highlightsConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.renderTime"), ci.renderTime, 1, 3)
                 .setTooltip(Text.translatable("vm.config.renderTime.tooltip"))
                 .setDefaultValue(1)
                 .setSaveConsumer(i -> configItems.renderTime = i)
