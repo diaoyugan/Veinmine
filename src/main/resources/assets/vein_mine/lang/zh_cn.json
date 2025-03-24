@@ -1,7 +1,7 @@
 {
   "modmenu.nameTranslation.vein_mine": "连锁挖掘",
-  "modmenu.descriptionTranslation.modmenu": "一个可以让你破坏多个相连方块的mod",
-  "modmenu.summaryTranslation.modmenu": "一个可以让你破坏多个相连方块的mod",
+  "modmenu.descriptionTranslation.vein_mine": "一个可以让你破坏多个相连方块的mod",
+  "modmenu.summaryTranslation.vein_mine": "一个可以让你破坏多个相连方块的mod",
   "key.category.vm.switch": "连锁挖掘",
   "key.vm.switch": "切换激活",
   "key.vein_mine.function_switch": "连锁挖掘开关",
@@ -40,5 +40,6 @@
   "vm.config.renderTime.tooltip": "提高渲染次数将会在距离上次渲染的一小点距离进行多次绘制，可以显著提高边框的可见性，但会降低性能",
   "vm.config.value.times": "%d 次",
   "vm.config.screen.highlights": "高亮设置",
-  "vm.config.transnote": "§7翻译不一定100%准确"
+  "vm.config.transnote": "§7翻译不一定100%准确\n按键绑定请前往游戏的按键绑定菜单",
+  "vm.config.screen.toolsandprotect": "工具和保护"
 }

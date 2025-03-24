@@ -5,13 +5,18 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import org.lwjgl.glfw.GLFW;
 import top.diaoyugan.vein_mine.Config;
 import top.diaoyugan.vein_mine.ConfigItems;
+import top.diaoyugan.vein_mine.client.vein_mineClient;
 
 public class VeinmineConfigScreen extends Screen { // Hold the current config
     private Config config;
@@ -86,28 +91,32 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 .setDefaultValue(true)
                 .setSaveConsumer(b -> configItems.useRadiusSearchWhenReachBFSLimit = b)
                 .build());
+
+        ConfigCategory toolsAndProtectConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.toolsandprotect"));
+        ConfigEntryBuilder toolsAndProtectEntryBuilder = cb.entryBuilder();
+
         /* Protect Tools */
-        mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.protect_tools"), ci.protectTools)
+        toolsAndProtectConfig.addEntry(toolsAndProtectEntryBuilder.startBooleanToggle(Text.translatable("vm.config.protect_tools"), ci.protectTools)
                 .setTooltip(Text.translatable("vm.config.protect_tools.tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(b -> configItems.protectTools = b)
                 .build());
         /* Protected Tools */
         List<String> protectedTools = new ArrayList<>(ci.protectedTools);
-        mainConfig.addEntry(entryBuilder.startStrList(Text.translatable("vm.config.protected_tools"), protectedTools)
+        toolsAndProtectConfig.addEntry(toolsAndProtectEntryBuilder.startStrList(Text.translatable("vm.config.protected_tools"), protectedTools)
                 .setTooltip(Text.translatable("vm.config.protected_tools.tooltip"))
                 .setSaveConsumer(strings -> {
                     configItems.protectedTools = Set.copyOf(strings);
                 })
                 .build());
         /* Protect All Default Valuable Tools */
-        mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.protect_allValuable_tools"), ci.protectAllDefaultValuableTools)
+        toolsAndProtectConfig.addEntry(toolsAndProtectEntryBuilder.startBooleanToggle(Text.translatable("vm.config.protect_allValuable_tools"), ci.protectAllDefaultValuableTools)
                 .setTooltip(Text.translatable("vm.config.protect_allValuable_tools.tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(b -> configItems.protectAllDefaultValuableTools = b)
                 .build());
         /* Durability Threshold */
-        mainConfig.addEntry(entryBuilder.startIntSlider(Text.translatable("vm.config.durability_threshold"), ci.durabilityThreshold, 1, 256)
+        toolsAndProtectConfig.addEntry(toolsAndProtectEntryBuilder.startIntSlider(Text.translatable("vm.config.durability_threshold"), ci.durabilityThreshold, 1, 256)
                 .setTooltip(Text.translatable("vm.config.durability_threshold.tooltip"))
                 .setDefaultValue(10)
                 .setSaveConsumer(i -> configItems.durabilityThreshold = i)
@@ -142,7 +151,7 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 blueSlider::getValue
         ));
 
-        mainConfig.addEntry(hlEntryBuilder.startIntSlider(Text.translatable("vm.config.renderAlpha"), ci.alpha, 0, 255)
+        highlightsConfig.addEntry(hlEntryBuilder.startIntSlider(Text.translatable("vm.config.renderAlpha"), ci.alpha, 0, 255)
                 .setDefaultValue(255)
                 .setTextGetter(val -> Text.literal(String.valueOf(val)))
                 .setSaveConsumer(val -> configItems.alpha = val)
