@@ -1,7 +1,7 @@
 {
   "modmenu.nameTranslation.vein_mine": "連鎖挖掘",
-  "modmenu.descriptionTranslation.modmenu": "一個可以讓你破壞多個相連方塊的mod",
-  "modmenu.summaryTranslation.modmenu": "一個可以讓你破壞多個相連方塊的mod",
+  "modmenu.descriptionTranslation.vein_mine": "一個可以讓你破壞多個相連方塊的mod",
+  "modmenu.summaryTranslation.vein_mine": "一個可以讓你破壞多個相連方塊的mod",
   "key.category.vm.switch": "連鎖挖掘",
   "key.vm.switch": "切換啟動",
   "vm.switch_state": "連鎖挖掘狀態",
@@ -38,5 +38,8 @@
   "vm.config.renderAlpha": "不透明度",
   "vm.config.renderTime": "渲染次數",
   "vm.config.renderTime.tooltip": "提高渲染次數將會在距離上次渲染的一小段距離進行多次繪製，可以顯著提高邊框的可見性，但會降低效能",
-  "vm.config.value.times": "%d 次"
+  "vm.config.value.times": "%d 次",
+  "vm.config.screen.highlights": "高亮設置",
+  "vm.config.transnote": "§7翻譯不一定 100% 準確\n按鍵綁定請前往遊戲的按鍵綁定選單",
+  "vm.config.screen.toolsandprotect": "工具與保護"
 }
