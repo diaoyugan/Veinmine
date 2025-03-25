@@ -8,7 +8,8 @@
   "contact": {
     "sources": "https://github.com/diaoyugan/Veinmine",
     "issues": "https://github.com/diaoyugan/Veinmine/issues",
-    "email": "diaoyugan666@qq.com"
+    "email": "diaoyugan666@qq.com",
+    "homepage": "https://modrinth.com/mod/veinmine"
   },
   "license": "GPL-3.0",
   "icon": "assets/vein_mine/icon.png",
@@ -42,7 +43,11 @@
   },
   "custom": {
     "modmenu": {
-      "update_checker": true
+      "update_checker": true,
+      "links": {
+        "Discord": "https://discord.gg/zMb8SRwUyN",
+        "Modrinth": "https://modrinth.com/mod/veinmine"
+      }
     }
   }
 }
