@@ -1,5 +1,6 @@
 package top.diaoyugan.vein_mine.client.render;
 
+import com.mojang.blaze3d.opengl.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
@@ -20,22 +21,22 @@ public class RenderOutlines {
 
             Camera camera = context.camera();
             Vec3d camPos = camera.getPos();
-            RenderSystem.disableDepthTest();
-            RenderSystem.depthMask(false); // 禁止写入深度缓冲
-            RenderSystem.enableBlend(); // 开启混合
-            RenderSystem.defaultBlendFunc(); // 默认混合模式
+            GlStateManager._disableDepthTest();
+            GlStateManager._depthMask(false); // 禁止写入深度缓冲
+            GlStateManager._enableBlend(); // 开启混合
+            //GlStateManager._defaultBlendFunc(); // 默认混合模式
 
             OutlineVertexConsumerProvider buffer = MinecraftClient.getInstance().getBufferBuilders().getOutlineVertexConsumers();
 
             for (BlockPos pos : ClientBlockHighlighting.HIGHLIGHTED_BLOCKS) {
-                drawOutlineBox(Objects.requireNonNull(context.matrixStack()), buffer.getBuffer(VMRenderLayers.LINES_NO_DEPTH), pos, camPos);
+                drawOutlineBox(Objects.requireNonNull(context.matrixStack()), buffer.getBuffer(RenderLayer.getLineStrip()), pos, camPos);
             }
 
             buffer.draw(); // 提交渲染
 
-            RenderSystem.depthMask(true);
-            RenderSystem.enableDepthTest();
-            RenderSystem.disableBlend();
+            GlStateManager._depthMask(true);
+            GlStateManager._enableDepthTest();
+            GlStateManager._disableBlend();
         });
 
     }
@@ -71,24 +72,35 @@ public class RenderOutlines {
             Vec3d p2 = corners[edge[1]];
 //            consumer.vertex(matrix, (float) p1.getX(), (float) p1.getY(), (float) p1.getZ()).color(r, g, b, a).normal(0,1,0);
 //            consumer.vertex(matrix, (float) p2.getX(), (float) p2.getY(), (float) p2.getZ()).color(r, g, b, a).normal(0,1,0);
-            drawThickLine(consumer, matrix, p1, p2, 0.01f , r, g, b, a);
+            //drawThickLine(consumer, matrix, p1, p2, 0.01f , r, g, b, a);
+            drawLineAsQuad(consumer, matrix, p1, p2, 0.01f, r, g, b, a);
         }
     }
-    private static void drawThickLine(VertexConsumer consumer, Matrix4f matrix, Vec3d p1, Vec3d p2, float thickness, float r, float g, float b, float a) {
+    private static void drawLineAsQuad(VertexConsumer consumer, Matrix4f matrix, Vec3d p1, Vec3d p2, float thickness, float r, float g, float b, float a) {
         Vec3d dir = p2.subtract(p1).normalize();
         Vec3d up = new Vec3d(0, 1, 0);
-        Vec3d offset = dir.crossProduct(up).normalize().multiply(thickness);
 
-        if (offset.lengthSquared() == 0) {
-            offset = new Vec3d(1, 0, 0).multiply(thickness); // fallback for vertical lines
+        Vec3d side = dir.crossProduct(up).normalize().multiply(thickness / 2);
+        if (side.lengthSquared() == 0) {
+            side = new Vec3d(1, 0, 0).multiply(thickness / 2); // fallback for vertical lines
         }
 
-        for (int i = 0; i <= Utils.getConfig().renderTime-1; i++) {
-            Vec3d o = offset.multiply(i);
-            Vec3d sp = p1.add(o);
-            Vec3d ep = p2.add(o);
-            consumer.vertex(matrix, (float) sp.getX(), (float) sp.getY(), (float) sp.getZ()).color(r, g, b, a).normal(0, 1, 0);
-            consumer.vertex(matrix, (float) ep.getX(), (float) ep.getY(), (float) ep.getZ()).color(r, g, b, a).normal(0, 1, 0);
-        }
+        Vec3d p1a = p1.add(side);
+        Vec3d p1b = p1.subtract(side);
+        Vec3d p2a = p2.add(side);
+        Vec3d p2b = p2.subtract(side);
+
+        // 两个三角形组成一个矩形面
+        drawTriangle(consumer, matrix, p1a, p2a, p2b, r, g, b, a);
+        drawTriangle(consumer, matrix, p2b, p1b, p1a, r, g, b, a);
+    }
+
+    private static void drawTriangle(VertexConsumer consumer, Matrix4f matrix, Vec3d v1, Vec3d v2, Vec3d v3, float r, float g, float b, float a) {
+        consumer.vertex(matrix, (float) v1.x, (float) v1.y, (float) v1.z)
+                .color(r, g, b, a).texture(0.0f, 0.0f).normal(0, 1, 0);
+        consumer.vertex(matrix, (float) v2.x, (float) v2.y, (float) v2.z)
+                .color(r, g, b, a).texture(0.0f, 0.0f).normal(0, 1, 0);
+        consumer.vertex(matrix, (float) v3.x, (float) v3.y, (float) v3.z)
+                .color(r, g, b, a).texture(0.0f, 0.0f).normal(0, 1, 0);
     }
 }
