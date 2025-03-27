@@ -38,8 +38,8 @@
     "minecraft": ">=1.21.5"
   },
   "recommends": {
-    "modmenu": ">=14.0.0",
-    "cloth-config": ">=17.0.0"
+    "modmenu": ">=14.0.0-rc.2",
+    "cloth-config": ">=18.0.145"
   },
   "custom": {
     "modmenu": {
