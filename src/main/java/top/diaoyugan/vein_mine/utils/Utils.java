@@ -2,9 +2,11 @@ package top.diaoyugan.vein_mine.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import top.diaoyugan.vein_mine.Config;
@@ -46,11 +48,23 @@ public class Utils {
     public static void applyToolDurabilityDamage(PlayerEntity player, int blockCount) {
         // 获取玩家主手工具
         ItemStack tool = player.getMainHandStack();
+        if (tool == null) return;
 
         // 检查工具是否能被损耗
         if (tool.isDamageable()) {
-            // 按照破坏的方块数量扣除耐久
-            tool.damage(blockCount, player, null);
+            //更好的耐久扣除方法 应该可以避免nep 因为担心有的mod可以左手使用工具 所以额外加了手的判断
+            Hand usedHand = Hand.MAIN_HAND;
+            if (player.getStackInHand(Hand.OFF_HAND) == tool) {
+                usedHand = Hand.OFF_HAND;
+            }
+            EquipmentSlot slot = (usedHand == Hand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+
+            tool.damage(blockCount, player, slot);
+
+            if (tool.isEmpty()) {
+                player.setStackInHand(usedHand, ItemStack.EMPTY);
+            }
+
         }
     }
 
