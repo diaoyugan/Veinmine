@@ -5,18 +5,14 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.lwjgl.glfw.GLFW;
 import top.diaoyugan.vein_mine.Config;
 import top.diaoyugan.vein_mine.ConfigItems;
-import top.diaoyugan.vein_mine.client.vein_mineClient;
 
 public class VeinmineConfigScreen extends Screen { // Hold the current config
     private Config config;
@@ -90,6 +86,12 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 .setTooltip(Text.translatable("vm.config.use_radius_search_when_reach_bfs_limit.tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(b -> configItems.useRadiusSearchWhenReachBFSLimit = b)
+                .build());
+
+        mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.highlight_blocks_message"), ci.highlightBlocksMessage)
+                .setTooltip(Text.translatable("vm.config.highlight_blocks_message.tooltip"))
+                .setDefaultValue(true)
+                .setSaveConsumer(b -> configItems.highlightBlocksMessage = b)
                 .build());
 
         ConfigCategory toolsAndProtectConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.toolsandprotect"));

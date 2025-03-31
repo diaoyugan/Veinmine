@@ -41,5 +41,8 @@
   "vm.config.renderAlpha": "Opacity",
   "vm.config.renderTime": "Render Passes",
   "vm.config.renderTime.tooltip": "Increasing render passes will draw multiple times at a small offset from the last render position, significantly improving border visibility but reducing performance",
-  "vm.config.value.times": "%d Times"
+  "vm.config.value.times": "%d Times",
+  "vm.message.highlightblocks": "Target blocks: %d",
+  "vm.config.highlight_blocks_message": "Show Target Block Count",
+  "vm.config.highlight_blocks_message.tooltip": "When enabled, the client will display how many blocks will be destroyed"
 }

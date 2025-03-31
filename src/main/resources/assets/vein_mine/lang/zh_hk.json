@@ -41,5 +41,8 @@
   "vm.config.value.times": "%d 次",
   "vm.config.screen.highlights": "高亮設置",
   "vm.config.transnote": "§7翻譯不一定 100% 準確\n按鍵綁定請前往遊戲的按鍵綁定選單",
-  "vm.config.screen.toolsandprotect": "工具與保護"
+  "vm.config.screen.toolsandprotect": "工具與保護",
+  "vm.message.highlightblocks": "目標方塊: %d 個",
+  "vm.config.highlight_blocks_message": "提示目標方塊數量",
+  "vm.config.highlight_blocks_message.tooltip": "開啟後，客戶端會提示有多少個方塊將會被破壞"
 }

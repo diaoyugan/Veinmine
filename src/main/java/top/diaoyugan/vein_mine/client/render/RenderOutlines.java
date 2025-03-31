@@ -1,7 +1,6 @@
 package top.diaoyugan.vein_mine.client.render;
 
 import com.mojang.blaze3d.opengl.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
@@ -24,7 +23,6 @@ public class RenderOutlines {
             GlStateManager._disableDepthTest();
             GlStateManager._depthMask(false); // 禁止写入深度缓冲
             GlStateManager._enableBlend(); // 开启混合
-            //GlStateManager._defaultBlendFunc(); // 默认混合模式
 
             OutlineVertexConsumerProvider buffer = MinecraftClient.getInstance().getBufferBuilders().getOutlineVertexConsumers();
 

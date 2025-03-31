@@ -41,5 +41,8 @@
   "vm.config.value.times": "%d 次",
   "vm.config.screen.highlights": "高亮设置",
   "vm.config.transnote": "§7翻译不一定100%准确\n按键绑定请前往游戏的按键绑定菜单",
-  "vm.config.screen.toolsandprotect": "工具和保护"
+  "vm.config.screen.toolsandprotect": "工具和保护",
+  "vm.message.highlightblocks": "目标方块: %d 个",
+  "vm.config.highlight_blocks_message": "提示连锁目标数量",
+  "vm.config.highlight_blocks_message.tooltip": "开启后，客户端会提示有多少个方块将会被破坏"
 }
