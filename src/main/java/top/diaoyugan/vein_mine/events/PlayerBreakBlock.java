@@ -56,7 +56,7 @@ public class PlayerBreakBlock {
 
             for (BlockPos targetPos : blocksToBreak) {
                 if (targetPos.equals(pos)) continue; // 排除中心方块
-                //这的顺序不能改！！！Unless is ness
+                //这的顺序不能改！！！除非你要加什么东西 必须考虑好所有情况再动！
                 BlockState targetState = world.getBlockState(targetPos);
                 Block targetBlock = targetState.getBlock();
                 if (targetBlock != state.getBlock()) continue;
@@ -79,7 +79,7 @@ public class PlayerBreakBlock {
                     world.breakBlock(targetPos, true);
                     destroyedCount++;
                 }
-            // **移动掉落物到中心点**
+
                 // **移动掉落物到中心点**
                 if (world instanceof ServerWorld serverWorld) {
                     List<Entity> drops = serverWorld.getEntitiesByClass(Entity.class, new Box(pos).expand(6), e ->

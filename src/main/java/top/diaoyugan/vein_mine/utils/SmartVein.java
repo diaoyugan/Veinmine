@@ -33,7 +33,6 @@ public class SmartVein {
         if (Utils.getConfig().ignoredBlocks.contains(startBlockID) || !Utils.getConfig().useBFS) {
             return findBlocksInCube(world, startPos, startState);
         } else {
-            // 否则，使用智能查找
             return findConnectedBlocks(world, startPos, startState);
         }
     }
@@ -43,7 +42,6 @@ public class SmartVein {
         if (Utils.getConfig().ignoredBlocks.contains(String.valueOf(startBlockID)) || !Utils.getConfig().useBFS) {
             return findBlocksInCube(world, startPos, startBlockID);
         } else {
-            // 否则，使用智能查找
             return findConnectedBlocks(world, startPos, startBlockID);
         }
     }

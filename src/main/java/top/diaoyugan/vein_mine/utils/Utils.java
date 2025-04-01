@@ -74,7 +74,7 @@ public class Utils {
         return tool.getEnchantments().toString().contains("minecraft:silk_touch");
     }
 
-    //这是没有凋落物的方块 不要让他掉东西
+    //这是没有掉落物的方块 不要让他掉东西
     public static boolean shouldNotDropItem(BlockState state, World world, BlockPos pos){ // 判断方块是否应该掉落物品
         state.getBlock();
         return Block.getDroppedStacks(state, (ServerWorld) world, pos, null).isEmpty();
@@ -100,7 +100,6 @@ public class Utils {
         ItemStack tool = player.getMainHandStack();
         // 只有指定工具才进行耐久保护
         if (isToolProtected(tool)) {
-            System.out.println("Protected Tool: "+tool.getItem());
             if (tool.getItem() != null) {
                 return tool.getMaxDamage() - tool.getDamage() - getConfig().durabilityThreshold >= cost;
             }
