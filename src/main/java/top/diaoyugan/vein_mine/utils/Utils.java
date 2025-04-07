@@ -68,20 +68,10 @@ public class Utils {
         }
     }
 
-    public static boolean isSilktouch(PlayerEntity player) {
-        ItemStack tool = player.getMainHandStack();
-        // 检查工具是否具有精准采集的附魔
-        return tool.getEnchantments().toString().contains("minecraft:silk_touch");
-    }
-
     //这是没有掉落物的方块 不要让他掉东西
     public static boolean shouldNotDropItem(BlockState state, World world, BlockPos pos){ // 判断方块是否应该掉落物品
         state.getBlock();
         return Block.getDroppedStacks(state, (ServerWorld) world, pos, null).isEmpty();
-    }
-
-    public static boolean isContainer(BlockState state) {
-        return state.hasBlockEntity();
     }
 
     // 计算连锁挖掘的总耐久度消耗

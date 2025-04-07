@@ -12,7 +12,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.item.ItemStack;    
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -68,15 +67,9 @@ public class PlayerBreakBlock {
                 } else if(Utils.shouldNotDropItem(targetState, world, targetPos)){
                     world.breakBlock(targetPos, false);
                     destroyedCount++;
-                } else if (isContainer(targetState)) {
-                    world.breakBlock(targetPos, true);
-                    destroyedCount++;
-                } else if (isSilktouch(player)) {
-                    world.breakBlock(targetPos, false);
-                    Block.dropStack(world, pos, new ItemStack(targetBlock));
-                    destroyedCount++;
                 } else {
-                    world.breakBlock(targetPos, true);
+                    Block.dropStacks(targetState,world,targetPos,world.getBlockEntity(targetPos),player,player.getMainHandStack());
+                    world.breakBlock(targetPos,false);
                     destroyedCount++;
                 }
 
