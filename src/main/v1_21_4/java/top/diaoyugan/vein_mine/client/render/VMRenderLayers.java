@@ -10,7 +10,7 @@ import java.util.OptionalDouble;
 
 public class VMRenderLayers {
     // 创建一个自定义的 RenderLayer，禁用深度测试
-    public static final RenderLayer LINES_NO_DEPTH = RenderLayer.of(
+    protected static final RenderLayer LINES_NO_DEPTH = RenderLayer.of(
             "lines_no_depth",
             VertexFormats.LINES,
             VertexFormat.DrawMode.LINES,
