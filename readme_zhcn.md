@@ -23,7 +23,7 @@
 ### 步骤
 1. 安装 [Fabric Loader](https://fabricmc.net/use/)。
 2. 下载并安装 [Fabric API](https://modrinth.com/mod/fabric-api)。
-3. 从 [GitHub Release](https://github.com/diaoyugan/Veinmine/releases) 下载 Vein Mine 的最新版本。
+3. 下载 Vein Mine 的最新版本。
 4. 将模组文件放入 Minecraft 目录下的 `mods` 文件夹。
 5. 启动游戏并享受！
 
