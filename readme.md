@@ -40,9 +40,14 @@ It's recommended to install [**ModMenu**](https://modrinth.com/mod/modmenu) and 
 If you encounter any issues or have any suggestions, feel free to open an issue on our [GitHub Issues](https://github.com/diaoyugan/Veinmine/issues) page.
 Or, if you're interested in contribution to our code, welcome to open a PR on GitHub!
 
+## Build
+For 1.21.4 run
+
+`./gradlew build -PmcVersion v1_21_4`
+
+For 1.21.5 run
+
+`./gradlew build -PmcVersion v1_21_5`
+
 ## License
 This mod is licensed under the GNU General Public License Version 3. See [LICENSE](LICENSE) for details.
-
-
-## TODO:
-* [ ] Add a setting to determine whether different-colored shulker boxes (or other colored blocks) should be considered the same type.

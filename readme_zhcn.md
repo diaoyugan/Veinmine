@@ -38,8 +38,14 @@
 ## 支持与反馈
 如果遇到问题或有建议，请在 [GitHub Issues](https://github.com/diaoyugan/Veinmine/issues) 页面提交问题。
 
+## 构建
+1.21.4 运行
+
+`./gradlew build -PmcVersion v1_21_4`
+
+1.21.5 运行
+
+`./gradlew build -PmcVersion v1_21_5`
+
 ## 许可证
 本模组基于 GNU GPLv3 许可证发布。详见 [LICENSE](LICENSE)。
-
-## TODO:
-* [ ] 添加一个设置，是否将不同颜色的潜影盒（或其他有颜色区分的方块）视为同一类。
