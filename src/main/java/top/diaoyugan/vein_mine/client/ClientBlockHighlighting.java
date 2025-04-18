@@ -9,6 +9,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import top.diaoyugan.vein_mine.Networking.HighlightBlock;
 import top.diaoyugan.vein_mine.utils.Messages;
+import top.diaoyugan.vein_mine.utils.Utils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class ClientBlockHighlighting {
             ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.addAll(newBlocks);
 
             // 只有在数据更新且不为空时输出
-            if (!ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.isEmpty()) {
+            if (!ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.isEmpty() & Utils.getConfig().highlightBlocksMessage) {
                 Messages.clientMessage(
                         Text.translatable("vm.message.highlightblocks",
                                 ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.size()),
