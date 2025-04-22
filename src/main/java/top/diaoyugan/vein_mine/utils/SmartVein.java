@@ -14,7 +14,7 @@ public class SmartVein {
     static {
         try{
             Utils.getConfig().ignoredBlocks.add("minecraft:air");
-        } catch (Exception e) { //find a better way to fix this
+        } catch (Exception e) { //TODO:find a better way to fix this
             if (!(e instanceof UnsupportedOperationException)) {
                 Logger.throwLog("error", String.valueOf(e),e.fillInStackTrace());
             }
