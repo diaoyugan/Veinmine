@@ -10,7 +10,7 @@ def targetVersion = project.hasProperty("mcVersion") ? project.getProperty("mcVe
 def modVersionBase = project.hasProperty("mod_version") ? project.mod_version : "1.0.0"
 def finalModVersion = "${modVersionBase}-${targetVersion.replace('v', '').replace('_', '.')}"
 
-// ✅ 在 targetVersion 定义之后设置 project.version
+//在 targetVersion 定义之后设置 project.version
 version = finalModVersion
 
 group = project.maven_group
