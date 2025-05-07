@@ -40,7 +40,7 @@
   "vm.config.renderTime.tooltip": "提高渲染次数将会在距离上次渲染的一小点距离进行多次绘制，可以显著提高边框的可见性，但会降低性能",
   "vm.config.value.times": "%d 次",
   "vm.config.screen.highlights": "高亮设置",
-  "vm.config.transnote": "§7翻译不一定100%准确\n按键绑定请前往游戏的按键绑定菜单",
+  "vm.config.transnote": "§7其他语言的翻译不一定100%准确。如果你有建议，请向我们反馈。\n按键绑定请前往游戏的按键绑定菜单",
   "vm.config.screen.toolsandprotect": "工具和保护",
   "vm.message.highlightblocks": "目标方块: %d 个",
   "vm.config.highlight_blocks_message": "提示连锁目标数量",
