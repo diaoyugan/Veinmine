@@ -34,7 +34,6 @@
 
 ## 控制
 - **按下 `(~)（默认）** 切换激活连锁挖掘。
-- 在游戏内的控制设置中修改快捷键。
 
 ## 支持与反馈
 如果遇到问题或有建议，请在 [GitHub Issues](https://github.com/diaoyugan/Veinmine/issues) 页面提交问题。

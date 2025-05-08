@@ -35,7 +35,6 @@ It's recommended to install [**ModMenu**](https://modrinth.com/mod/modmenu) and 
 - For servers, the configuration file located in `[your Minecraft server directory]/config/veinmine.json`
 ## Controls
 - **Press `(~) (default)** to toggle Vein Mine.
-- Change the activation keybind in the in-game controls settings.
 
 ## Support & Feedback
 If you encounter any issues or have any suggestions, feel free to open an issue on our [GitHub Issues](https://github.com/diaoyugan/Veinmine/issues) page.
