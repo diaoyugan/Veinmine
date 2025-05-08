@@ -27,7 +27,6 @@
   "vm.config.protect_allValuable_tools.tooltip": "是否自動保護所有貴重工具，如果開啟，將會自動保護黃金、鑽石和下界合金工具",
   "vm.config.durability_threshold": "損壞警告閾值",
   "vm.config.durability_threshold.tooltip": "若連鎖後的耐久將會低於此值，則觸發工具保護",
-  "key.vein_mine.function_switch": "切換連鎖挖掘",
   "vm.config.screen.main": "主要設置",
   "vm.config.value.block": "%d 個方塊",
   "vm.config.value.durability": "%d 點耐久度",
@@ -40,9 +39,14 @@
   "vm.config.renderTime.tooltip": "提高渲染次數將會在距離上次渲染的一小段距離進行多次繪製，可以顯著提高邊框的可見性，但會降低效能",
   "vm.config.value.times": "%d 次",
   "vm.config.screen.highlights": "高亮設置",
-  "vm.config.transnote": "§7翻譯不一定 100% 準確。如果你有建議，請向我們迴響。\n按鍵綁定請前往遊戲的按鍵綁定選單",
+  "vm.config.transnote": "§7翻譯不一定 100% 準確。如果你有建議，請向我們迴響。",
   "vm.config.screen.toolsandprotect": "工具與保護",
   "vm.message.highlightblocks": "目標方塊: %d 個",
   "vm.config.highlight_blocks_message": "提示目標方塊數量",
-  "vm.config.highlight_blocks_message.tooltip": "開啟後，客戶端會提示有多少個方塊將會被破壞"
+  "vm.config.highlight_blocks_message.tooltip": "開啟後，客戶端會提示有多少個方塊將會被破壞",
+  "key.vm.switch.tooltip": "可在此處綁定按鍵",
+  "vm.config.use_hold_instead_of_toggle": "按住啟動",
+  "vm.config.use_hold_instead_of_toggle.tooltip": "開啟後，啟動功能需要按住按鍵，而不是按下切換",
+  "vm.config.screen.keysAndBinding": "按鍵與綁定"
+
 }

@@ -3,13 +3,15 @@
   "modmenu.descriptionTranslation.vein_mine": "A mod that allows you to mine veins of blocks",
   "modmenu.summaryTranslation.vein_mine": "A mod that allows you to mine veins of blocks",
   "key.category.vm.switch": "Vein Mine",
-  "key.vm.switch": "Toggle Activation",
-  "key.vein_mine.function_switch": "Toggle Vein Mining",
+  "key.vm.switch": "Activation Key",
+  "key.vm.switch.tooltip": "You can bind activation key here",
   "vm.switch_state": "Vein Mining",
+  "vm.config.use_hold_instead_of_toggle": "Use hold instead of toggle",
+  "vm.config.use_hold_instead_of_toggle.tooltip": "If enabled, you can toggle activation instead of a single tap by holding down the key",
   "vm.config.screen.title": "Vein Mining Config",
   "vm.config.screen.main": "Main Settings",
   "vm.config.screen.highlights": "Highlights Settings",
-  "vm.config.transnote": "§7The translation may not be 100% accurate. \nIf you have any suggestions, please give us feedback.\nKey binding please go to the game key binds settings",
+  "vm.config.transnote": "§7The translation may not be 100% accurate. \nIf you have any suggestions, please give us feedback.",
   "vm.config.search_radius": "Range Search Radius",
   "vm.config.search_radius.tooltip": "Range mode search radius\n1 means 8 blocks in all directions\nplus 9 blocks in each layer, plus center",
   "vm.config.bfs_limit": "Chain Search Limit",
@@ -44,5 +46,6 @@
   "vm.config.value.times": "%d Times",
   "vm.message.highlightblocks": "Target blocks: %d",
   "vm.config.highlight_blocks_message": "Show Target Block Count",
-  "vm.config.highlight_blocks_message.tooltip": "When enabled, the client will display how many blocks will be break"
+  "vm.config.highlight_blocks_message.tooltip": "When enabled, the client will display how many blocks will be break",
+  "vm.config.screen.keysAndBinding": "Keys & Binding"
 }

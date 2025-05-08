@@ -1,31 +1,49 @@
-
 package top.diaoyugan.vein_mine.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import org.lwjgl.glfw.GLFW;
+import top.diaoyugan.vein_mine.Config;
 import top.diaoyugan.vein_mine.Networking.keybindreciever.KeybindingPayloadResponse;
 
 public class vein_mineClient implements ClientModInitializer {
-    protected static final KeyBinding BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.vm.switch",
-            InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_GRAVE_ACCENT,
-            "key.category.vm.switch"));
+    public static KeyBinding BINDING;
 
     @Override
     public void onInitializeClient() {
-        ClientBlockHighlighting.onInitialize();
+        registerKeyBindingFromConfig();
 
+        ClientBlockHighlighting.onInitialize();
         ClientTickEvents.END_CLIENT_TICK.register(HotKeys::tickEvent);
+
         ClientInitialize versions = new VersionInit();
         versions.OnInitialize();
-        // 注册接收来自服务端的状态更新
+
         ClientPlayNetworking.registerGlobalReceiver(KeybindingPayloadResponse.ID, HotKeys::receiveKeybindingResponse);
     }
 
-}
+    public static void registerKeyBindingFromConfig() {
+        int keyCode = Config.getInstance().getConfigItems().keyBindingCode;
+        InputUtil.Key key = InputUtil.fromKeyCode(keyCode, 0);
 
+        BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.vm.switch",
+                key.getCode(),
+                "key.category.vm.switch"
+        ));
+    }
+
+    public static void updateKeyBinding(int newCode) {
+        BINDING.setBoundKey(InputUtil.fromKeyCode(newCode, 0));
+        // 强制保存新的按键设置
+        MinecraftClient.getInstance().options.write();
+        // 更新按键绑定 没有这一行会导致游戏内不会立刻生效
+        KeyBinding.updateKeysByCode();
+    }
+
+
+}

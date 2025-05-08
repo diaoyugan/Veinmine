@@ -2,17 +2,21 @@ package top.diaoyugan.vein_mine.client.config;
 
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.lwjgl.glfw.GLFW;
 import top.diaoyugan.vein_mine.Config;
 import top.diaoyugan.vein_mine.ConfigItems;
+import top.diaoyugan.vein_mine.client.vein_mineClient;
 
 public class VeinmineConfigScreen extends Screen { // Hold the current config
     private Config config;
@@ -39,6 +43,7 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
     }
 
     private Screen initConfigScreen(ConfigBuilder cb, ConfigItems ci){
+        configItems.keyBindingCode = KeyBindingHelper.getBoundKeyOf(vein_mineClient.BINDING).getCode();
         ConfigCategory mainConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.main"));
         ConfigEntryBuilder entryBuilder = cb.entryBuilder();
 
@@ -65,9 +70,7 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
         List<String> ignoredBlocks = new ArrayList<>(ci.ignoredBlocks);
         mainConfig.addEntry(entryBuilder.startStrList(Text.translatable("vm.config.ignored_blocks"), ignoredBlocks)
                 .setTooltip(Text.translatable("vm.config.ignored_blocks.tooltip"))
-                .setSaveConsumer(strings -> {
-                    configItems.ignoredBlocks = Set.copyOf(strings);
-                })
+                .setSaveConsumer(strings -> configItems.ignoredBlocks = Set.copyOf(strings))
                 .build());
         /* Use BFS */
         mainConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.use_bfs"), ci.useBFS)
@@ -107,9 +110,7 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
         List<String> protectedTools = new ArrayList<>(ci.protectedTools);
         toolsAndProtectConfig.addEntry(toolsAndProtectEntryBuilder.startStrList(Text.translatable("vm.config.protected_tools"), protectedTools)
                 .setTooltip(Text.translatable("vm.config.protected_tools.tooltip"))
-                .setSaveConsumer(strings -> {
-                    configItems.protectedTools = Set.copyOf(strings);
-                })
+                .setSaveConsumer(strings -> configItems.protectedTools = Set.copyOf(strings))
                 .build());
         /* Protect All Default Valuable Tools */
         toolsAndProtectConfig.addEntry(toolsAndProtectEntryBuilder.startBooleanToggle(Text.translatable("vm.config.protect_allValuable_tools"), ci.protectAllDefaultValuableTools)
@@ -170,6 +171,29 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 .setSaveConsumer(i -> configItems.renderTime = i)
                 .setTextGetter(value -> Text.translatable("vm.config.value.times", value))
                 .build());
+
+        ConfigCategory keysAndBinding = cb.getOrCreateCategory(Text.translatable("vm.config.screen.keysAndBinding"));
+        ConfigEntryBuilder keysAndBindingEntryBuilder = cb.entryBuilder();
+
+        keysAndBinding.addEntry(keysAndBindingEntryBuilder.startBooleanToggle(Text.translatable("vm.config.use_hold_instead_of_toggle"), ci.useHoldInsteadOfToggle)
+                .setTooltip(Text.translatable("vm.config.use_hold_instead_of_toggle.tooltip"))
+                .setDefaultValue(false)
+                .setSaveConsumer(b -> configItems.useHoldInsteadOfToggle = b)
+                .build());
+
+        keysAndBinding.addEntry(keysAndBindingEntryBuilder.startKeyCodeField(
+                        Text.translatable("key.vm.switch"),
+                        InputUtil.fromKeyCode(ci.keyBindingCode, 0))
+                .setTooltip(Text.translatable("key.vm.switch.tooltip"))
+                .setDefaultValue(InputUtil.fromKeyCode(GLFW.GLFW_KEY_GRAVE_ACCENT, 0))
+                .setKeySaveConsumer(key -> {
+                    configItems.keyBindingCode = key.getCode(); // 存储为 int
+                    vein_mineClient.updateKeyBinding(key.getCode()); // 重新注册按键
+                })
+                .build());
+
+
+
 
         return cb.build();
     }
