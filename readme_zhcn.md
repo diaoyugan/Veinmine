@@ -1,6 +1,6 @@
 # Vein Mine - Minecraft 模组
 
-[English Version](readme.md) 简体中文
+[English](readme.md) 简体中文
 
 ## 简介
 连锁挖掘是一个 Minecraft 模组，允许玩家高效地挖掘相连的相同类型方块。无论是挖矿、砍树还是收集资源，该模组都能让过程更加快捷便利！
