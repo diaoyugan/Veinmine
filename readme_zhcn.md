@@ -37,6 +37,7 @@
 
 ## 支持与反馈
 如果遇到问题或有建议，请在 [GitHub Issues](https://github.com/diaoyugan/Veinmine/issues) 页面提交问题。
+如果你想协助我们改进代码，欢迎PR
 
 ## 构建
 1.21.4 运行
