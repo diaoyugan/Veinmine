@@ -1,4 +1,4 @@
-package top.diaoyugan.vein_mine.client.config;
+package top.diaoyugan.vein_mine.client.ConfigScreen;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

@@ -1,4 +1,4 @@
-package top.diaoyugan.vein_mine.client.config;
+package top.diaoyugan.vein_mine.client.ConfigScreen;
 
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import net.minecraft.client.MinecraftClient;

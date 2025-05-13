@@ -9,8 +9,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import top.diaoyugan.vein_mine.Config;
-import top.diaoyugan.vein_mine.ConfigItems;
+import top.diaoyugan.vein_mine.config.Config;
+import top.diaoyugan.vein_mine.config.ConfigItems;
 
 import java.util.*;
 

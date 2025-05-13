@@ -1,4 +1,4 @@
-package top.diaoyugan.vein_mine;
+package top.diaoyugan.vein_mine.config;
 
 // No NULL VALUE allowed!!! I'm fed up with NPE
 
@@ -45,7 +45,7 @@ public class Config {
         try (Writer writer = Files.newBufferedWriter(configFilePath)) {
             jsonProcessor.toJson(configItems, writer);
         } catch (Exception e) {
-            Logger.throwLog("error","",e);
+            Logger.throwLog("error","Failed to save the configuration",e);
         }
     }
     
@@ -80,7 +80,3 @@ public class Config {
 
     
 }
-
-/* Logic
-
- */

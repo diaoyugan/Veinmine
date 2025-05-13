@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import top.diaoyugan.vein_mine.ConfigItems;
+import top.diaoyugan.vein_mine.config.ConfigItems;
 import top.diaoyugan.vein_mine.utils.Messages;
 import top.diaoyugan.vein_mine.utils.SmartVein;
 import top.diaoyugan.vein_mine.utils.Utils;

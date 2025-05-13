@@ -1,4 +1,4 @@
-package top.diaoyugan.vein_mine;
+package top.diaoyugan.vein_mine.config;
 
 import org.lwjgl.glfw.GLFW;
 

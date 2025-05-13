@@ -1,10 +1,8 @@
 package top.diaoyugan.vein_mine.Networking;
 
-import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-
 
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -24,7 +22,7 @@ import top.diaoyugan.vein_mine.utils.Utils;
 import java.util.*;
 
 
-public class HighlightBlock implements ModInitializer {
+public class HighlightBlock {
     public static final Identifier HIGHLIGHT_PACKET_ID = Networking.id("block_highlight"); // 请求包的 ID
     public static final Identifier HIGHLIGHT_PACKET_RESPONSE_ID = Networking.id("block_highlight_response"); // 响应包的 ID
 
@@ -69,7 +67,6 @@ public class HighlightBlock implements ModInitializer {
     }
 
 
-    @Override
     public void onInitialize() {
         PayloadTypeRegistry.playC2S().register(BlockHighlightPayloadC2S.ID, BlockHighlightPayloadC2S.CODEC);
         PayloadTypeRegistry.playS2C().register(HighlightBlock.BlockHighlightPayloadS2C.ID, HighlightBlock.BlockHighlightPayloadS2C.CODEC);

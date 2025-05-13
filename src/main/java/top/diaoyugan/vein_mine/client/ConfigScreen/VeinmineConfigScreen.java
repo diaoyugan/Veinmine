@@ -1,4 +1,4 @@
-package top.diaoyugan.vein_mine.client.config;
+package top.diaoyugan.vein_mine.client.ConfigScreen;
 
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.lwjgl.glfw.GLFW;
-import top.diaoyugan.vein_mine.Config;
-import top.diaoyugan.vein_mine.ConfigItems;
+import top.diaoyugan.vein_mine.config.Config;
+import top.diaoyugan.vein_mine.config.ConfigItems;
 import top.diaoyugan.vein_mine.client.vein_mineClient;
 
 public class VeinmineConfigScreen extends Screen { // Hold the current config
@@ -191,9 +191,6 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                     vein_mineClient.updateKeyBinding(key.getCode()); // 重新注册按键
                 })
                 .build());
-
-
-
 
         return cb.build();
     }
