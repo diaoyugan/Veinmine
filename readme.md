@@ -4,7 +4,7 @@
 English [简体中文](readme_zhcn.md)
 
 ## Introduction
-Vein Mine is a Minecraft mod that allows players to efficiently mine connected blocks of the same type. Whether you're mining ores, chopping trees, or gathering resources, this mod makes the process faster and more convenient!
+Veinmine is a simple, lightweight, and fast-updating Minecraft mod that allows players to efficiently mine connected blocks of the same type. that allows players to efficiently mine connected blocks of the same type. Whether you're mining ores, chopping trees, or gathering resources, this mod makes the process faster and more convenient!
 
 ## Features
 - **Vein Mining:** Break an entire vein of ores or a group of connected blocks with a single action.
