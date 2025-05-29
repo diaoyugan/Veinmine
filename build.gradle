@@ -97,7 +97,7 @@ dependencies {
     modApi("me.shedaniel.cloth:cloth-config-fabric:${clothConfigVersions[targetVersion]}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
-    modImplementation "com.terraformersmc:modmenu:${modMenuVersions[targetVersion]}" // Modmenu integration
+//    modImplementation "com.terraformersmc:modmenu:${modMenuVersions[targetVersion]}" // Modmenu integration
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabricApiVersions[targetVersion]}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
