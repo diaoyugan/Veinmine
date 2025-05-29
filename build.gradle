@@ -4,7 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
 
-def targetVersion = project.hasProperty("mcVersion") ? project.getProperty("mcVersion") : "v1_21_5"
+def targetVersion = project.hasProperty("mcVersion") ? project.getProperty("mcVersion") : "v1_21_6"
 
 // 拼接 mod_version 和 targetVersion 成最终版本号
 def modVersionBase = project.hasProperty("mod_version") ? project.mod_version : "1.0.0"
@@ -21,27 +21,32 @@ base {
 
 def yarnMappings = [
         "v1_21_4": "1.21.4+build.8",
-        "v1_21_5": "1.21.5+build.1"
+        "v1_21_5": "1.21.5+build.1",
+        "v1_21_6": "1.21.6-pre1+build.1"
 ]
 
 def fabricApiVersions = [
         "v1_21_4": "0.115.0+1.21.4",
-        "v1_21_5": "0.119.5+1.21.5"
+        "v1_21_5": "0.119.5+1.21.5",
+        "v1_21_6": "0.125.2+1.21.6"
 ]
 
 def modMenuVersions = [
         "v1_21_4": "13.0.0",
-        "v1_21_5": "14.0.0-rc.2"
+        "v1_21_5": "14.0.0-rc.2",
+        "v1_21_6": "14.0.0-rc.2"
 ]
 
 def clothConfigVersions = [
         "v1_21_4": "17.0.142",
-        "v1_21_5": "18.0.145"
+        "v1_21_5": "18.0.145",
+        "v1_21_6": "18.0.145"
 ]
 
 def loaderVersion= [
         "v1_21_4": "0.16.10",
-        "v1_21_5": "0.16.10"
+        "v1_21_5": "0.16.10",
+        "v1_21_6": "0.16.14"
 ]
 
 def requiredKeys = [yarnMappings, fabricApiVersions, modMenuVersions, clothConfigVersions, loaderVersion]
@@ -50,7 +55,6 @@ requiredKeys.each {
         throw new GradleException("missing targetVersion = ${targetVersion}")
     }
 }
-
 
 def versionedSrc = file("src/main/${targetVersion}/java")
 sourceSets {
@@ -86,7 +90,8 @@ repositories {
 
 dependencies {
     // To change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${targetVersion.replace('v', '').replace('_','.')}"
+    minecraft "com.mojang:minecraft:1.21.6-pre1"
+//    minecraft "com.mojang:minecraft:${targetVersion.replace('v', '').replace('_','.')}"
     mappings "net.fabricmc:yarn:${yarnMappings[targetVersion]}:v2"
     modImplementation "net.fabricmc:fabric-loader:${loaderVersion[targetVersion]}"
     modApi("me.shedaniel.cloth:cloth-config-fabric:${clothConfigVersions[targetVersion]}") {
@@ -99,14 +104,15 @@ dependencies {
 
 processResources {
     inputs.property "version", project.version
-    inputs.property "minecraft_version", targetVersion.replace('v', '').replace('_', '.')
+//    inputs.property "minecraft_version", targetVersion.replace('v', '').replace('_', '.')
     inputs.property "loader_version", loaderVersion[targetVersion]
     filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
         expand(
                 "version": project.version,
-                "minecraft_version": targetVersion.replace('v', '').replace('_', '.'),
+                "minecraft_version": "1.21.6-pre1",
+//                "minecraft_version": targetVersion.replace('v', '').replace('_', '.'),
                 "loader_version": loaderVersion[targetVersion],
                 "modmenu_version": modMenuVersions[targetVersion],
                 "cloth_config_version": clothConfigVersions[targetVersion],
