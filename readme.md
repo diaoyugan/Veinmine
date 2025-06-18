@@ -49,5 +49,9 @@ For 1.21.5 run
 
 `./gradlew build -PmcVersion v1_21_5`
 
+For 1.21.6 run
+
+`./gradlew build -PmcVersion v1_21_6`
+
 ## License
 This mod is licensed under the GNU General Public License Version 3. See [LICENSE](LICENSE) for details.

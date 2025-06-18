@@ -48,5 +48,9 @@
 
 `./gradlew build -PmcVersion v1_21_5`
 
+1.21.6 运行
+
+`./gradlew build -PmcVersion v1_21_6`
+
 ## 许可证
 本模组基于 GNU GPLv3 许可证发布。详见 [LICENSE](LICENSE)。
