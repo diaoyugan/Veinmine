@@ -22,10 +22,8 @@ public class Messages {
 
     //发送聊天消息
     public static void sendMessage(ServerPlayerEntity player, Text message,Boolean isOnActionbar) {
-        if (isOnActionbar)
-            player.server.execute(() -> player.sendMessage(message, true));
-        else
-            player.server.execute(() -> player.sendMessage(message, false));
+        utilsVersionInterface vMessages = new versionMessage();
+        vMessages.sendMessage(player, message, isOnActionbar);
     }
 
     //发送标题消息(游戏中屏幕中间的大标题）

@@ -25,13 +25,6 @@
       "top.diaoyugan.vein_mine.client.ConfigScreen.ModMenuIntegration"
     ]
   },
-  "mixins": [
-    "vein_mine.mixins.json",
-    {
-      "config": "vein_mine.client.mixins.json",
-      "environment": "client"
-    }
-  ],
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": ">=${api_version}",
