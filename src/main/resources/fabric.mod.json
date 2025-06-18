@@ -28,7 +28,7 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": ">=${api_version}",
-    "minecraft": "1.21.6-rc.1"
+    "minecraft": "${minecraft_version}"
   },
   "recommends": {
     "modmenu": ">=${modmenu_version}",
