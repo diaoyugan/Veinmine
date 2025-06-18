@@ -193,16 +193,16 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                 })
                 .build());
 
-        ConfigCategory finalResortConfig = cb.getOrCreateCategory(Text.literal("最终手段").styled(style -> style.withColor(Formatting.RED)));
-
+        ConfigCategory finalResortConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.final_resort").styled(style -> style.withColor(Formatting.RED)));
         ConfigEntryBuilder finalResortEntryBuilder = cb.entryBuilder();
 
         finalResortConfig.addEntry(finalResortEntryBuilder
-                .startBooleanToggle(Text.translatable("vm.config.useIntrusiveCode"), ci.useIntrusiveCode)
-                .setTooltip(Text.literal("开启此选项将启用mixin和反射等高入侵度功能\n如果与其他mod冲突导致崩溃，请关闭此选项\n此选项需要重启游戏应用更改\n\n关闭此选项后，高亮渲染将无法穿透物体").styled(style -> style.withColor(Formatting.RED)))
+                .startBooleanToggle(Text.translatable("vm.config.useIntrusiveCode").styled(style -> style.withColor(Formatting.RED)), ci.useIntrusiveCode)
+                .setTooltip(Text.translatable("vm.config.useIntrusiveCode.tooltip").styled(style -> style.withColor(Formatting.RED)))
                 .setDefaultValue(true)
                 .setSaveConsumer(b -> configItems.useIntrusiveCode = b)
                 .build());
+
 
         return cb.build();
     }
