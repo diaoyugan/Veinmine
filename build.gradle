@@ -40,7 +40,7 @@ def modMenuVersions = [
 def clothConfigVersions = [
         "v1_21_4": "17.0.142",
         "v1_21_5": "18.0.145",
-        "v1_21_6": "18.0.145"
+        "v1_21_6": "19.0.146"
 ]
 
 def loaderVersion= [
