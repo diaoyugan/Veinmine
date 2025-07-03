@@ -42,7 +42,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Clean old lock files
+      - name: Clean old cache files
         run: |
           rm -rf ~/.gradle/caches/fabric-loom
 
