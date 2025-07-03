@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
 import top.diaoyugan.vein_mine.config.Config;
 import top.diaoyugan.vein_mine.config.ConfigItems;
@@ -191,6 +192,17 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
                     vein_mineClient.updateKeyBinding(key.getCode()); // 重新注册按键
                 })
                 .build());
+
+        ConfigCategory finalResortConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.final_resort").styled(style -> style.withColor(Formatting.RED)));
+        ConfigEntryBuilder finalResortEntryBuilder = cb.entryBuilder();
+
+        finalResortConfig.addEntry(finalResortEntryBuilder
+                .startBooleanToggle(Text.translatable("vm.config.useIntrusiveCode").styled(style -> style.withColor(Formatting.RED)), ci.useIntrusiveCode)
+                .setTooltip(Text.translatable("vm.config.useIntrusiveCode.tooltip").styled(style -> style.withColor(Formatting.RED)))
+                .setDefaultValue(true)
+                .setSaveConsumer(b -> configItems.useIntrusiveCode = b)
+                .build());
+
 
         return cb.build();
     }

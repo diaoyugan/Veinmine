@@ -60,6 +60,7 @@ public class Config {
             ConfigItems loadedConfig = jsonProcessor.fromJson(reader, ConfigItems.class);
             if (loadedConfig != null) {
                 configItems = loadedConfig;
+                IntrusiveConfig.load(configItems);
             } else {
                 // Handle null case
                 configItems = new ConfigItems();
