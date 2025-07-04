@@ -42,9 +42,12 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Clean old lock files
+      - name: Clean old cache files
         run: |
           rm -rf ~/.gradle/caches/fabric-loom
+
+      - name: Build 1.21.7 with Gradle
+        run: ./gradlew build -PmcVersion=v1_21_7
 
       - name: Build 1.21.6 with Gradle
         run: ./gradlew build -PmcVersion=v1_21_6

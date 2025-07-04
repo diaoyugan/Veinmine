@@ -4,7 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
 
-def targetVersion = project.hasProperty("mcVersion") ? project.getProperty("mcVersion") : "v1_21_6"
+def targetVersion = project.hasProperty("mcVersion") ? project.getProperty("mcVersion") : "v1_21_7"
 
 // 拼接 mod_version 和 targetVersion 成最终版本号
 def modVersionBase = project.hasProperty("mod_version") ? project.mod_version : "1.0.0"
@@ -22,31 +22,36 @@ base {
 def yarnMappings = [
         "v1_21_4": "1.21.4+build.8",
         "v1_21_5": "1.21.5+build.1",
-        "v1_21_6": "1.21.6+build.1"
+        "v1_21_6": "1.21.6+build.1",
+        "v1_21_7": "1.21.7+build.2"
 ]
 
 def fabricApiVersions = [
         "v1_21_4": "0.115.0+1.21.4",
         "v1_21_5": "0.119.5+1.21.5",
-        "v1_21_6": "0.127.0+1.21.6"
+        "v1_21_6": "0.127.0+1.21.6",
+        "v1_21_7": "0.128.2+1.21.7"
 ]
 
 def modMenuVersions = [
         "v1_21_4": "13.0.0",
         "v1_21_5": "14.0.0-rc.2",
-        "v1_21_6": "15.0.0-beta.1"
+        "v1_21_6": "15.0.0-beta.3",
+        "v1_21_7": "15.0.0-beta.3"
 ]
 
 def clothConfigVersions = [
         "v1_21_4": "17.0.142",
         "v1_21_5": "18.0.145",
-        "v1_21_6": "19.0.146"
+        "v1_21_6": "19.0.147",
+        "v1_21_7": "19.0.147"
 ]
 
 def loaderVersion= [
         "v1_21_4": "0.16.10",
         "v1_21_5": "0.16.10",
-        "v1_21_6": "0.16.14"
+        "v1_21_6": "0.16.14",
+        "v1_21_7": "0.16.14"
 ]
 
 def requiredKeys = [yarnMappings, fabricApiVersions, modMenuVersions, clothConfigVersions, loaderVersion]
@@ -117,9 +122,11 @@ processResources {
                 "modmenu_version": modMenuVersions[targetVersion],
                 "cloth_config_version": clothConfigVersions[targetVersion],
                 "api_version":fabricApiVersions[targetVersion],
-                "fabric": fabricApiVersions[targetVersion]
+                "fabric": fabricApiVersions[targetVersion],
+                "targetVersion": targetVersion
         )
     }
+
 }
 
 

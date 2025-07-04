@@ -8,6 +8,7 @@ import java.util.Set;
 public class ConfigItems {
     private final int version = 1; // Config file version, modify after config format change, not used now
 
+    public boolean useIntrusiveCode = true;
     public int searchRadius = 1;
     public int BFSLimit = 50;
     public Set<String> ignoredBlocks = new HashSet<>();

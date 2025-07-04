@@ -47,6 +47,8 @@
   "key.vm.switch.tooltip": "可在此處綁定按鍵",
   "vm.config.use_hold_instead_of_toggle": "按住啟動",
   "vm.config.use_hold_instead_of_toggle.tooltip": "開啟後，啟動功能需要按住按鍵，而不是按下切換",
-  "vm.config.screen.keysAndBinding": "按鍵與綁定"
-
+  "vm.config.screen.keysAndBinding": "按鍵與綁定",
+  "vm.config.screen.final_resort": "最終手段",
+  "vm.config.useIntrusiveCode": "使用侵入式代碼",
+  "vm.config.useIntrusiveCode.tooltip": "啟用此選項將開啟 mixin 和反射等高侵入性功能。\n若與其他模組發生衝突或導致當機，請關閉此選項。\n此選項需要重新啟動遊戲後才會生效。\n\n關閉後，區塊高亮將無法穿透顯示。"
 }

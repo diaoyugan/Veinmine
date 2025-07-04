@@ -9,9 +9,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import top.diaoyugan.vein_mine.client.ClientBlockHighlighting;
+import top.diaoyugan.vein_mine.config.IntrusiveConfig;
 import top.diaoyugan.vein_mine.utils.Utils;
-
-import java.util.Objects;
 
 public class RenderOutlines {
     public static void onInitialize(){
@@ -20,22 +19,41 @@ public class RenderOutlines {
 
             Camera camera = context.camera();
             Vec3d camPos = camera.getPos();
+
+            MatrixStack matrices = context.matrixStack();
+            VertexConsumerProvider vertexConsumers = context.consumers();
+
             GlStateManager._disableDepthTest();
-            GlStateManager._depthMask(false); // 禁止写入深度缓冲
-            GlStateManager._enableBlend(); // 开启混合
+            GlStateManager._depthMask(false);
+            GlStateManager._enableBlend();
 
-            OutlineVertexConsumerProvider buffer = MinecraftClient.getInstance().getBufferBuilders().getOutlineVertexConsumers();
-
-            for (BlockPos pos : ClientBlockHighlighting.HIGHLIGHTED_BLOCKS) {
-                drawOutlineBox(Objects.requireNonNull(context.matrixStack()), buffer.getBuffer(RenderLayer.getLineStrip()), pos, camPos);
+            if (matrices != null) {
+                matrices.push();
             }
 
-            buffer.draw(); // 提交渲染
+            for (BlockPos pos : ClientBlockHighlighting.HIGHLIGHTED_BLOCKS) {
+                if (matrices != null) {
+                    if (vertexConsumers != null) {
+                        if (IntrusiveConfig.isEnabled()){
+                            drawOutlineBox(matrices, vertexConsumers.getBuffer(CustomLayers.LINES_NO_DEPTH), pos, camPos);
+                        }else{
+                            drawOutlineBox(matrices, vertexConsumers.getBuffer(RenderLayer.getLineStrip()), pos, camPos);
+                        }
+
+                    }
+                }
+            }
+
+            if (matrices != null) {
+                matrices.pop();
+            }
 
             GlStateManager._depthMask(true);
             GlStateManager._enableDepthTest();
             GlStateManager._disableBlend();
         });
+
+
 
     }
     private static void drawOutlineBox(MatrixStack matrices, VertexConsumer consumer, BlockPos pos, Vec3d cameraPos) {
@@ -43,7 +61,10 @@ public class RenderOutlines {
         double y = pos.getY() - cameraPos.y;
         double z = pos.getZ() - cameraPos.z;
 
-        float r = (float) Utils.getConfig().red / 255, g = (float) Utils.getConfig().green / 255, b = (float) Utils.getConfig().blue / 255, a = (float) Utils.getConfig().alpha / 255;//这是颜色
+        float r = (float) Utils.getConfig().red / 255f;
+        float g = (float) Utils.getConfig().green / 255f;
+        float b = (float) Utils.getConfig().blue / 255f;
+        float a = (float) Utils.getConfig().alpha / 255f;
 
         Matrix4f matrix = matrices.peek().getPositionMatrix();
 
