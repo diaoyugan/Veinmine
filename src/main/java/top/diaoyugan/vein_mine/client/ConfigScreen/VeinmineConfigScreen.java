@@ -23,10 +23,12 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
     private Config config;
     private ConfigItems configItems;
     private final Screen parent;
+
     protected VeinmineConfigScreen(Screen parent) {
         super(Text.translatable("vm.config.screen.title"));
         this.parent = parent;
     }
+
     @Override
     protected void init() {
         this.config = Config.getInstance();
@@ -38,12 +40,12 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
     }
 
     @Override
-    public void render(DrawContext dc,int mouseX, int mouseY, float delta) {
+    public void render(DrawContext dc, int mouseX, int mouseY, float delta) {
         this.renderBackground(dc, mouseX, mouseY, delta);
         super.render(dc, mouseX, mouseY, delta);
     }
 
-    private Screen initConfigScreen(ConfigBuilder cb, ConfigItems ci){
+    private Screen initConfigScreen(ConfigBuilder cb, ConfigItems ci) {
         configItems.keyBindingCode = KeyBindingHelper.getBoundKeyOf(vein_mineClient.BINDING).getCode();
         ConfigCategory mainConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.main"));
         ConfigEntryBuilder entryBuilder = cb.entryBuilder();

@@ -17,7 +17,7 @@ public class ColorPreviewEntry extends AbstractConfigListEntry<Void> {
     private final Supplier<Integer> blue;
 
     public ColorPreviewEntry(Supplier<Integer> red, Supplier<Integer> green, Supplier<Integer> blue) {
-        super(Text.literal("Color Preview"),false);
+        super(Text.literal("Color Preview"), false);
         this.red = red;
         this.green = green;
         this.blue = blue;
@@ -50,7 +50,10 @@ public class ColorPreviewEntry extends AbstractConfigListEntry<Void> {
         context.fill(boxX, boxY, boxX + boxWidth, boxY + boxHeight, color); // 实际颜色预览
     }
 
-    @Override public Void getValue() { return null; }
+    @Override
+    public Void getValue() {
+        return null;
+    }
 
     @Override
     public Optional<Void> getDefaultValue() {
@@ -58,7 +61,10 @@ public class ColorPreviewEntry extends AbstractConfigListEntry<Void> {
     }
 
     //   @Override public void setValue(Void value) {}
-    @Override public boolean isEdited() { return false; }
+    @Override
+    public boolean isEdited() {
+        return false;
+    }
 
     @Override
     public List<? extends Selectable> narratables() {

@@ -51,5 +51,4 @@
   "vm.config.screen.final_resort": "Advanced",
   "vm.config.useIntrusiveCode": "Enable Intrusive Code",
   "vm.config.useIntrusiveCode.tooltip": "Enabling this will allow use of mixins, Java reflection, and other invasive features.\nIf crashes or conflicts with other mods occur, disable this option.\nChanges require a game restart.\n\nDisabling this will disable advanced highlight rendering."
-
 }

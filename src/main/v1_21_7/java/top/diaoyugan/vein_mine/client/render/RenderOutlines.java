@@ -13,7 +13,7 @@ import top.diaoyugan.vein_mine.config.IntrusiveConfig;
 import top.diaoyugan.vein_mine.utils.Utils;
 
 public class RenderOutlines {
-    public static void onInitialize(){
+    public static void onInitialize() {
         WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
             if (MinecraftClient.getInstance().world == null) return;
 
@@ -34,9 +34,9 @@ public class RenderOutlines {
             for (BlockPos pos : ClientBlockHighlighting.HIGHLIGHTED_BLOCKS) {
                 if (matrices != null) {
                     if (vertexConsumers != null) {
-                        if (IntrusiveConfig.isEnabled()){
+                        if (IntrusiveConfig.isEnabled()) {
                             drawOutlineBox(matrices, vertexConsumers.getBuffer(CustomLayers.LINES_NO_DEPTH), pos, camPos);
-                        }else{
+                        } else {
                             drawOutlineBox(matrices, vertexConsumers.getBuffer(RenderLayer.getLineStrip()), pos, camPos);
                         }
 
@@ -54,8 +54,8 @@ public class RenderOutlines {
         });
 
 
-
     }
+
     private static void drawOutlineBox(MatrixStack matrices, VertexConsumer consumer, BlockPos pos, Vec3d cameraPos) {
         double x = pos.getX() - cameraPos.x;
         double y = pos.getY() - cameraPos.y;
@@ -70,20 +70,20 @@ public class RenderOutlines {
 
         // 立方体的8个点
         Vec3d[] corners = new Vec3d[]{
-                new Vec3d((float)x,     (float)y,     (float)z),
-                new Vec3d((float)x+1,   (float)y,     (float)z),
-                new Vec3d((float)x+1,   (float)y+1,   (float)z),
-                new Vec3d((float)x,     (float)y+1,   (float)z),
-                new Vec3d((float)x,     (float)y,     (float)z+1),
-                new Vec3d((float)x+1,   (float)y,     (float)z+1),
-                new Vec3d((float)x+1,   (float)y+1,   (float)z+1),
-                new Vec3d((float)x,     (float)y+1,   (float)z+1),
+                new Vec3d((float) x, (float) y, (float) z),
+                new Vec3d((float) x + 1, (float) y, (float) z),
+                new Vec3d((float) x + 1, (float) y + 1, (float) z),
+                new Vec3d((float) x, (float) y + 1, (float) z),
+                new Vec3d((float) x, (float) y, (float) z + 1),
+                new Vec3d((float) x + 1, (float) y, (float) z + 1),
+                new Vec3d((float) x + 1, (float) y + 1, (float) z + 1),
+                new Vec3d((float) x, (float) y + 1, (float) z + 1),
         };
 
         int[][] edges = {
-                {0,1},{1,2},{2,3},{3,0},
-                {4,5},{5,6},{6,7},{7,4},
-                {0,4},{1,5},{2,6},{3,7},
+                {0, 1}, {1, 2}, {2, 3}, {3, 0},
+                {4, 5}, {5, 6}, {6, 7}, {7, 4},
+                {0, 4}, {1, 5}, {2, 6}, {3, 7},
         };
 
         for (int[] edge : edges) {
@@ -95,6 +95,7 @@ public class RenderOutlines {
             drawLineAsQuad(consumer, matrix, p1, p2, 0.01f, r, g, b, a);
         }
     }
+
     private static void drawLineAsQuad(VertexConsumer consumer, Matrix4f matrix, Vec3d p1, Vec3d p2, float thickness, float r, float g, float b, float a) {
         Vec3d dir = p2.subtract(p1).normalize();
         Vec3d up = new Vec3d(0, 1, 0);

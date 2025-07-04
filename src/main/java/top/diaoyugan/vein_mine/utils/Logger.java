@@ -19,7 +19,7 @@ public class Logger {
         }
     }
 
-    
+
     // 简单日志方法，不需要异常参数
     public static void throwLog(String type, String message) {
         switch (type) {
