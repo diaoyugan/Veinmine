@@ -5,10 +5,10 @@ import net.minecraft.util.Identifier;
 import static top.diaoyugan.vein_mine.vein_mine.ID;
 
 public final class Networking {
-	public static Identifier id(String name) {
-		return Identifier.of(ID, name);
-	}
+    public static Identifier id(String name) {
+        return Identifier.of(ID, name);
+    }
 
-	private Networking() {
-	}
+    private Networking() {
+    }
 }

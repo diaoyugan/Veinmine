@@ -47,16 +47,16 @@ jobs:
           rm -rf ~/.gradle/caches/fabric-loom
 
       - name: Build 1.21.7 with Gradle
-        run: ./gradlew build -PmcVersion=v1_21_7
+        run: ./gradlew build -Pmc_version=v1_21_7
 
       - name: Build 1.21.6 with Gradle
-        run: ./gradlew build -PmcVersion=v1_21_6
+        run: ./gradlew build -Pmc_version=v1_21_6
 
       - name: Build 1.21.5 with Gradle
-        run: ./gradlew build -PmcVersion=v1_21_5
+        run: ./gradlew build -Pmc_version=v1_21_5
 
       - name: Build 1.21.4 with Gradle
-        run: ./gradlew build -PmcVersion=v1_21_4
+        run: ./gradlew build -Pmc_version=v1_21_4
 
       - name: Extract Release Notes
         id: extract-release-info
