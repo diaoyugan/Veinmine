@@ -5,7 +5,7 @@ import org.lwjgl.glfw.GLFW;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ConfigItems {
+public class ConfigItems { // Default configuration
     private final int version = 1; // Config file version, modify after config format change, not used now
 
     public boolean useIntrusiveCode = true;

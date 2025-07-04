@@ -8,7 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import top.diaoyugan.vein_mine.config.Config;
-import top.diaoyugan.vein_mine.Networking.keybindreciever.KeybindingPayloadResponse;
+import top.diaoyugan.vein_mine.networking.keybindreciever.KeybindingPayloadResponse;
 
 public class vein_mineClient implements ClientModInitializer {
     public static KeyBinding BINDING;

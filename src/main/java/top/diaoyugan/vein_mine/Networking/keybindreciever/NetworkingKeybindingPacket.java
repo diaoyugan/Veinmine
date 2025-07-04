@@ -1,5 +1,5 @@
 
-package top.diaoyugan.vein_mine.Networking.keybindreciever;
+package top.diaoyugan.vein_mine.networking.keybindreciever;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;

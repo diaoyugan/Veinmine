@@ -1,11 +1,11 @@
 
-package top.diaoyugan.vein_mine.Networking.keybindreciever;
+package top.diaoyugan.vein_mine.networking.keybindreciever;
 
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 
-import top.diaoyugan.vein_mine.Networking.Networking;
+import top.diaoyugan.vein_mine.networking.Networking;
 
 public class KeybindingPayload implements CustomPayload {
 	public static final KeybindingPayload INSTANCE = new KeybindingPayload();

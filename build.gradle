@@ -4,7 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
 
-def targetVersion = project.hasProperty("mcVersion") ? project.getProperty("mcVersion") : "v1_21_7"
+def targetVersion = project.hasProperty("mc_version") ? project.getProperty("mc_version") : "v1_21_7"
 
 // 拼接 mod_version 和 targetVersion 成最终版本号
 def modVersionBase = project.hasProperty("mod_version") ? project.mod_version : "1.0.0"

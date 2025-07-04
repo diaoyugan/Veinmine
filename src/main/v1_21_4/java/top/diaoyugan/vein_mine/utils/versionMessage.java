@@ -5,7 +5,7 @@ import net.minecraft.text.Text;
 
 import java.util.Objects;
 
-public class versionMessage implements utilsVersionInterface{
+public class VersionMessage implements IUtilsVersion {
     @Override
     public void sendMessage(ServerPlayerEntity player, Text message, Boolean isOnActionbar) {
         if (isOnActionbar)

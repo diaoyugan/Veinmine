@@ -2,8 +2,8 @@ package top.diaoyugan.vein_mine.client;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import top.diaoyugan.vein_mine.Networking.keybindreciever.KeybindingPayload;
-import top.diaoyugan.vein_mine.Networking.keybindreciever.KeybindingPayloadResponse;
+import top.diaoyugan.vein_mine.networking.keybindreciever.KeybindingPayload;
+import top.diaoyugan.vein_mine.networking.keybindreciever.KeybindingPayloadResponse;
 import top.diaoyugan.vein_mine.utils.Utils;
 
 public class HotKeys {

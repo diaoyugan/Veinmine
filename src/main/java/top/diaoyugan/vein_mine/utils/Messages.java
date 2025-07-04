@@ -22,7 +22,7 @@ public class Messages {
 
     //发送聊天消息
     public static void sendMessage(ServerPlayerEntity player, Text message,Boolean isOnActionbar) {
-        utilsVersionInterface vMessages = new versionMessage();
+        IUtilsVersion vMessages = new VersionMessage();
         vMessages.sendMessage(player, message, isOnActionbar);
     }
 

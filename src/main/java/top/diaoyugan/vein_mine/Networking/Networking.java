@@ -1,4 +1,4 @@
-package top.diaoyugan.vein_mine.Networking;
+package top.diaoyugan.vein_mine.networking;
 
 import net.minecraft.util.Identifier;
 
