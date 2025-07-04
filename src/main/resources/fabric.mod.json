@@ -4,7 +4,7 @@
   "version": "${version}",
   "name": "vein mine",
   "description": "A mod that allows you to mine veins of blocks",
-  "authors": ["钓鱼竿呀(diaoyugan)","墨墨(HarukaB,aka HarukaC on modrinth)"],
+  "authors": ["钓鱼竿呀(diaoyugan)","momo(HarukaB,aka HarukaC on modrinth)"],
   "contact": {
     "sources": "https://github.com/diaoyugan/Veinmine",
     "issues": "https://github.com/diaoyugan/Veinmine/issues",
