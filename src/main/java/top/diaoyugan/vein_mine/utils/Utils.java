@@ -17,12 +17,12 @@ import java.util.*;
 public class Utils {
     // 创建一个Map来存储每个玩家的开关状态
     private static final Map<UUID, Boolean> playerVeinMineSwitchState = new HashMap<>();
-    
+
     // 获取配置的统一方法
     public static ConfigItems getConfig() {
         return Config.getInstance().getConfigItems();
     }
-    
+
 
     // 切换特定玩家的开关状态
     public static boolean toggleVeinMineSwitchState(PlayerEntity player) {
@@ -37,9 +37,9 @@ public class Utils {
         return playerVeinMineSwitchState.getOrDefault(player.getUuid(), false);
     }
 
-    public static boolean isToolSuitable(BlockState blockState, PlayerEntity player){
+    public static boolean isToolSuitable(BlockState blockState, PlayerEntity player) {
         ItemStack tool = player.getMainHandStack();
-        if (blockState.isToolRequired()){
+        if (blockState.isToolRequired()) {
             return tool.isSuitableFor(blockState);
         }
         return true;
@@ -69,7 +69,7 @@ public class Utils {
     }
 
     //这是没有掉落物的方块 不要让他掉东西
-    public static boolean shouldNotDropItem(BlockState state, World world, BlockPos pos){ // 判断方块是否应该掉落物品
+    public static boolean shouldNotDropItem(BlockState state, World world, BlockPos pos) { // 判断方块是否应该掉落物品
         state.getBlock();
         return Block.getDroppedStacks(state, (ServerWorld) world, pos, null).isEmpty();
     }
@@ -85,6 +85,7 @@ public class Utils {
         }
         return cost;
     }
+
     // 检查玩家工具的耐久度是否足够
     public static boolean hasEnoughDurability(PlayerEntity player, int cost) {
         ItemStack tool = player.getMainHandStack();
@@ -97,10 +98,11 @@ public class Utils {
         // 如果不是指定的工具，或者工具不是工具类型，就不进行保护
         return true;
     }
+
     // 检查玩家工具是否需要保护
     public static boolean isToolProtected(ItemStack tool) {
         String toolName = tool.getItem().toString(); // 获取工具的名称（例如 "minecraft:diamond_pickaxe"）
-        if(getConfig().protectAllDefaultValuableTools) {
+        if (getConfig().protectAllDefaultValuableTools) {
             return getConfig().defaultProtectedTools.contains(toolName) || getConfig().protectedTools.contains(toolName);
         }
         return getConfig().protectedTools.contains(toolName); // 如果名称在保护列表中，返回 true

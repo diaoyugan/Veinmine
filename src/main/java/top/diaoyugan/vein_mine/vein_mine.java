@@ -1,8 +1,8 @@
 package top.diaoyugan.vein_mine;
 
 import net.fabricmc.api.ModInitializer;
-import top.diaoyugan.vein_mine.Networking.HighlightBlock;
-import top.diaoyugan.vein_mine.Networking.keybindreciever.NetworkingKeybindingPacket;
+import top.diaoyugan.vein_mine.networking.HighlightBlock;
+import top.diaoyugan.vein_mine.networking.keybindreciever.NetworkingKeybindingPacket;
 import top.diaoyugan.vein_mine.events.PlayerBreakBlock;
 
 

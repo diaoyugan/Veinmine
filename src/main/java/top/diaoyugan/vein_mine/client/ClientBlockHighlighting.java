@@ -7,7 +7,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import top.diaoyugan.vein_mine.Networking.HighlightBlock;
+import top.diaoyugan.vein_mine.networking.HighlightBlock;
 import top.diaoyugan.vein_mine.utils.Messages;
 import top.diaoyugan.vein_mine.utils.Utils;
 

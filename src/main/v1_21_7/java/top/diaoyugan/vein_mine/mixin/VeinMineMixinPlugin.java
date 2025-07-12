@@ -20,10 +20,23 @@ public class VeinMineMixinPlugin implements IMixinConfigPlugin {
     }
 
     // 其余接口方法保留默认返回（空实现即可）
-    @Override public void onLoad(String mixinPackage) {}
-    @Override public String getRefMapperConfig() { return null; }
-    @Override public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {}
-    @Override public List<String> getMixins() { return null; }
+    @Override
+    public void onLoad(String mixinPackage) {
+    }
+
+    @Override
+    public String getRefMapperConfig() {
+        return null;
+    }
+
+    @Override
+    public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
+    }
+
+    @Override
+    public List<String> getMixins() {
+        return null;
+    }
 
     @Override
     public void preApply(String s, ClassNode classNode, String s1, IMixinInfo iMixinInfo) {

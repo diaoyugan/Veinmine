@@ -12,17 +12,17 @@ import net.minecraft.text.Text;
 public class Messages {
     @Environment(EnvType.CLIENT)
     //客户端消息 不会经过服务端
-    public static void clientMessage(Text message,Boolean isOnActionbar){
+    public static void clientMessage(Text message, Boolean isOnActionbar) {
         MinecraftClient client = MinecraftClient.getInstance();
-        if(isOnActionbar)
+        if (isOnActionbar)
             client.inGameHud.setOverlayMessage(message, false);
         else
             client.inGameHud.getChatHud().addMessage(message);
     }
 
     //发送聊天消息
-    public static void sendMessage(ServerPlayerEntity player, Text message,Boolean isOnActionbar) {
-        utilsVersionInterface vMessages = new versionMessage();
+    public static void sendMessage(ServerPlayerEntity player, Text message, Boolean isOnActionbar) {
+        IUtilsVersion vMessages = new VersionMessage();
         vMessages.sendMessage(player, message, isOnActionbar);
     }
 

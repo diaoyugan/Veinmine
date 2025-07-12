@@ -15,18 +15,24 @@ import java.util.Set;
 
 import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.diaoyugan.vein_mine.config.Config;
 import top.diaoyugan.vein_mine.config.ConfigItems;
 import top.diaoyugan.vein_mine.client.vein_mineClient;
+import top.diaoyugan.vein_mine.utils.Utils;
 
-public class VeinmineConfigScreen extends Screen { // Hold the current config
+public class VeinmineConfigScreen extends Screen {
+    private static final Logger log = LoggerFactory.getLogger(VeinmineConfigScreen.class); // Hold the current config
     private Config config;
     private ConfigItems configItems;
     private final Screen parent;
+
     protected VeinmineConfigScreen(Screen parent) {
         super(Text.translatable("vm.config.screen.title"));
         this.parent = parent;
     }
+
     @Override
     protected void init() {
         this.config = Config.getInstance();
@@ -38,12 +44,12 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
     }
 
     @Override
-    public void render(DrawContext dc,int mouseX, int mouseY, float delta) {
+    public void render(DrawContext dc, int mouseX, int mouseY, float delta) {
         this.renderBackground(dc, mouseX, mouseY, delta);
         super.render(dc, mouseX, mouseY, delta);
     }
 
-    private Screen initConfigScreen(ConfigBuilder cb, ConfigItems ci){
+    private Screen initConfigScreen(ConfigBuilder cb, ConfigItems ci) {
         configItems.keyBindingCode = KeyBindingHelper.getBoundKeyOf(vein_mineClient.BINDING).getCode();
         ConfigCategory mainConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.main"));
         ConfigEntryBuilder entryBuilder = cb.entryBuilder();
@@ -179,7 +185,11 @@ public class VeinmineConfigScreen extends Screen { // Hold the current config
         keysAndBinding.addEntry(keysAndBindingEntryBuilder.startBooleanToggle(Text.translatable("vm.config.use_hold_instead_of_toggle"), ci.useHoldInsteadOfToggle)
                 .setTooltip(Text.translatable("vm.config.use_hold_instead_of_toggle.tooltip"))
                 .setDefaultValue(false)
-                .setSaveConsumer(b -> configItems.useHoldInsteadOfToggle = b)
+                .setSaveConsumer((b) -> {
+                    configItems.useHoldInsteadOfToggle = b;
+                    Utils.toggleVeinMineSwitchState(client.player); // Fix for #26
+
+                })
                 .build());
 
         keysAndBinding.addEntry(keysAndBindingEntryBuilder.startKeyCodeField(

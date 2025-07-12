@@ -5,12 +5,12 @@ import net.minecraft.text.Text;
 
 import java.util.Objects;
 
-public class versionMessage implements utilsVersionInterface{
+public class VersionMessage implements IUtilsVersion {
     @Override
     public void sendMessage(ServerPlayerEntity player, Text message, Boolean isOnActionbar) {
         if (isOnActionbar)
-            player.server.execute(() -> player.sendMessage(message, true));
+            Objects.requireNonNull(player.getServer()).execute(() -> player.sendMessage(message, true));
         else
-            player.server.execute(() -> player.sendMessage(message, false));
+            Objects.requireNonNull(player.getServer()).execute(() -> player.sendMessage(message, false));
     }
 }

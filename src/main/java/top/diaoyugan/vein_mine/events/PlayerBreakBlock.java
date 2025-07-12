@@ -39,15 +39,15 @@ public class PlayerBreakBlock {
         int destroyedCount = 0;
         Identifier startBlockID = Registries.BLOCK.getId(state.getBlock());
         List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos, startBlockID);
-        if (blocksToBreak != null){
+        if (blocksToBreak != null) {
             ConfigItems config = Utils.getConfig();
-            if (config.protectTools){
+            if (config.protectTools) {
                 if (!player.isInCreativeMode()) {
                     int totalDurabilityCost = Utils.calculateTotalDurabilityCost(blocksToBreak, player, state);
                     // 检查玩家工具的当前耐久是否足够
                     if (!Utils.hasEnoughDurability(player, totalDurabilityCost)) {
                         Text message = Text.translatable("vm.warn.breakthroughs").styled(style -> style.withFormatting(Formatting.RED));
-                        Messages.sendMessage((ServerPlayerEntity) player, message,true);
+                        Messages.sendMessage((ServerPlayerEntity) player, message, true);
                         return; // 如果工具耐久不足，直接返回
                     }
                 }
@@ -61,15 +61,15 @@ public class PlayerBreakBlock {
                 if (targetBlock != state.getBlock()) continue;
                 if (player.isInCreativeMode()) {
                     world.breakBlock(targetPos, false);
-                } else if(!Utils.isToolSuitable(targetState, player)){
+                } else if (!Utils.isToolSuitable(targetState, player)) {
                     world.breakBlock(targetPos, false);
                     destroyedCount++;
-                } else if(Utils.shouldNotDropItem(targetState, world, targetPos)){
+                } else if (Utils.shouldNotDropItem(targetState, world, targetPos)) {
                     world.breakBlock(targetPos, false);
                     destroyedCount++;
                 } else {
-                    Block.dropStacks(targetState,world,targetPos,world.getBlockEntity(targetPos),player,player.getMainHandStack());
-                    world.breakBlock(targetPos,false);
+                    Block.dropStacks(targetState, world, targetPos, world.getBlockEntity(targetPos), player, player.getMainHandStack());
+                    world.breakBlock(targetPos, false);
                     destroyedCount++;
                 }
 
@@ -85,8 +85,8 @@ public class PlayerBreakBlock {
             }
 
 
-        // 扣除耐久
-        Utils.applyToolDurabilityDamage(player, destroyedCount);
+            // 扣除耐久
+            Utils.applyToolDurabilityDamage(player, destroyedCount);
         }
     }
 

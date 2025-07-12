@@ -1,4 +1,4 @@
-package top.diaoyugan.vein_mine.Networking;
+package top.diaoyugan.vein_mine.networking;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -102,7 +102,6 @@ public class HighlightBlock {
         playerGlowingPos.clear();
         playerGlowingPos.addAll(newGlowingBlocks);
     }
-
 
 
 }
