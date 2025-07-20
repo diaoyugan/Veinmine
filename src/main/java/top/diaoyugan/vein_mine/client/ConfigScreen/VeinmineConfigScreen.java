@@ -55,7 +55,7 @@ public class VeinmineConfigScreen extends Screen {
         ConfigEntryBuilder entryBuilder = cb.entryBuilder();
 
         mainConfig.addEntry(entryBuilder
-                .startTextDescription(Text.translatable("vm.config.transnote"))
+                .startTextDescription(Text.translatable("vm.config.translation_note"))
                 .build());
 
         /* Search Radius */
