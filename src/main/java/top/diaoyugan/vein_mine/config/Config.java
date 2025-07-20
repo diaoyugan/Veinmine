@@ -50,11 +50,11 @@ public class Config {
         }
     }
 
-    public void apply() {
-        // 重新加载配置
-        load();
-        Logger.throwLog("info", "Reloaded and applied config!");
-    }
+//    public void apply() {
+//        // 重新加载配置
+//        load();
+//        Logger.throwLog("info", "Reloaded and applied config!");
+//    }
 
     public void load() {
         try (Reader reader = Files.newBufferedReader(configFilePath)) {

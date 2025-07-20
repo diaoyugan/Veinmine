@@ -27,7 +27,7 @@ public class ConfigItems { // Default configuration
     public int renderTime = 1;
     public boolean useHoldInsteadOfToggle = false;
     public int keyBindingCode = GLFW.GLFW_KEY_GRAVE_ACCENT; // 默认是 ~ 键
-    public Set<String> defaultProtectedTools = Set.of( // No GUI for this, this is by design!
+    public final Set<String> defaultProtectedTools = Set.of( // No GUI for this, this is by design!
             // 黄金工具
             "minecraft:golden_pickaxe",
             "minecraft:golden_axe",

@@ -15,15 +15,14 @@ import java.util.Set;
 
 import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import top.diaoyugan.vein_mine.config.Config;
 import top.diaoyugan.vein_mine.config.ConfigItems;
 import top.diaoyugan.vein_mine.client.vein_mineClient;
+import top.diaoyugan.vein_mine.utils.Logger;
 import top.diaoyugan.vein_mine.utils.Utils;
 
 public class VeinmineConfigScreen extends Screen {
-    private static final Logger log = LoggerFactory.getLogger(VeinmineConfigScreen.class); // Hold the current config
+    // private static final Logger log = LoggerFactory.getLogger(VeinmineConfigScreen.class); // Hold the current config
     private Config config;
     private ConfigItems configItems;
     private final Screen parent;
@@ -40,7 +39,12 @@ public class VeinmineConfigScreen extends Screen {
         ConfigBuilder cb = ConfigBuilder.create().setParentScreen(this.parent).setTitle(Text.translatable("vm.config.screen.title"));
         cb.setSavingRunnable(config::save);
         Screen screen = initConfigScreen(cb, configItems);
-        this.client.setScreen(screen);
+        if(this.client != null) {
+            this.client.setScreen(screen);
+        } else {
+            throw new IllegalStateException("Client not initialized");
+        }
+
     }
 
     @Override
@@ -187,8 +191,15 @@ public class VeinmineConfigScreen extends Screen {
                 .setDefaultValue(false)
                 .setSaveConsumer((b) -> {
                     configItems.useHoldInsteadOfToggle = b;
-                    Utils.toggleVeinMineSwitchState(client.player); // Fix for #26
-
+                    if (client != null) {
+                        if (client.player != null) {
+                            Utils.toggleVeinMineSwitchState(client.player); // Fix for #26
+                        } else {
+                            Logger.throwLog("error", "Client.player not initialized");
+                        }
+                    } else {
+                        Logger.throwLog("error", "Client not initialized");
+                    }
                 })
                 .build());
 
