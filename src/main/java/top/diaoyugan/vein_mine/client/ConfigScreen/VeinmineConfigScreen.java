@@ -18,8 +18,9 @@ import org.lwjgl.glfw.GLFW;
 import top.diaoyugan.vein_mine.config.Config;
 import top.diaoyugan.vein_mine.config.ConfigItems;
 import top.diaoyugan.vein_mine.client.vein_mineClient;
-import top.diaoyugan.vein_mine.utils.Logger;
+import top.diaoyugan.vein_mine.utils.logging.Logger;
 import top.diaoyugan.vein_mine.utils.Utils;
+import top.diaoyugan.vein_mine.utils.logging.LoggerLevels;
 
 public class VeinmineConfigScreen extends Screen {
     // private static final Logger log = LoggerFactory.getLogger(VeinmineConfigScreen.class); // Hold the current config
@@ -195,10 +196,10 @@ public class VeinmineConfigScreen extends Screen {
                         if (client.player != null) {
                             Utils.toggleVeinMineSwitchState(client.player); // Fix for #26
                         } else {
-                            Logger.throwLog("error", "Client.player not initialized");
+                            Logger.throwLog(LoggerLevels.ERROR, "Client.player not initialized");
                         }
                     } else {
-                        Logger.throwLog("error", "Client not initialized");
+                        Logger.throwLog(LoggerLevels.ERROR, "Client not initialized");
                     }
                 })
                 .build());

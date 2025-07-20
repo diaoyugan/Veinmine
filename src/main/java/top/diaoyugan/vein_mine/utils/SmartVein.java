@@ -6,6 +6,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import top.diaoyugan.vein_mine.utils.logging.Logger;
+import top.diaoyugan.vein_mine.utils.logging.LoggerLevels;
 
 import java.util.*;
 
@@ -16,7 +18,7 @@ public class SmartVein {
             Utils.getConfig().ignoredBlocks.add("minecraft:air");
         } catch (Exception e) { //TODO:find a better way to fix this
             if (!(e instanceof UnsupportedOperationException)) {
-                Logger.throwLog("error", String.valueOf(e), e.fillInStackTrace());
+                Logger.throwLog(LoggerLevels.ERROR, String.valueOf(e), e.fillInStackTrace());
             }
         }
 

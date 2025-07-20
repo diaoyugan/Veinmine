@@ -5,7 +5,8 @@ package top.diaoyugan.vein_mine.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import top.diaoyugan.vein_mine.utils.Logger;
+import top.diaoyugan.vein_mine.utils.logging.Logger;
+import top.diaoyugan.vein_mine.utils.logging.LoggerLevels;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -38,7 +39,7 @@ public class Config {
             }
             load();
         } catch (Exception e) {
-            Logger.throwLog("error", "Failed to initialize the configuration", e);
+            Logger.throwLog(LoggerLevels.ERROR, "Failed to initialize the configuration", e);
         }
     }
 
@@ -46,14 +47,14 @@ public class Config {
         try (Writer writer = Files.newBufferedWriter(configFilePath)) {
             jsonProcessor.toJson(configItems, writer);
         } catch (Exception e) {
-            Logger.throwLog("error", "Failed to save the configuration", e);
+            Logger.throwLog(LoggerLevels.ERROR, "Failed to save the configuration", e);
         }
     }
 
 //    public void apply() {
 //        // 重新加载配置
 //        load();
-//        Logger.throwLog("info", "Reloaded and applied config!");
+//        Logger.throwLog(LoggerLevels.INFO, "Reloaded and applied config!");
 //    }
 
     public void load() {
@@ -68,11 +69,11 @@ public class Config {
                 save();
             }
         } catch (JsonSyntaxException e) {
-            Logger.throwLog("error", "The configuration file is malformed, reset to the default configuration");
+            Logger.throwLog(LoggerLevels.ERROR, "The configuration file is malformed, reset to the default configuration");
             configItems = new ConfigItems();
             save();
         } catch (IOException e) {
-            Logger.throwLog("error", "Failed to read the configuration file, using the default configuration");
+            Logger.throwLog(LoggerLevels.ERROR, "Failed to read the configuration file, using the default configuration");
             configItems = new ConfigItems();
         }
     }

@@ -3,8 +3,6 @@ package top.diaoyugan.vein_mine.utils;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
-import java.util.Objects;
-
 public class VersionMessage implements IUtilsVersion {
     @Override
     public void sendMessage(ServerPlayerEntity player, Text message, Boolean isOnActionbar) {
