@@ -10,25 +10,13 @@ jobs:
     name: Build and Release
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # 需要写入权限来创建Release
+      contents: write
 
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 获取完整的提交历史用于版本检查
-
-      # - name: Modify mod version
-      #   run: |
-      #       MOD_VERSION="$(grep "mod_version" gradle.properties | cut -d '=' -f 2 | tr -d ' ')"
-      #       COMMIT_MOD_VERSION="$(git describe --tags --exact-match 2>/dev/null | cut -d 'v' -f 2)"
-      #       EVENT_NAME="${{ github.event_name }}" 
-            
-      #       if [[ "$MOD_VERSION" != "$COMMIT_MOD_VERSION" && "$EVENT_NAME" != "workflow_dispatch" ]]; then
-      #         echo "::warning::Version mismatch！gradle.properties ($MOD_VERSION) vs tag ($COMMIT_MOD_VERSION)"
-      #         echo "::warning::Mod version will be modified to $COMMIT_MOD_VERSION"
-      #         awk -v old="mod_version=$MOD_VERSION" -v new="mod_version=$COMMIT_MOD_VERSION" '{gsub(old, new)}1' gradle.properties > temp && mv temp gradle.properties
-      #       fi
+          fetch-depth: 0
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -43,20 +31,15 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Clean old cache files
+        run: rm -rf ~/.gradle/caches/fabric-loom
+
+      - name: Build All Versions
         run: |
-          rm -rf ~/.gradle/caches/fabric-loom
-
-      - name: Build 1.21.7 with Gradle
-        run: ./gradlew build -Pmc_version=v1_21_7
-
-      - name: Build 1.21.6 with Gradle
-        run: ./gradlew build -Pmc_version=v1_21_6
-
-      - name: Build 1.21.5 with Gradle
-        run: ./gradlew build -Pmc_version=v1_21_5
-
-      - name: Build 1.21.4 with Gradle
-        run: ./gradlew build -Pmc_version=v1_21_4
+          versions=(v1_21_8 v1_21_7 v1_21_6 v1_21_5 v1_21_4 v1_21_3)
+          for version in "${versions[@]}"; do
+            echo "Building for $version"
+            ./gradlew build -Pmc_version=$version || exit 1
+          done
 
       - name: Extract Release Notes
         id: extract-release-info
