@@ -7,13 +7,14 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 
 @Mixin(RenderLayer.class)
-public abstract class RenderLayerAccessor {
+public interface RenderLayerInvoker {
     @Invoker("of")
-    public static RenderLayer.MultiPhase callOf(String name, int size, boolean hasCrumbling, boolean translucent,
-                                                RenderPipeline pipeline, RenderLayer.MultiPhaseParameters params) {
+    static RenderLayer.MultiPhase callOf(String name, int size, boolean hasCrumbling, boolean translucent,
+                                         RenderPipeline pipeline, RenderLayer.MultiPhaseParameters params) {
         throw new AssertionError();
     }
 }
+
 
 
 

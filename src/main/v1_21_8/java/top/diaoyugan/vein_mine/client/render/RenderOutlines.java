@@ -12,10 +12,17 @@ import top.diaoyugan.vein_mine.client.ClientBlockHighlighting;
 import top.diaoyugan.vein_mine.config.IntrusiveConfig;
 import top.diaoyugan.vein_mine.utils.Utils;
 
+
 public class RenderOutlines {
+    protected static boolean initialized = false;
     public static void onInitialize() {
         WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
             if (MinecraftClient.getInstance().world == null) return;
+
+            if (!initialized) {
+                initialized = true;
+                CustomLayers.init();
+            }
 
             Camera camera = context.camera();
             Vec3d camPos = camera.getPos();
@@ -31,11 +38,15 @@ public class RenderOutlines {
                 matrices.push();
             }
 
+            RenderLayer layer = IntrusiveConfig.isEnabled()
+                    ? CustomLayers.getLinesNoDepth()
+                    : RenderLayer.getLineStrip();
+
             for (BlockPos pos : ClientBlockHighlighting.HIGHLIGHTED_BLOCKS) {
                 if (matrices != null) {
                     if (vertexConsumers != null) {
                         if (IntrusiveConfig.isEnabled()) {
-                            drawOutlineBox(matrices, vertexConsumers.getBuffer(CustomLayers.LINES_NO_DEPTH), pos, camPos);
+                            drawOutlineBox(matrices, vertexConsumers.getBuffer(layer), pos, camPos);
                         } else {
                             drawOutlineBox(matrices, vertexConsumers.getBuffer(RenderLayer.getLineStrip()), pos, camPos);
                         }
