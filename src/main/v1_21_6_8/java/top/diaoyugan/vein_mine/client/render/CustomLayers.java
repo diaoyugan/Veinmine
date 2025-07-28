@@ -1,11 +1,9 @@
 package top.diaoyugan.vein_mine.client.render;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import top.diaoyugan.vein_mine.mixin.RenderLayerInvoker;
 
-import java.lang.reflect.Method;
 import java.util.OptionalDouble;
 
 public class CustomLayers {
