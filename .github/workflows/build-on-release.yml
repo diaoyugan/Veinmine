@@ -35,7 +35,7 @@ jobs:
 
       - name: Build All Versions
         run: |
-          versions=(v1_21_8 v1_21_7 v1_21_6 v1_21_5 v1_21_3_4)
+          versions=(v1_21_6_8 v1_21_5 v1_21_3_4)
           for version in "${versions[@]}"; do
             echo "Building for $version"
             ./gradlew build -Pmc_version=$version || exit 1

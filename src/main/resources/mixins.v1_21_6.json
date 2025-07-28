@@ -2,7 +2,6 @@
   "required": true,
   "package": "top.diaoyugan.vein_mine.mixin",
   "compatibilityLevel": "JAVA_21",
-  "plugin": "top.diaoyugan.vein_mine.mixin.VeinMineMixinPlugin",
   "mixins": [
     "RenderLayerInvoker"
   ],
