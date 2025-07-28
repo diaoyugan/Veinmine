@@ -13,9 +13,9 @@ import java.util.Set;
 public class VeinMineMixinPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (mixinClassName.endsWith("RenderLayerInvoker")) {
-            return IntrusiveConfig.isEnabled(); // 控制是否注入
-        }
+//        if (mixinClassName.endsWith("RenderLayerInvoker")) {
+//            return IntrusiveConfig.isEnabled(); // 控制是否注入
+//        }
         return true;
     }
 
