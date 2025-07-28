@@ -5,9 +5,11 @@ import com.mojang.blaze3d.platform.DepthTestFunction;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 
+import static net.minecraft.client.gl.RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET;
+
 public class CustomRenderPipeline {
     public static final RenderPipeline LINES_NO_DEPTH =
-            RenderPipeline.builder()
+            RenderPipeline.builder(TRANSFORMS_AND_PROJECTION_SNIPPET)
                     .withLocation("pipeline/lines_no_depth")
                     .withVertexShader("core/position_color")
                     .withFragmentShader("core/position_color")

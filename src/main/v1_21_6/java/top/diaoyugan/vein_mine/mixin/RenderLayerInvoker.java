@@ -1,4 +1,4 @@
-package top.diaoyugan.vein_mine.mixin;
+eeepackage top.diaoyugan.vein_mine.mixin;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.render.RenderLayer;
