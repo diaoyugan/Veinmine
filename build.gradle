@@ -4,11 +4,22 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
 
-def targetVersion = project.hasProperty("mc_version") ? project.getProperty("mc_version") : "v1_21_8"
+def targetVersion = project.hasProperty("mc_version") ? project.getProperty("mc_version") : "v1_21_6_8"
 
 // 拼接 mod_version 和 targetVersion 成最终版本号
 def modVersionBase = project.hasProperty("mod_version") ? project.mod_version : "1.0.0"
-def finalModVersion = "${modVersionBase}+${targetVersion.replace('v', '').replace('_', '.')}"
+def finalModVersion = {
+    def parts = targetVersion.replace('v', '').split('_')
+    if (parts.length == 4) {
+        // 拼成区间开头-结尾，比如 1.21.3-1.21.4
+        def startVersion = "${parts[0]}.${parts[1]}.${parts[2]}"
+        def endVersion = "${parts[0]}.${parts[1]}.${parts[3]}"
+        return "${modVersionBase}+${startVersion}-${endVersion}"
+    } else {
+        // 不是4段，正常拼接
+        return "${modVersionBase}+${targetVersion.replace('v', '').replace('_', '.')}"
+    }
+}()
 
 //在 targetVersion 定义之后设置 project.version
 version = finalModVersion
@@ -20,49 +31,63 @@ base {
 }
 
 def yarnMappings = [ // Find them @ https://maven.fabricmc.net/net/fabricmc/yarn/
-        "v1_21_3": "1.21.3+build.1",
-        "v1_21_4": "1.21.4+build.8",
+        "v1_21_3_4": "1.21.3+build.1",
         "v1_21_5": "1.21.5+build.1",
-        "v1_21_6": "1.21.6+build.1",
-        "v1_21_7": "1.21.7+build.2",
-        "v1_21_8": "1.21.8+build.1"
+        "v1_21_6_8": "1.21.6+build.1",
 ]
 
 def fabricApiVersions = [ // Find them @ https://modrinth.com/mod/fabric-api
-        "v1_21_3": "0.112.0+1.21.3",
-        "v1_21_4": "0.115.0+1.21.4",
+        "v1_21_3_4": "0.112.0+1.21.3",
         "v1_21_5": "0.119.5+1.21.5",
-        "v1_21_6": "0.127.0+1.21.6",
-        "v1_21_7": "0.128.2+1.21.7",
-        "v1_21_8": "0.129.0+1.21.8"
+        "v1_21_6_8": "0.127.0+1.21.6",
 ]
 
 def modMenuVersions = [ // Find them @ https://modrinth.com/mod/modmenu
-        "v1_21_3": "12.0.0",
-        "v1_21_4": "13.0.0",
+        "v1_21_3_4": "12.0.0",
         "v1_21_5": "14.0.0-rc.2",
-        "v1_21_6": "15.0.0-beta.3",
-        "v1_21_7": "15.0.0-beta.3",
-        "v1_21_8": "15.0.0-beta.3"
+        "v1_21_6_8": "15.0.0-beta.3",
 ]
 
 def clothConfigVersions = [ // Find them @ https://modrinth.com/mod/cloth-config
-        "v1_21_3": "16.0.143",
-        "v1_21_4": "17.0.142",
+        "v1_21_3_4": "16.0.143",
         "v1_21_5": "18.0.145",
-        "v1_21_6": "19.0.147",
-        "v1_21_7": "19.0.147",
-        "v1_21_8": "19.0.147" // Oh shoot, cloth-config does not support 1.21.8 yet so hope 1.21.6+ cloth config works
+        "v1_21_6_8": "19.0.147",
+        // Oh shoot, cloth-config does not support 1.21.8 yet so hope 1.21.6+ cloth config works
 ]
 
 def loaderVersion= [
-        "v1_21_3": "0.16.10",
-        "v1_21_4": "0.16.10",
+        "v1_21_3_4": "0.16.10",
         "v1_21_5": "0.16.10",
-        "v1_21_6": "0.16.14",
-        "v1_21_7": "0.16.14",
-        "v1_21_8": "0.16.14"
+        "v1_21_6_8": "0.16.14",
 ]
+
+def resolvedMinecraftVersion = {
+    def parts = targetVersion.replace("v", "").split("_")
+    if (parts.length == 4) {
+        return ">=${parts[0]}.${parts[1]}.${parts[2]} <=${parts[0]}.${parts[1]}.${parts[3]}"
+    } else {
+        return targetVersion.replace("v", "").replace("_", ".")
+    }
+}()
+
+
+def dependencyMinecraftVersion = {
+    def parts = targetVersion.replace("v", "").split("_")
+    if (parts.length == 4) {
+        return "${parts[0]}.${parts[1]}.${parts[2]}"
+    } else {
+        return targetVersion.replace("v", "").replace("_", ".")
+    }
+}()
+
+def minVersionForFiles = {
+    def parts = targetVersion.replace('v', '').split('_')
+    if (parts.length == 4) {
+        return "v${parts[0]}_${parts[1]}_${parts[2]}"
+    } else {
+        return targetVersion
+    }
+}()
 
 def requiredKeys = [yarnMappings, fabricApiVersions, modMenuVersions, clothConfigVersions, loaderVersion]
 requiredKeys.each {
@@ -70,6 +95,7 @@ requiredKeys.each {
         throw new GradleException("missing targetVersion = ${targetVersion}")
     }
 }
+
 
 def versionedSrc = file("src/main/${targetVersion}/java")
 sourceSets {
@@ -104,10 +130,11 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     // To change the versions see the gradle.properties file
 //    minecraft "com.mojang:minecraft:1.21.6-rc1"
-    minecraft "com.mojang:minecraft:${targetVersion.replace('v', '').replace('_','.')}"
+    minecraft "com.mojang:minecraft:${dependencyMinecraftVersion}"
     mappings "net.fabricmc:yarn:${yarnMappings[targetVersion]}:v2"
     modImplementation "net.fabricmc:fabric-loader:${loaderVersion[targetVersion]}"
     modApi("me.shedaniel.cloth:cloth-config-fabric:${clothConfigVersions[targetVersion]}") {
@@ -118,6 +145,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
+
 processResources {
     inputs.property "version", project.version
 //    inputs.property "minecraft_version", targetVersion.replace('v', '').replace('_', '.')
@@ -127,14 +155,14 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand(
                 "version": project.version,
-//                "minecraft_version": "1.21.6-rc1",
-                "minecraft_version": targetVersion.replace('v', '').replace('_', '.'),
+                "minecraft_version": resolvedMinecraftVersion,
                 "loader_version": loaderVersion[targetVersion],
                 "modmenu_version": modMenuVersions[targetVersion],
                 "cloth_config_version": clothConfigVersions[targetVersion],
                 "api_version":fabricApiVersions[targetVersion],
                 "fabric": fabricApiVersions[targetVersion],
-                "targetVersion": targetVersion
+                "targetVersion": targetVersion,
+                "versionForFiles":minVersionForFiles
         )
     }
 

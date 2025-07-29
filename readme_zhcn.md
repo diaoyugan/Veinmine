@@ -40,18 +40,17 @@
 如果你想协助我们改进代码，欢迎PR
 
 ## 构建
-1.21.4 运行
+1.21.3到1.21.4 运行
 
-`./gradlew build -PmcVersion v1_21_4`
+`./gradlew build -PmcVersion v1_21_3_4`
 
 1.21.5 运行
 
 `./gradlew build -PmcVersion v1_21_5`
 
-1.21.6 运行
+1.21.6到1.21.8 运行
 
-`./gradlew build -PmcVersion v1_21_6`
-以此类推
+`./gradlew build -PmcVersion v1_21_6_8`
 
 ## 许可证
 本模组基于 GNU GPLv3 许可证发布。详见 [LICENSE](LICENSE)。

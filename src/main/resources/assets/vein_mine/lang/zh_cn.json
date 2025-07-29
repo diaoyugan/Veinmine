@@ -50,5 +50,5 @@
   "vm.config.screen.keysAndBinding": "按键与绑定",
   "vm.config.screen.final_resort": "高级选项",
   "vm.config.useIntrusiveCode": "使用入侵性的代码",
-  "vm.config.useIntrusiveCode.tooltip": "开启此选项将启用 mixin 和反射等高入侵度功能。\n若与其他模组冲突导致崩溃，请关闭此选项。\n更改此选项需要重启游戏才能生效。\n\n关闭后，方块高亮将无法穿透方块显示。"
+  "vm.config.useIntrusiveCode.tooltip": "开启此选项将启用 mixin。\n若与其他模组冲突导致崩溃，请关闭此选项。\n更改此选项需要重启游戏才能生效。\n\n关闭后，方块高亮将无法穿透方块显示。"
 }
