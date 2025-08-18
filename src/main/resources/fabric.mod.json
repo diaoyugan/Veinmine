@@ -25,7 +25,7 @@
       "top.diaoyugan.vein_mine.vein_mine"
     ],
     "modmenu": [
-      "top.diaoyugan.vein_mine.client.ConfigScreen.ModMenuIntegration"
+      "top.diaoyugan.vein_mine.client.configScreen.ModMenuIntegration"
     ]
   },
   "mixins": [

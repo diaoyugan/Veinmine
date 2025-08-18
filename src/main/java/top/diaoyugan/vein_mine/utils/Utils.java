@@ -14,17 +14,28 @@ import top.diaoyugan.vein_mine.config.ConfigItems;
 
 import java.util.*;
 
+/**
+ * 工具类，提供连锁挖掘相关的通用方法。
+ */
 public class Utils {
     // 创建一个Map来存储每个玩家的开关状态
     private static final Map<UUID, Boolean> playerVeinMineSwitchState = new HashMap<>();
 
-    // 获取配置的统一方法
+    /**
+     * 获取配置对象。
+     *
+     * @return 当前配置项 {@link ConfigItems}
+     */
     public static ConfigItems getConfig() {
         return Config.getInstance().getConfigItems();
     }
 
-
-    // 切换特定玩家的开关状态
+    /**
+     * 切换指定玩家的连锁挖掘开关状态。
+     *
+     * @param player 目标玩家
+     * @return 切换后的新状态，true 表示开启，false 表示关闭
+     */
     public static boolean toggleVeinMineSwitchState(PlayerEntity player) {
         UUID playerId = player.getUuid();
         boolean newState = !playerVeinMineSwitchState.getOrDefault(playerId, false);
@@ -32,11 +43,32 @@ public class Utils {
         return newState;
     }
 
-    // 获取特定玩家的当前开关状态
+    /**
+     * 获取指定玩家的连锁挖掘开关状态。
+     *
+     * @param player 目标玩家
+     * @return true 表示开启，false 表示关闭
+     */
     public static boolean getVeinMineSwitchState(PlayerEntity player) {
         return playerVeinMineSwitchState.getOrDefault(player.getUuid(), false);
     }
 
+    /**
+     * 清理断开连接玩家的状态，避免内存泄露。
+     *
+     * @param playerId 玩家 UUID
+     */
+    public static void clearVeinMineState(UUID playerId) {
+        playerVeinMineSwitchState.remove(playerId);
+    }
+
+    /**
+     * 检查玩家的主手工具是否适合挖掘指定方块。
+     *
+     * @param blockState 方块状态
+     * @param player     玩家
+     * @return true 表示工具适合挖掘，false 表示不适合
+     */
     public static boolean isToolSuitable(BlockState blockState, PlayerEntity player) {
         ItemStack tool = player.getMainHandStack();
         if (blockState.isToolRequired()) {
@@ -45,14 +77,18 @@ public class Utils {
         return true;
     }
 
+    /**
+     * 按照破坏方块数量对玩家工具进行耐久扣除。
+     *
+     * @param player     玩家
+     * @param blockCount 被破坏的方块数量
+     */
     public static void applyToolDurabilityDamage(PlayerEntity player, int blockCount) {
-        // 获取玩家主手工具
         ItemStack tool = player.getMainHandStack();
         if (tool == null) return;
 
-        // 检查工具是否能被损耗
         if (tool.isDamageable()) {
-            //更好的耐久扣除方法 应该可以避免nep 因为担心有的mod可以左手使用工具 所以额外加了手的判断
+            // 判断使用的是主手还是副手
             Hand usedHand = Hand.MAIN_HAND;
             if (player.getStackInHand(Hand.OFF_HAND) == tool) {
                 usedHand = Hand.OFF_HAND;
@@ -64,48 +100,68 @@ public class Utils {
             if (tool.isEmpty()) {
                 player.setStackInHand(usedHand, ItemStack.EMPTY);
             }
-
         }
     }
 
-    //这是没有掉落物的方块 不要让他掉东西
-    public static boolean shouldNotDropItem(BlockState state, World world, BlockPos pos) { // 判断方块是否应该掉落物品
-        state.getBlock();
+    /**
+     * 判断方块是否不会掉落物品。
+     *
+     * @param state 方块状态
+     * @param world 世界
+     * @param pos   方块位置
+     * @return true 表示不会掉落物品，false 表示会掉落
+     */
+    public static boolean shouldNotDropItem(BlockState state, World world, BlockPos pos) {
         return Block.getDroppedStacks(state, (ServerWorld) world, pos, null).isEmpty();
     }
 
-    // 计算连锁挖掘的总耐久度消耗
+    /**
+     * 计算目标方块的总耐久度消耗。
+     *
+     * @param blocksToBreak 需要破坏的方块位置集合
+     * @param player        玩家
+     * @param state         起始方块状态
+     * @return 耐久消耗总和
+     */
     public static int calculateTotalDurabilityCost(List<BlockPos> blocksToBreak, PlayerEntity player, BlockState state) {
         int cost = 0;
         for (BlockPos targetPos : blocksToBreak) {
             BlockState targetState = player.getWorld().getBlockState(targetPos);
             if (Utils.isToolSuitable(targetState, player)) {
-                cost++; // 每破坏一个适合的方块消耗1点耐久
+                cost++;
             }
         }
         return cost;
     }
 
-    // 检查玩家工具的耐久度是否足够
+    /**
+     * 检查玩家工具的耐久度是否足够支持操作。
+     *
+     * @param player 玩家
+     * @param cost   本次操作需要消耗的耐久值
+     * @return true 表示足够，false 表示不足
+     */
     public static boolean hasEnoughDurability(PlayerEntity player, int cost) {
         ItemStack tool = player.getMainHandStack();
-        // 只有指定工具才进行耐久保护
         if (isToolProtected(tool)) {
             if (tool.getItem() != null) {
                 return tool.getMaxDamage() - tool.getDamage() - getConfig().durabilityThreshold >= cost;
             }
         }
-        // 如果不是指定的工具，或者工具不是工具类型，就不进行保护
         return true;
     }
 
-    // 检查玩家工具是否需要保护
+    /**
+     * 检查指定工具是否在保护列表中（即需要耐久保护）。
+     *
+     * @param tool 工具物品堆
+     * @return true 表示受保护，false 表示不受保护
+     */
     public static boolean isToolProtected(ItemStack tool) {
-        String toolName = tool.getItem().toString(); // 获取工具的名称（例如 "minecraft:diamond_pickaxe"）
+        String toolName = tool.getItem().toString();
         if (getConfig().protectAllDefaultValuableTools) {
             return getConfig().defaultProtectedTools.contains(toolName) || getConfig().protectedTools.contains(toolName);
         }
-        return getConfig().protectedTools.contains(toolName); // 如果名称在保护列表中，返回 true
+        return getConfig().protectedTools.contains(toolName);
     }
 }
-
