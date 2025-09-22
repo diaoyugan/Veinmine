@@ -16,11 +16,12 @@ import java.util.Set;
 
 import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
+import top.diaoyugan.vein_mine.client.HotKeys;
 import top.diaoyugan.vein_mine.networking.keybindreciever.KeybindingPayload;
 import top.diaoyugan.vein_mine.config.Config;
 import top.diaoyugan.vein_mine.config.ConfigItems;
 import top.diaoyugan.vein_mine.client.vein_mineClient;
-import top.diaoyugan.vein_mine.utils.Utils;
+
 
 public class VeinmineConfigScreen extends Screen {
     private Config config;
@@ -199,7 +200,7 @@ public class VeinmineConfigScreen extends Screen {
                 .setDefaultValue(false)
                 .setSaveConsumer((Boolean b) -> {
                     if (client != null && client.player != null) {
-                        if (Utils.getVeinMineSwitchState(client.player)) {
+                        if (HotKeys.getVeinMineSwitchState()) {
                             ClientPlayNetworking.send(KeybindingPayload.INSTANCE);
                         }
                     }

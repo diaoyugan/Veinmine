@@ -1,5 +1,7 @@
 package top.diaoyugan.vein_mine.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import top.diaoyugan.vein_mine.networking.keybindreciever.KeybindingPayload;
@@ -13,6 +15,11 @@ public class HotKeys {
     // 接收服务端返回的状态
     protected static void receiveKeybindingResponse(KeybindingPayloadResponse response, ClientPlayNetworking.Context context) {
         veinMineSwitchState = response.state();  // 同步状态
+    }
+    // 获取客户端状态
+    @Environment(EnvType.CLIENT)
+    public static boolean getVeinMineSwitchState(){
+        return veinMineSwitchState;
     }
 
     public static void tickEvent(MinecraftClient client) {
