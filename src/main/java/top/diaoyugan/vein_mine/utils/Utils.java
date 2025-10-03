@@ -126,7 +126,7 @@ public class Utils {
     public static int calculateTotalDurabilityCost(List<BlockPos> blocksToBreak, PlayerEntity player, BlockState state) {
         int cost = 0;
         for (BlockPos targetPos : blocksToBreak) {
-            BlockState targetState = player.getWorld().getBlockState(targetPos);
+            BlockState targetState = player.getEntityWorld().getBlockState(targetPos);
             if (Utils.isToolSuitable(targetState, player)) {
                 cost++;
             }
