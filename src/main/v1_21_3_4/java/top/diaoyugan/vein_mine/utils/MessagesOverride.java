@@ -8,8 +8,8 @@ import java.util.Objects;
 public class MessagesOverride {
     public static void sendMessage(ServerPlayerEntity player, Text message, Boolean isOnActionbar) {
         if (isOnActionbar)
-            Objects.requireNonNull(player.getEntityWorld().getServer()).execute(() -> player.sendMessage(message, true));
+            Objects.requireNonNull(player.getWorld().getServer()).execute(() -> player.sendMessage(message, true));
         else
-            Objects.requireNonNull(player.getEntityWorld().getServer()).execute(() -> player.sendMessage(message, false));
+            Objects.requireNonNull(player.getWorld().getServer()).execute(() -> player.sendMessage(message, false));
     }
 }
