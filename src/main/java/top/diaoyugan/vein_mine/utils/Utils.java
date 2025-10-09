@@ -9,6 +9,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import top.diaoyugan.vein_mine.SVInterfaceOverride;
 import top.diaoyugan.vein_mine.config.Config;
 import top.diaoyugan.vein_mine.config.ConfigItems;
 
@@ -18,6 +19,7 @@ import java.util.*;
  * 工具类，提供连锁挖掘相关的通用方法。
  */
 public class Utils {
+    static ServerVersionInterface SVI = new SVInterfaceOverride();
     // 创建一个Map来存储每个玩家的开关状态
     private static final Map<UUID, Boolean> playerVeinMineSwitchState = new HashMap<>();
 
@@ -124,14 +126,7 @@ public class Utils {
      * @return 耐久消耗总和
      */
     public static int calculateTotalDurabilityCost(List<BlockPos> blocksToBreak, PlayerEntity player, BlockState state) {
-        int cost = 0;
-        for (BlockPos targetPos : blocksToBreak) {
-            BlockState targetState = player.getEntityWorld().getBlockState(targetPos);
-            if (Utils.isToolSuitable(targetState, player)) {
-                cost++;
-            }
-        }
-        return cost;
+        return SVI.calculateTotalDurabilityCost(blocksToBreak, player, state);
     }
 
     /**

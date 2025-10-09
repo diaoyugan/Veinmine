@@ -30,7 +30,7 @@ public class RenderOutlines {
 
         if (!initialized) {
             initialized = true;
-            CustomLayers.init(); // 保持你的自定义图层初始化
+            CustomLayers.init();
         }
 
         Vec3d camPos = camera.getPos();

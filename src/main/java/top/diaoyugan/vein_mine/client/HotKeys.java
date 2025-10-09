@@ -23,9 +23,10 @@ public class HotKeys {
     }
 
     public static void tickEvent(MinecraftClient client) {
+        ClientVersionInterface vCLInitialize = new CLInterfaceOverride();
         if (client.getNetworkHandler() == null || client.player == null) return;
 
-        boolean isPressed = vein_mineClient.BINDING.isPressed();
+        boolean isPressed = vCLInitialize.KeyIsPressed();
 
         if (Utils.getConfig().useHoldInsteadOfToggle) {
             // 【按住模式】只在状态变化时发送包
@@ -35,7 +36,7 @@ public class HotKeys {
             }
         } else {
             // 【切换模式】按一下切换一次状态
-            if (vein_mineClient.BINDING.wasPressed()) {
+            if (vCLInitialize.KeyWasPressed()) {
                 ClientPlayNetworking.send(KeybindingPayload.INSTANCE);
             }
         }

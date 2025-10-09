@@ -7,6 +7,7 @@ import net.minecraft.network.packet.s2c.play.SubtitleS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import top.diaoyugan.vein_mine.SVInterfaceOverride;
 
 
 /**
@@ -37,8 +38,8 @@ public class Messages {
      * @param isOnActionbar 是否显示在动作条上，否则显示在聊天栏
      */
     public static void sendMessage(ServerPlayerEntity player, Text message, Boolean isOnActionbar) {
-        IUtilsVersion vMessages = new VersionMessage();
-        vMessages.sendMessage(player, message, isOnActionbar);
+        ServerVersionInterface SVI = new SVInterfaceOverride();
+        SVI.sendMessage(player, message, isOnActionbar);
     }
 
     /**

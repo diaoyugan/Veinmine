@@ -4,7 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
 
-def targetVersion = project.hasProperty("mc_version") ? project.getProperty("mc_version") : "v1_21_9"
+def targetVersion = project.hasProperty("mc_version") ? project.getProperty("mc_version") : "v1_21_9_10"
 
 // 拼接 mod_version 和 targetVersion 成最终版本号
 def modVersionBase = project.hasProperty("mod_version") ? project.mod_version : "1.0.0"
@@ -34,35 +34,35 @@ def yarnMappings = [ // Find them @ https://maven.fabricmc.net/net/fabricmc/yarn
         "v1_21_3_4": "1.21.3+build.1",
         "v1_21_5": "1.21.5+build.1",
         "v1_21_6_8": "1.21.6+build.1",
-        "v1_21_9":"1.21.9+build.1"
+        "v1_21_9_10":"1.21.9+build.1"
 ]
 
 def fabricApiVersions = [ // Find them @ https://modrinth.com/mod/fabric-api
         "v1_21_3_4": "0.112.0+1.21.3",
         "v1_21_5": "0.119.5+1.21.5",
         "v1_21_6_8": "0.127.0+1.21.6",
-        "v1_21_9":"0.133.14+1.21.9"
+        "v1_21_9_10":"0.133.14+1.21.9"
 ]
 
 def modMenuVersions = [ // Find them @ https://modrinth.com/mod/modmenu
         "v1_21_3_4": "12.0.0",
         "v1_21_5": "14.0.0-rc.2",
         "v1_21_6_8": "15.0.0",
-        "v1_21_9": "15.0.0",
+        "v1_21_9_10": "16.0.0-rc.1",
 ]
 
 def clothConfigVersions = [ // Find them @ https://modrinth.com/mod/cloth-config
         "v1_21_3_4": "16.0.143",
         "v1_21_5": "18.0.145",
         "v1_21_6_8": "19.0.147",
-        "v1_21_9": "19.0.147",
+        "v1_21_9_10": "20.0.148",
 ]
 
-def loaderVersion= [
+def loaderVersion= [ // Find them @ https://fabricmc.net/develop
         "v1_21_3_4": "0.16.10",
         "v1_21_5": "0.16.10",
         "v1_21_6_8": "0.16.14",
-        "v1_21_9":"0.17.2"
+        "v1_21_9_10":"0.17.2"
 ]
 
 def resolvedMinecraftVersion = {

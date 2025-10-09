@@ -15,18 +15,19 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.util.Formatting;
-import org.lwjgl.glfw.GLFW;
+import top.diaoyugan.vein_mine.client.ClientVersionInterface;
+import top.diaoyugan.vein_mine.client.CLInterfaceOverride;
 import top.diaoyugan.vein_mine.client.HotKeys;
 import top.diaoyugan.vein_mine.networking.keybindreciever.KeybindingPayload;
 import top.diaoyugan.vein_mine.config.Config;
 import top.diaoyugan.vein_mine.config.ConfigItems;
-import top.diaoyugan.vein_mine.client.vein_mineClient;
 
 
 public class VeinmineConfigScreen extends Screen {
     private Config config;
     private ConfigItems configItems;
     private final Screen parent;
+    ClientVersionInterface vCLInitialize = new CLInterfaceOverride();
 
     protected VeinmineConfigScreen(Screen parent) {
         super(Text.translatable("vm.config.screen.title"));
@@ -57,7 +58,7 @@ public class VeinmineConfigScreen extends Screen {
     }
 
     private Screen initConfigScreen(ConfigBuilder cb, ConfigItems ci) {
-        configItems.keyBindingCode = KeyBindingHelper.getBoundKeyOf(vein_mineClient.BINDING).getCode();
+        configItems.keyBindingCode = KeyBindingHelper.getBoundKeyOf(vCLInitialize.getBinding()).getCode();
 
         createMainConfig(cb, ci);
         createToolsAndProtectConfig(cb, ci);
@@ -208,14 +209,20 @@ public class VeinmineConfigScreen extends Screen {
                 })
                 .build());
 
-        keysConfig.addEntry(entryBuilder.startKeyCodeField(Text.translatable("key.vm.switch"), InputUtil.fromKeyCode(ci.keyBindingCode, 0))
-                .setTooltip(Text.translatable("key.vm.switch.tooltip"))
-                .setDefaultValue(InputUtil.fromKeyCode(GLFW.GLFW_KEY_GRAVE_ACCENT, 0))
-                .setKeySaveConsumer((InputUtil.Key key) -> {
-                    configItems.keyBindingCode = key.getCode();
-                    vein_mineClient.updateKeyBinding(key.getCode());
-                })
-                .build());
+        keysConfig.addEntry(
+                entryBuilder.startKeyCodeField(
+                                Text.translatable("key.vm.switch"),
+                                vCLInitialize.getConfigKey(ci.keyBindingCode)  // 从接口拿配置键位
+                        )
+                        .setTooltip(Text.translatable("key.vm.switch.tooltip"))
+                        .setDefaultValue(vCLInitialize.getDefaultKey())  // 从接口拿默认键位
+                        .setKeySaveConsumer((InputUtil.Key key) -> {
+                            configItems.keyBindingCode = key.getCode();
+                            vCLInitialize.UpDateKeyBinding(key.getCode());
+                        })
+                        .build()
+        );
+
     }
 
     private void createAdvanceConfig(ConfigBuilder cb, ConfigItems ci) {
