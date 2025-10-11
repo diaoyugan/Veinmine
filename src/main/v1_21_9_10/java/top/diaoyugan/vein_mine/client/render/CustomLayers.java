@@ -2,7 +2,6 @@ package top.diaoyugan.vein_mine.client.render;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
-import top.diaoyugan.vein_mine.mixin.RenderLayerInvoker;
 
 import java.util.OptionalDouble;
 
@@ -11,7 +10,7 @@ public class CustomLayers {
 
     public static void init() {
         if (linesNoDepth != null) return;
-        linesNoDepth = RenderLayerInvoker.callOf(
+        linesNoDepth = RenderLayer.of(
                 "lines_no_depth",
                 2048,
                 false,
@@ -24,6 +23,7 @@ public class CustomLayers {
                         .build(false)
         );
     }
+
 
     public static RenderLayer.MultiPhase getLinesNoDepth() {
         if (linesNoDepth == null) {

@@ -4,11 +4,13 @@ package top.diaoyugan.vein_mine.client;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 import top.diaoyugan.vein_mine.client.keybinding.KeyBinding;
+import top.diaoyugan.vein_mine.client.render.RenderOutlines;
 
 public class CLInterfaceOverride implements ClientVersionInterface {
     @Override
     public void OnInitialize() {
         KeyBinding.onInitialize();
+        RenderOutlines.onInitialize();
     }
 
     @Override

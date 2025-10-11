@@ -3,7 +3,6 @@
   "package": "top.diaoyugan.vein_mine.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "RenderLayerInvoker"
   ],
   "injectors": {
     "defaultRequire": 1
