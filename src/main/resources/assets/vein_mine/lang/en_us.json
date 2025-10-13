@@ -11,7 +11,7 @@
   "vm.config.screen.title": "Vein Mine Config",
   "vm.config.screen.main": "General",
   "vm.config.screen.highlights": "Highlights Settings",
-  "vm.config.translation_note": "§7The translation may not be 100% accurate. \nIf you have any suggestions, please give us feedback.",
+  "vm.config.translation_note": "§7The translation may not be 100% accurate. \nIf you have any suggestions, please give us feedback.\nWant to help translate this mod? Contribute on GitHub or contact us!",
   "vm.config.search_radius": "Range Search Radius",
   "vm.config.search_radius.tooltip": "Range mode search radius\n1 means 8 blocks in all directions\nplus 9 blocks in each layer and the center block",
   "vm.config.bfs_limit": "Chain Search Limit",
@@ -50,5 +50,5 @@
   "vm.config.screen.keysAndBinding": "Keys & Binding",
   "vm.config.screen.final_resort": "Advanced",
   "vm.config.useIntrusiveCode": "Enable Intrusive Code",
-  "vm.config.useIntrusiveCode.tooltip": "Enabling this will allow use of mixins.\nIf crashes or conflicts with other mods occur, disable this option.\nChanges require a game restart.\n\nDisabling this will disable advanced highlight rendering."
+  "vm.config.useIntrusiveCode.tooltip": "Enabling this option will activate a dedicated RenderLayer and RenderPipeline to render wall-penetrating highlight outlines.\nIf it causes crashes or invisible highlights due to conflicts with other mods, please disable this option.\nChanging this setting requires restarting the game to take effect.\n\nWhen disabled, block highlights will no longer be visible through blocks."
 }
