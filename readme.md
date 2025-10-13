@@ -33,6 +33,7 @@ It's recommended to install [**ModMenu**](https://modrinth.com/mod/modmenu) and 
 - Open the **modmenu** to customize Vein Mine's behavior. OR
 - Edit the configuration file located in `.minecraft/config/veinmine.json`.
 - For servers, the configuration file located in `[your Minecraft server directory]/config/veinmine.json`
+- [Configuration Guide](config_docs/config_en_us.md)
 ## Controls
 - **Press `(~) (default)** to toggle Vein Mine.
 
