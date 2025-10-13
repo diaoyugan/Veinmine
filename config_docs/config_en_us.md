@@ -48,10 +48,3 @@ This document explains the configuration options in the mod settings screen and 
 |--------------------|---------|--------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `useIntrusiveCode` | Boolean | Client | `true`  | Enable custom RenderLayer and RenderPipeline for wall-penetrating highlights. May conflict with certain mods, shaders, or renderers. If crashes or invisible highlights occur, disable this option. Changes require restarting the client. |
 
----
-
-## Localization & Contribution
-If you notice translation issues or want to add new languages, submit an Issue or Pull Request on GitHub:
-- Add language files under `assets/<modid>/lang/` (format: `xx_xx.json`).
-- Keep the keys consistent with existing ones.
-- Include the scope of changes and examples in the PR description.
