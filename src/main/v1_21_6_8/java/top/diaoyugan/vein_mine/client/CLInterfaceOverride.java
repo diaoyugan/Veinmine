@@ -1,10 +1,13 @@
 
 package top.diaoyugan.vein_mine.client;
 
+import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
+import top.diaoyugan.vein_mine.client.config.ConfigOverride;
 import top.diaoyugan.vein_mine.client.keybinding.KeyBinding;
 import top.diaoyugan.vein_mine.client.render.RenderOutlines;
+import top.diaoyugan.vein_mine.config.ConfigItems;
 
 public class CLInterfaceOverride implements ClientVersionInterface {
     @Override
@@ -42,6 +45,11 @@ public class CLInterfaceOverride implements ClientVersionInterface {
     @Override
     public InputUtil.Key getConfigKey(int keyCode) {
         return InputUtil.fromKeyCode(keyCode, 0);
+    }
+
+    @Override
+    public void createAdvanceConfig(ConfigBuilder cb, ConfigItems ci) {
+        ConfigOverride.createAdvanceConfig(cb, ci);
     }
 }
 

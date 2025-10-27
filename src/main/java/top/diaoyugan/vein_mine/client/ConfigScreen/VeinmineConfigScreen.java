@@ -24,10 +24,10 @@ import top.diaoyugan.vein_mine.config.ConfigItems;
 
 
 public class VeinmineConfigScreen extends Screen {
-    private Config config;
+    protected Config config;
     private ConfigItems configItems;
     private final Screen parent;
-    ClientVersionInterface vCLInitialize = new CLInterfaceOverride();
+    ClientVersionInterface CLI = new CLInterfaceOverride();
 
     protected VeinmineConfigScreen(Screen parent) {
         super(Text.translatable("vm.config.screen.title"));
@@ -58,7 +58,7 @@ public class VeinmineConfigScreen extends Screen {
     }
 
     private Screen initConfigScreen(ConfigBuilder cb, ConfigItems ci) {
-        configItems.keyBindingCode = KeyBindingHelper.getBoundKeyOf(vCLInitialize.getBinding()).getCode();
+        configItems.keyBindingCode = KeyBindingHelper.getBoundKeyOf(CLI.getBinding()).getCode();
 
         createMainConfig(cb, ci);
         createToolsAndProtectConfig(cb, ci);
@@ -212,13 +212,13 @@ public class VeinmineConfigScreen extends Screen {
         keysConfig.addEntry(
                 entryBuilder.startKeyCodeField(
                                 Text.translatable("key.vm.switch"),
-                                vCLInitialize.getConfigKey(ci.keyBindingCode)  // 从接口拿配置键位
+                                CLI.getConfigKey(ci.keyBindingCode)  // 从接口拿配置键位
                         )
                         .setTooltip(Text.translatable("key.vm.switch.tooltip"))
-                        .setDefaultValue(vCLInitialize.getDefaultKey())  // 从接口拿默认键位
+                        .setDefaultValue(CLI.getDefaultKey())  // 从接口拿默认键位
                         .setKeySaveConsumer((InputUtil.Key key) -> {
                             configItems.keyBindingCode = key.getCode();
-                            vCLInitialize.UpDateKeyBinding(key.getCode());
+                            CLI.UpDateKeyBinding(key.getCode());
                         })
                         .build()
         );
@@ -226,13 +226,6 @@ public class VeinmineConfigScreen extends Screen {
     }
 
     private void createAdvanceConfig(ConfigBuilder cb, ConfigItems ci) {
-        ConfigCategory finalConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.final_resort").styled(style -> style.withColor(Formatting.RED)));
-        ConfigEntryBuilder entryBuilder = cb.entryBuilder();
-
-        finalConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.useIntrusiveCode").styled(style -> style.withColor(Formatting.RED)), ci.useIntrusiveCode)
-                .setTooltip(Text.translatable("vm.config.useIntrusiveCode.tooltip").styled(style -> style.withColor(Formatting.RED)))
-                .setDefaultValue(true)
-                .setSaveConsumer((Boolean b) -> configItems.useIntrusiveCode = b)
-                .build());
+        CLI.createAdvanceConfig(cb, ci);
     }
 }

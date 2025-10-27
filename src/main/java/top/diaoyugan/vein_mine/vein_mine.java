@@ -20,6 +20,8 @@ public class vein_mine implements ModInitializer {
         PlayerBreakBlock.register();
         new NetworkingKeybindingPacket().onInitialize();
         new HighlightBlock().onInitialize();
+
+        //TODO:把这玩意换个地方放
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
             ServerPlayerEntity player = handler.player;
             if (player != null) {
