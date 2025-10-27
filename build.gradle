@@ -11,13 +11,14 @@ def modVersionBase = project.hasProperty("mod_version") ? project.mod_version : 
 def finalModVersion = {
     def parts = targetVersion.replace('v', '').split('_')
     if (parts.length == 4) {
-        // 拼成区间开头-结尾，比如 1.21.3-1.21.4
-        def startVersion = "${parts[0]}.${parts[1]}.${parts[2]}"
-        def endVersion = "${parts[0]}.${parts[1]}.${parts[3]}"
+        def startPatch = parts[2] == "0" ? "" : ".${parts[2]}"
+        def endPatch = parts[3] == "0" ? "" : ".${parts[3]}"
+        def startVersion = "${parts[0]}.${parts[1]}${startPatch}"
+        def endVersion = "${parts[0]}.${parts[1]}${endPatch}"
         return "${modVersionBase}+${startVersion}-${endVersion}"
     } else {
-        // 不是4段，正常拼接
-        return "${modVersionBase}+${targetVersion.replace('v', '').replace('_', '.')}"
+        def patch = (parts.length > 2 && parts[2] != "0") ? ".${parts[2]}" : ""
+        return "${modVersionBase}+${parts[0]}.${parts[1]}${patch}"
     }
 }()
 
@@ -31,35 +32,35 @@ base {
 }
 
 def yarnMappings = [ // Find them @ https://maven.fabricmc.net/net/fabricmc/yarn/
-        "v1_21_2_4": "1.21.2+build.1",
+        "v1_21_0_4": "1.21+build.9",
         "v1_21_5": "1.21.5+build.1",
         "v1_21_6_8": "1.21.6+build.1",
         "v1_21_9_10":"1.21.9+build.1"
 ]
 
 def fabricApiVersions = [ // Find them @ https://modrinth.com/mod/fabric-api
-        "v1_21_2_4": "0.106.1+1.21.2",
+        "v1_21_0_4": "0.102.0+1.21",
         "v1_21_5": "0.119.5+1.21.5",
         "v1_21_6_8": "0.127.0+1.21.6",
         "v1_21_9_10":"0.133.14+1.21.9"
 ]
 
 def modMenuVersions = [ // Find them @ https://modrinth.com/mod/modmenu
-        "v1_21_2_4": "12.0.0",
+        "v1_21_0_4": "11.0.3",
         "v1_21_5": "14.0.0-rc.2",
         "v1_21_6_8": "15.0.0",
         "v1_21_9_10": "16.0.0-rc.1",
 ]
 
 def clothConfigVersions = [ // Find them @ https://modrinth.com/mod/cloth-config
-        "v1_21_2_4": "16.0.143",
+        "v1_21_0_4": "15.0.140",
         "v1_21_5": "18.0.145",
         "v1_21_6_8": "19.0.147",
         "v1_21_9_10": "20.0.148",
 ]
 
 def loaderVersion= [ // Find them @ https://fabricmc.net/develop
-        "v1_21_2_4": "0.16.10",
+        "v1_21_0_4": "0.16.10",
         "v1_21_5": "0.16.10",
         "v1_21_6_8": "0.16.14",
         "v1_21_9_10":"0.17.2"
@@ -68,21 +69,36 @@ def loaderVersion= [ // Find them @ https://fabricmc.net/develop
 def resolvedMinecraftVersion = {
     def parts = targetVersion.replace("v", "").split("_")
     if (parts.length == 4) {
-        return ">=${parts[0]}.${parts[1]}.${parts[2]} <=${parts[0]}.${parts[1]}.${parts[3]}"
+        def major = parts[0]
+        def minor = parts[1]
+        def patchStart = parts[2] == "0" ? "" : ".${parts[2]}"
+        def patchEnd = parts[3] == "0" ? "" : ".${parts[3]}"
+        return ">=${major}.${minor}${patchStart} <=${major}.${minor}${patchEnd}"
     } else {
-        return targetVersion.replace("v", "").replace("_", ".")
+        def major = parts[0]
+        def minor = parts[1]
+        def patch = (parts.length > 2 && parts[2] != "0") ? ".${parts[2]}" : ""
+        return "${major}.${minor}${patch}"
     }
 }()
+
 
 
 def dependencyMinecraftVersion = {
     def parts = targetVersion.replace("v", "").split("_")
     if (parts.length == 4) {
-        return "${parts[0]}.${parts[1]}.${parts[2]}"
+        def major = parts[0]
+        def minor = parts[1]
+        def patchStart = parts[2] == "0" ? "" : ".${parts[2]}"
+        return "${major}.${minor}${patchStart}"
     } else {
-        return targetVersion.replace("v", "").replace("_", ".")
+        def major = parts[0]
+        def minor = parts[1]
+        def patch = (parts.length > 2 && parts[2] != "0") ? ".${parts[2]}" : ""
+        return "${major}.${minor}${patch}"
     }
 }()
+
 
 def minVersionForFiles = {
     def parts = targetVersion.replace('v', '').split('_')
