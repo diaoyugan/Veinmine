@@ -31,35 +31,35 @@ base {
 }
 
 def yarnMappings = [ // Find them @ https://maven.fabricmc.net/net/fabricmc/yarn/
-        "v1_21_3_4": "1.21.3+build.1",
+        "v1_21_2_4": "1.21.2+build.1",
         "v1_21_5": "1.21.5+build.1",
         "v1_21_6_8": "1.21.6+build.1",
         "v1_21_9_10":"1.21.9+build.1"
 ]
 
 def fabricApiVersions = [ // Find them @ https://modrinth.com/mod/fabric-api
-        "v1_21_3_4": "0.112.0+1.21.3",
+        "v1_21_2_4": "0.106.1+1.21.2",
         "v1_21_5": "0.119.5+1.21.5",
         "v1_21_6_8": "0.127.0+1.21.6",
         "v1_21_9_10":"0.133.14+1.21.9"
 ]
 
 def modMenuVersions = [ // Find them @ https://modrinth.com/mod/modmenu
-        "v1_21_3_4": "12.0.0",
+        "v1_21_2_4": "12.0.0",
         "v1_21_5": "14.0.0-rc.2",
         "v1_21_6_8": "15.0.0",
         "v1_21_9_10": "16.0.0-rc.1",
 ]
 
 def clothConfigVersions = [ // Find them @ https://modrinth.com/mod/cloth-config
-        "v1_21_3_4": "16.0.143",
+        "v1_21_2_4": "16.0.143",
         "v1_21_5": "18.0.145",
         "v1_21_6_8": "19.0.147",
         "v1_21_9_10": "20.0.148",
 ]
 
 def loaderVersion= [ // Find them @ https://fabricmc.net/develop
-        "v1_21_3_4": "0.16.10",
+        "v1_21_2_4": "0.16.10",
         "v1_21_5": "0.16.10",
         "v1_21_6_8": "0.16.14",
         "v1_21_9_10":"0.17.2"
