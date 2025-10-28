@@ -13,8 +13,8 @@ public class vein_mineClient implements ClientModInitializer {
         ClientBlockHighlighting.onInitialize();
         ClientTickEvents.END_CLIENT_TICK.register(HotKeys::tickEvent);
 
-        ClientVersionInterface vCLInitialize = new CLInterfaceOverride();
-        vCLInitialize.OnInitialize();
+        ClientVersionInterface CLI = new CLInterfaceOverride();
+        CLI.OnInitialize();
 
         ClientPlayNetworking.registerGlobalReceiver(KeybindingPayloadResponse.ID, HotKeys::receiveKeybindingResponse);
     }
