@@ -154,6 +154,12 @@ public class VeinmineConfigScreen extends Screen {
         ConfigCategory highlightsConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.highlights"));
         ConfigEntryBuilder entryBuilder = cb.entryBuilder();
 
+        highlightsConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.enableHighlights"), ci.enableHighlights)
+                .setTooltip(Text.translatable("vm.config.enableHighlights.tooltip"))
+                .setDefaultValue(true)
+                .setSaveConsumer((Boolean b) -> configItems.enableHighlights = b)
+                .build());
+
         var redSlider = entryBuilder.startIntSlider(Text.translatable("vm.config.renderRed"), ci.red, 0, 255)
                 .setDefaultValue(255)
                 .setSaveConsumer((Integer val) -> configItems.red = val)
