@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Slice;
 import top.diaoyugan.vein_mine.client.render.RenderOutlines;
+import top.diaoyugan.vein_mine.utils.Utils;
 import top.diaoyugan.vein_mine.utils.logging.Logger;
 import top.diaoyugan.vein_mine.utils.logging.LoggerLevels;
 
@@ -45,16 +46,18 @@ public abstract class WorldRendererMixin {
         // 先执行原始透明层渲染
         original.call(instance, group);
 
-        try {
-            Camera camera = client.gameRenderer.getCamera();
-            VertexConsumerProvider.Immediate immediate = bufferBuilders.getEntityVertexConsumers();
-            MatrixStack matrices = new MatrixStack();
+        if(Utils.getConfig().enableHighlights){
+            try {
+                Camera camera = client.gameRenderer.getCamera();
+                VertexConsumerProvider.Immediate immediate = bufferBuilders.getEntityVertexConsumers();
+                MatrixStack matrices = new MatrixStack();
 
-            // 调用渲染逻辑
-            RenderOutlines.renderHighlights(matrices, immediate, camera);
+                // 调用渲染逻辑
+                RenderOutlines.renderHighlights(matrices, immediate, camera);
 
-        } catch (Throwable t) {
-            Logger.throwLog(LoggerLevels.ERROR, String.valueOf(t));
+            } catch (Throwable t) {
+                Logger.throwLog(LoggerLevels.ERROR, String.valueOf(t));
+            }
         }
     }
 }

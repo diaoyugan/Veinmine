@@ -1,6 +1,7 @@
 package top.diaoyugan.vein_mine.client.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
@@ -16,7 +17,12 @@ import top.diaoyugan.vein_mine.utils.Utils;
 public class RenderOutlines {
 
     public static void onInitialize() {
-        WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
+        WorldRenderEvents.AFTER_TRANSLUCENT.register(RenderOutlines::renderHighlights);
+    }
+
+    // 单独封装实际渲染逻辑
+    private static void renderHighlights(WorldRenderContext context) {
+        if(Utils.getConfig().enableHighlights) {
             MinecraftClient client = MinecraftClient.getInstance();
             if (client.world == null) return;
 
@@ -35,7 +41,7 @@ public class RenderOutlines {
 
             buffer.draw();
             restoreGlState();
-        });
+        }
     }
 
     private static void setupGlState() {

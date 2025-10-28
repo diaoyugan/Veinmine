@@ -60,7 +60,7 @@ public class ColorPreviewEntry extends AbstractConfigListEntry<Void> {
                 MinecraftClient.getInstance().textRenderer,
                 Text.translatable("vm.config.color_preview"),
                 p.x + 5, p.y + 6,
-                0xFFFFFF,
+                0xFFFFFFFF,
                 false
         );
 

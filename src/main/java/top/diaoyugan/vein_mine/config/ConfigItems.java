@@ -20,6 +20,7 @@ public class ConfigItems { // Default configuration
     public Set<String> protectedTools = new HashSet<>();
     public int durabilityThreshold = 10;
     public boolean protectAllDefaultValuableTools = true;
+    public boolean enableHighlights = true;
     public int red = 255;
     public int green = 255;
     public int blue = 255;

@@ -117,7 +117,6 @@ requiredKeys.each {
 }
 
 
-def versionedSrc = file("src/main/${targetVersion}/java")
 sourceSets {
     main {
         java {
@@ -189,7 +188,7 @@ processResources {
 }
 
 
-def targetJavaVersion = 21
+def targetJavaVersion = project.hasProperty("targetJavaVersion") ? Integer.parseInt(project.targetJavaVersion) : 21
 tasks.withType(JavaCompile).configureEach {
     // ensure that the encoding is set to UTF-8, no matter what the system default is
     // this fixes some edge cases with special characters not displaying correctly
@@ -236,6 +235,7 @@ publishing {
         // retrieving dependencies.
     }
 }
+
 kotlin {
-    jvmToolchain(23)
+    jvmToolchain(project.hasProperty("kotlin_jvm_toolchain") ? Integer.parseInt(project.kotlin_jvm_toolchain) : 23)
 }

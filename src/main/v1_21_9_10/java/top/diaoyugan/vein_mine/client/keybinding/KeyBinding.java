@@ -5,6 +5,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
+import org.lwjgl.glfw.GLFW;
 import top.diaoyugan.vein_mine.config.Config;
 import net.minecraft.client.option.KeyBinding.Category;
 
@@ -34,5 +35,15 @@ public class KeyBinding {
         MinecraftClient.getInstance().options.write();
         // 更新按键绑定 没有这一行会导致游戏内不会立刻生效
         net.minecraft.client.option.KeyBinding.updateKeysByCode();
+    }
+
+    // 提供默认键
+    public static InputUtil.Key getDefaultKey() {
+        return InputUtil.fromKeyCode(new KeyInput(GLFW.GLFW_KEY_GRAVE_ACCENT, 0, 0));
+    }
+
+    // 根据 keyCode 提供对应键
+    public static InputUtil.Key getConfigKey(int keyCode) {
+        return InputUtil.fromKeyCode(new KeyInput(keyCode, 0, 0));
     }
 }

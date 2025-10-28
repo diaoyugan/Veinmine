@@ -18,27 +18,29 @@ public class RenderOutlines {
     protected static boolean initialized = false;
 
     public static void onInitialize() {
-        WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
-            MinecraftClient client = MinecraftClient.getInstance();
-            if (client.world == null) return;
+        if(Utils.getConfig().enableHighlights) {
+            WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
+                MinecraftClient client = MinecraftClient.getInstance();
+                if (client.world == null) return;
 
-            if (!initialized) {
-                initialized = true;
-                CustomLayers.init();
-            }
+                if (!initialized) {
+                    initialized = true;
+                    CustomLayers.init();
+                }
 
-            MatrixStack matrices = context.matrixStack();
-            VertexConsumerProvider vertexConsumers = context.consumers();
-            Vec3d camPos = context.camera().getPos();
+                MatrixStack matrices = context.matrixStack();
+                VertexConsumerProvider vertexConsumers = context.consumers();
+                Vec3d camPos = context.camera().getPos();
 
-            setupGlState();
+                setupGlState();
 
-            if (matrices != null && vertexConsumers != null) {
-                renderHighlightedBlocks(matrices, vertexConsumers, camPos);
-            }
+                if (matrices != null && vertexConsumers != null) {
+                    renderHighlightedBlocks(matrices, vertexConsumers, camPos);
+                }
 
-            restoreGlState();
-        });
+                restoreGlState();
+            });
+        }
     }
 
     private static void setupGlState() {

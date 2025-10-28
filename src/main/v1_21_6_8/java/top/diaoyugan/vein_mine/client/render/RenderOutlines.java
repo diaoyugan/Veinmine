@@ -32,6 +32,7 @@ public class RenderOutlines {
     }
 
     private static void renderHighlights(WorldRenderContext context) {
+        if(Utils.getConfig().enableHighlights){
         if (MinecraftClient.getInstance().world == null || ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.isEmpty()) return;
 
         if (!initialized) {
@@ -59,6 +60,7 @@ public class RenderOutlines {
 
         matrices.pop();
         resetGlState();
+        }
     }
 
     private static void prepareGlState() {

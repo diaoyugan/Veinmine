@@ -37,16 +37,14 @@ public class CLInterfaceOverride implements ClientVersionInterface {
 
     @Override
     public InputUtil.Key getDefaultKey() {
-        // 反引号键（`）
-        return InputUtil.fromKeyCode(new KeyInput(GLFW.GLFW_KEY_GRAVE_ACCENT, 0, 0));
+        return KeyBinding.getDefaultKey(); // 从 KeyProvider 拿
     }
 
     @Override
     public InputUtil.Key getConfigKey(int keyCode) {
-        // 旧版逻辑：InputUtil.fromKeyCode(keyCode, 0)
-        // 新版需要封装成 KeyInput 再传入
-        return InputUtil.fromKeyCode(new KeyInput(keyCode, 0, 0));
+        return KeyBinding.getConfigKey(keyCode); // 从 KeyProvider 拿
     }
+
 
     @Override
     public void createAdvanceConfig(ConfigBuilder cb, ConfigItems ci) {

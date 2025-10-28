@@ -11,7 +11,7 @@ This document explains the configuration options in the mod settings screen and 
 | `useBFS`                           | Boolean  | Server | `true`  | Enable chain (BFS) search mode. If disabled, all searches use radius search.                                                                 |
 | `useRadiusSearch`                  | Boolean  | Server | `true`  | Enable radius search. If disabled, radius search will never be used.                                                                         |
 | `useRadiusSearchWhenReachBFSLimit` | Boolean  | Server | `true`  | Switch to radius search automatically when the BFS limit is exceeded. If disabled, exceeding the limit will stop chain mining.               |
-| `highlightBlocksMessage`           | Boolean  | Server | `true`  | Show the client a message of how many blocks will be broken (e.g., Target blocks: 9).                                                        |
+| `highlightBlocksMessage`           | Boolean  | Client | `true`  | Show the client a message of how many blocks will be broken (e.g., Target blocks: 9).                                                        |
 
 ---
 
@@ -26,13 +26,14 @@ This document explains the configuration options in the mod settings screen and 
 ---
 
 ## Highlights
-| Key          | Type          | Scope  | Default | Description                                                                       |
-|--------------|---------------|--------|---------|-----------------------------------------------------------------------------------|
-| `red`        | Integer 0–255 | Client | `255`   | Red channel for highlights.                                                       |
-| `green`      | Integer 0–255 | Client | `255`   | Green channel for highlights.                                                     |
-| `blue`       | Integer 0–255 | Client | `255`   | Blue channel for highlights.                                                      |
-| `alpha`      | Integer 0–255 | Client | `255`   | Highlight opacity (shown as percentage in UI).                                    |
-| `renderTime` | Integer 1–3   | Client | `1`     | Number of render passes. Higher values improve visibility but reduce performance. |
+| Key                | Type          | Scope  | Default | Description                                                                       |
+|--------------------|---------------|--------|---------|-----------------------------------------------------------------------------------|
+| `enableHighlights` | Boolean       | Client | `true`  | Render highlight preview.                                                         |
+| `red`              | Integer 0–255 | Client | `255`   | Red channel for highlights.                                                       |
+| `green`            | Integer 0–255 | Client | `255`   | Green channel for highlights.                                                     |
+| `blue`             | Integer 0–255 | Client | `255`   | Blue channel for highlights.                                                      |
+| `alpha`            | Integer 0–255 | Client | `255`   | Highlight opacity (shown as percentage in UI).                                    |
+| `renderTime`       | Integer 1–3   | Client | `1`     | Number of render passes. Higher values improve visibility but reduce performance. |
 
 ---
 
