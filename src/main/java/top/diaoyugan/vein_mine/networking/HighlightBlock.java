@@ -9,8 +9,6 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 
 
 import net.minecraft.util.Identifier;
@@ -18,8 +16,6 @@ import net.minecraft.util.math.BlockPos;
 
 import top.diaoyugan.vein_mine.SVInterfaceOverride;
 import top.diaoyugan.vein_mine.utils.ServerVersionInterface;
-import top.diaoyugan.vein_mine.utils.SmartVein;
-import top.diaoyugan.vein_mine.utils.Utils;
 
 import java.util.*;
 
@@ -82,6 +78,4 @@ public class HighlightBlock {
     private static void receive(BlockHighlightPayloadC2S payload, ServerPlayNetworking.Context context) {
         SVI.PacketReceive(payload, context);
     }
-
-
 }
