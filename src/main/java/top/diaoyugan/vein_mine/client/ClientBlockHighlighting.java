@@ -2,6 +2,7 @@ package top.diaoyugan.vein_mine.client;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
@@ -26,10 +27,13 @@ public class ClientBlockHighlighting {
 
     public static void checkPlayerLooking(ClientPlayerEntity player) {
         // 获取玩家视线方向
-        HitResult hitResult = player.raycast(10, 0, false);
+        HitResult hitResult = player.raycast(5, 0, false);
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockPos blockPos = ((BlockHitResult) hitResult).getBlockPos();
             sendHighlightPacket(blockPos);
+        } else //这里用来实现清理超出范围后的残留渲染
+            if (!ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.isEmpty()) {
+            ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.clear();
         }
     }
 
