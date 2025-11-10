@@ -17,7 +17,7 @@
 - Minecraft
 - Fabric API ([下载](https://modrinth.com/mod/fabric-api))
 - Fabric Loader ([下载](https://fabricmc.net/use/))
-## 推荐安装
+### 推荐安装
 推荐安装 [**ModMenu**](https://modrinth.com/mod/modmenu) 和 [**Cloth Config API**](https://www.curseforge.com/minecraft/mc-mods/cloth-config) 以便更好地管理和配置模组。
 
 ### 步骤

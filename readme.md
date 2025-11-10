@@ -19,7 +19,7 @@ Veinmine is a simple, lightweight, and fast-updating Minecraft mod that allows p
 - Fabric API ([Download](https://modrinth.com/mod/fabric-api))
 - Fabric Loader ([Download](https://fabricmc.net/use/))
 
-## Recommends
+### Recommends
 It's recommended to install [**ModMenu**](https://modrinth.com/mod/modmenu) and [**Cloth Config API**](https://www.curseforge.com/minecraft/mc-mods/cloth-config) for better mod management and easier configuration.
 
 ### Steps
