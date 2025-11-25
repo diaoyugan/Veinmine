@@ -2,6 +2,7 @@ package top.diaoyugan.vein_mine.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -113,9 +114,14 @@ public class Utils {
      * @param pos   方块位置
      * @return true 表示不会掉落物品，false 表示会掉落
      */
-    public static boolean shouldNotDropItem(BlockState state, World world, BlockPos pos) {
-        return Block.getDroppedStacks(state, (ServerWorld) world, pos, null).isEmpty();
+    public static boolean shouldNotDropItem(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+        if (!(world instanceof ServerWorld serverWorld)) return true; // 保守处理：非服务端认为不会掉
+        // 传入 block entity, player 和手持工具，确保 LootContext 能识别 silk touch / shears 等
+        BlockEntity be = serverWorld.getBlockEntity(pos);
+        ItemStack tool = player == null ? ItemStack.EMPTY : player.getMainHandStack();
+        return Block.getDroppedStacks(state, serverWorld, pos, be, player, tool).isEmpty();
     }
+
 
     /**
      * 计算目标方块的总耐久度消耗。

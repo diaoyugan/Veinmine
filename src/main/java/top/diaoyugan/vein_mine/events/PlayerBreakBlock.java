@@ -88,7 +88,7 @@ public class PlayerBreakBlock {
     private static boolean shouldDropItems(PlayerEntity player, BlockState state, World world, BlockPos pos) {
         if (player.isInCreativeMode()) return false; // 创造模式不掉落
         if (!Utils.isToolSuitable(state, player)) return false; // 工具不适合不掉落
-        return !Utils.shouldNotDropItem(state, world, pos); // 判断方块是否会掉落
+        return !Utils.shouldNotDropItem(state, world, pos, player); // 判断方块是否会掉落
     }
 
     private static void moveDropsToCenter(ServerWorld world, BlockPos centerPos) {
