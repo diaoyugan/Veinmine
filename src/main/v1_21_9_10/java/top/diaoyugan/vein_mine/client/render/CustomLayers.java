@@ -19,7 +19,7 @@ public class CustomLayers {
                 RenderLayer.MultiPhaseParameters.builder()
                         .lineWidth(new RenderPhase.LineWidth(OptionalDouble.of(2.0)))
                         .layering(RenderLayer.VIEW_OFFSET_Z_LAYERING)
-                        .target(RenderLayer.ITEM_ENTITY_TARGET)
+                        .target(RenderLayer.MAIN_TARGET)
                         .build(false)
         );
     }

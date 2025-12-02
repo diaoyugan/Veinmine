@@ -8,8 +8,6 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.Identifier;
 import top.diaoyugan.vein_mine.vein_mine;
 
-import static net.minecraft.client.gl.RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET;
-
 public class CustomRenderPipeline {
     protected static final RenderPipeline LINES_NO_DEPTH = RenderPipelines.register(
             RenderPipeline.builder(RenderPipelines.RENDERTYPE_LINES_SNIPPET)
@@ -18,4 +16,5 @@ public class CustomRenderPipeline {
                     .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
                     .build()
     );
+
 }
