@@ -217,9 +217,9 @@ java {
 }
 
 jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
-    }
+//    from("LICENSE") {
+//        rename { "${it}_${archivesName}" }
+//    }
 }
 
 
@@ -227,7 +227,7 @@ jar {
 publishing {
     publications {
 //        create("mavenJava", MavenPublication) {
-//            artifactId = "${project.archivesBaseName}-${targetVersion.replace('v', '')}-${project.version}"
+//            artifactId = "${archivesName}-${targetVersion.replace('v', '')}-${project.version}"
 //            from components.java
 //        }
     }

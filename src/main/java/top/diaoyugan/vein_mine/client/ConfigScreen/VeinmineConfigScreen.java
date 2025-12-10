@@ -59,12 +59,16 @@ public class VeinmineConfigScreen extends Screen {
 
     private Screen initConfigScreen(ConfigBuilder cb, ConfigItems ci) {
         configItems.keyBindingCode = KeyBindingHelper.getBoundKeyOf(CLI.getBinding()).getCode();
+        IVersionConfigProvider vp = CommonConfig.getVersionProvider();
 
         createMainConfig(cb, ci);
         createToolsAndProtectConfig(cb, ci);
         createHighlightsConfig(cb, ci);
         createKeysAndBindingConfig(cb, ci);
-        createAdvanceConfig(cb, ci);
+
+        if (vp.allowOption("use_intrusive_code")) {
+            createAdvanceConfig(cb, ci);
+        }
 
         return cb.build();
     }
@@ -231,7 +235,16 @@ public class VeinmineConfigScreen extends Screen {
 
     }
 
-    private void createAdvanceConfig(ConfigBuilder cb, ConfigItems ci) {
-        CLI.createAdvanceConfig(cb, ci);
+    public static void createAdvanceConfig(ConfigBuilder cb, ConfigItems ci) {
+        Config config = Config.getInstance();
+        ConfigItems configItems = config.getConfigItems();
+        ConfigCategory finalConfig = cb.getOrCreateCategory(Text.translatable("vm.config.screen.final_resort").styled(style -> style.withColor(Formatting.RED)));
+        ConfigEntryBuilder entryBuilder = cb.entryBuilder();
+
+        finalConfig.addEntry(entryBuilder.startBooleanToggle(Text.translatable("vm.config.useIntrusiveCode").styled(style -> style.withColor(Formatting.RED)), ci.useIntrusiveCode)
+                .setTooltip(Text.translatable("vm.config.useIntrusiveCode.tooltip").styled(style -> style.withColor(Formatting.RED)))
+                .setDefaultValue(true)
+                .setSaveConsumer((Boolean b) -> configItems.useIntrusiveCode = b)
+                .build());
     }
 }

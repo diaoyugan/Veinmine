@@ -13,6 +13,5 @@ public interface ClientVersionInterface {
     void UpDateKeyBinding(int code);
     InputUtil.Key getDefaultKey();  // 默认键位
     InputUtil.Key getConfigKey(int keyCode);  // 从配置生成键位
-    void createAdvanceConfig(ConfigBuilder cb, ConfigItems ci);
 }
 
