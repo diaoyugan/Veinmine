@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.11-SNAPSHOT'
+    id 'fabric-loom' version '1.14-SNAPSHOT'
     id 'maven-publish'
     id 'org.jetbrains.kotlin.jvm'
 }
@@ -35,14 +35,16 @@ def yarnMappings = [ // Find them @ https://maven.fabricmc.net/net/fabricmc/yarn
         "v1_21_0_4": "1.21+build.9",
         "v1_21_5": "1.21.5+build.1",
         "v1_21_6_8": "1.21.6+build.1",
-        "v1_21_9_10":"1.21.9+build.1"
+        "v1_21_9_10":"1.21.9+build.1",
+        "v1_21_11":"1.21.11+build.1"
 ]
 
 def fabricApiVersions = [ // Find them @ https://modrinth.com/mod/fabric-api
         "v1_21_0_4": "0.102.0+1.21",
         "v1_21_5": "0.119.5+1.21.5",
         "v1_21_6_8": "0.127.0+1.21.6",
-        "v1_21_9_10":"0.133.14+1.21.9"
+        "v1_21_9_10":"0.133.14+1.21.9",
+        "v1_21_11":"0.139.4+1.21.11"
 ]
 
 def modMenuVersions = [ // Find them @ https://modrinth.com/mod/modmenu
@@ -50,6 +52,7 @@ def modMenuVersions = [ // Find them @ https://modrinth.com/mod/modmenu
         "v1_21_5": "14.0.0-rc.2",
         "v1_21_6_8": "15.0.0",
         "v1_21_9_10": "16.0.0-rc.1",
+        "v1_21_11":"17.0.0-alpha.1"
 ]
 
 def clothConfigVersions = [ // Find them @ https://modrinth.com/mod/cloth-config
@@ -57,13 +60,15 @@ def clothConfigVersions = [ // Find them @ https://modrinth.com/mod/cloth-config
         "v1_21_5": "18.0.145",
         "v1_21_6_8": "19.0.147",
         "v1_21_9_10": "20.0.148",
+        "v1_21_11":"20.0.148"
 ]
 
 def loaderVersion= [ // Find them @ https://fabricmc.net/develop
         "v1_21_0_4": "0.16.10",
         "v1_21_5": "0.16.10",
         "v1_21_6_8": "0.16.14",
-        "v1_21_9_10":"0.17.2"
+        "v1_21_9_10":"0.17.2",
+        "v1_21_11":"0.18.2"
 ]
 
 def resolvedMinecraftVersion = {
@@ -221,10 +226,10 @@ jar {
 // configure the maven publication
 publishing {
     publications {
-        create("mavenJava", MavenPublication) {
-            artifactId = "${project.archivesBaseName}-${targetVersion.replace('v', '')}-${project.version}"
-            from components.java
-        }
+//        create("mavenJava", MavenPublication) {
+//            artifactId = "${project.archivesBaseName}-${targetVersion.replace('v', '')}-${project.version}"
+//            from components.java
+//        }
     }
 
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
