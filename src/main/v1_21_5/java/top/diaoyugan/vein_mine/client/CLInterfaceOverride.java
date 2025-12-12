@@ -46,10 +46,5 @@ public class CLInterfaceOverride implements ClientVersionInterface {
     public InputUtil.Key getConfigKey(int keyCode) {
         return InputUtil.fromKeyCode(keyCode, 0);
     }
-
-    @Override
-    public void createAdvanceConfig(ConfigBuilder cb, ConfigItems ci) {
-        ConfigOverride.createAdvanceConfig(cb, ci);
-    }
 }
 
