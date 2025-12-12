@@ -60,7 +60,7 @@ def clothConfigVersions = [ // Find them @ https://modrinth.com/mod/cloth-config
         "v1_21_5": "18.0.145",
         "v1_21_6_8": "19.0.147",
         "v1_21_9_10": "20.0.148",
-        "v1_21_11":"20.0.148"
+        "v1_21_11":"21.11.151"
 ]
 
 def loaderVersion= [ // Find them @ https://fabricmc.net/develop

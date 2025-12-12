@@ -24,7 +24,7 @@ public abstract class WorldRendererMixin {
      * 在透明层渲染完成后（等价于 WorldRenderEvents.AFTER_TRANSLUCENT）执行。
      */
     @WrapOperation(
-            method = "method_62214", // 这个是 1.21+ 的渲染主循环方法，保持不变即可
+            method = "method_62214", // 这个是 1.21+ 的渲染主循环方法，保持不变即可 (在1.21.11后不可用)
             slice = @Slice(
                     from = @At(
                             value = "INVOKE_STRING",
