@@ -92,7 +92,12 @@ public class RenderOutlines {
                 Vec3d p2 = corners[edge[1]];
                 switch (STYLE) {
                     case THIN_LINES -> drawLineSimple(vertexConsumers.getBuffer(layer), matrix, p1, p2, color);
-                    case RIBBON_THICK_LINES -> drawBillboardRibbon(vertexConsumers.getBuffer(layer), matrix, p1, p2, color, 0.04f);
+                    case RIBBON_THICK_LINES -> {
+                        if(IntrusiveConfig.isEnabled())
+                            drawBillboardRibbon(vertexConsumers.getBuffer(layer), matrix, p1, p2, color, 0.04f);
+                        else
+                            drawLineSimple(vertexConsumers.getBuffer(layer), matrix, p1, p2, color);
+                    }
                     case OLD_TRIANGLES -> drawLineAsQuad_Old(vertexConsumers.getBuffer(layer), matrix, p1, p2, 0.02f, color);
                 }
             }
@@ -132,10 +137,10 @@ public class RenderOutlines {
     // --------------------------
     private static void drawLineSimple(VertexConsumer consumer, Matrix4f matrix, Vec3d p1, Vec3d p2, Color color) {
         consumer.vertex(matrix, (float)p1.x, (float)p1.y, (float)p1.z)
-                .color(color.r, color.g, color.b, color.a)
+                .color(color.r, color.g, color.b, color.a).lineWidth(1.0f)
                 .normal(0, 1, 0);
         consumer.vertex(matrix, (float)p2.x, (float)p2.y, (float)p2.z)
-                .color(color.r, color.g, color.b, color.a)
+                .color(color.r, color.g, color.b, color.a).lineWidth(1.0f)
                 .normal(0, 1, 0);
     }
 
