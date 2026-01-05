@@ -26,7 +26,7 @@ public class SVInterfaceOverride implements ServerVersionInterface {
     }
 
     @Override
-    public void PacketReceive(HighlightBlock.BlockHighlightPayloadC2S payload, ServerPlayNetworking.Context context) {
+    public void PacketReceive(BlockHighlightRequest payload, ServerPlayNetworking.Context context) {
         HighlightBlockOverride.receive(payload, context);
     }
 }

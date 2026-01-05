@@ -2,13 +2,13 @@ package top.diaoyugan.vein_mine.client;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import top.diaoyugan.vein_mine.networking.HighlightBlock;
+import top.diaoyugan.vein_mine.networking.highlightingpacket.BlockHighlightRequest;
+import top.diaoyugan.vein_mine.networking.highlightingpacket.BlockHighlightResponse;
 import top.diaoyugan.vein_mine.utils.Messages;
 import top.diaoyugan.vein_mine.utils.Utils;
 
@@ -21,7 +21,7 @@ public class ClientBlockHighlighting {
 
     public static void onInitialize() {
         // 注册客户端接收处理器
-        ClientPlayNetworking.registerGlobalReceiver(HighlightBlock.BlockHighlightPayloadS2C.ID, ClientBlockHighlighting::receiveCL);
+        ClientPlayNetworking.registerGlobalReceiver(BlockHighlightResponse.ID, ClientBlockHighlighting::receiveCL);
     }
 
 
@@ -38,12 +38,12 @@ public class ClientBlockHighlighting {
     }
 
     public static void sendHighlightPacket(BlockPos blockPos) {
-        ClientPlayNetworking.send(new HighlightBlock.BlockHighlightPayloadC2S(blockPos));
+        ClientPlayNetworking.send(new BlockHighlightRequest(blockPos));
     }
 
-    private static void receiveCL(HighlightBlock.BlockHighlightPayloadS2C payload, ClientPlayNetworking.Context context) {
+    private static void receiveCL(BlockHighlightResponse payload, ClientPlayNetworking.Context context) {
         // 将接收到的多个 BlockPos 转换为 Set
-        Set<BlockPos> newBlocks = new HashSet<>(payload.arrayList());
+        Set<BlockPos> newBlocks = new HashSet<>(payload.positions());
 
         // 如果新旧内容不同，就替换
         if (!ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.equals(newBlocks)) {

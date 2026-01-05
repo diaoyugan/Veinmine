@@ -18,7 +18,7 @@ import net.minecraft.util.Formatting;
 import top.diaoyugan.vein_mine.client.ClientVersionInterface;
 import top.diaoyugan.vein_mine.client.CLInterfaceOverride;
 import top.diaoyugan.vein_mine.client.HotKeys;
-import top.diaoyugan.vein_mine.networking.keybindreciever.KeybindingPayload;
+import top.diaoyugan.vein_mine.networking.keypacket.KeyPressPacket;
 import top.diaoyugan.vein_mine.config.Config;
 import top.diaoyugan.vein_mine.config.ConfigItems;
 
@@ -212,7 +212,7 @@ public class VeinmineConfigScreen extends Screen {
                 .setSaveConsumer((Boolean b) -> {
                     if (client != null && client.player != null) {
                         if (HotKeys.getVeinMineSwitchState()) {
-                            ClientPlayNetworking.send(KeybindingPayload.INSTANCE);
+                            ClientPlayNetworking.send(KeyPressPacket.INSTANCE);
                         }
                     }
                     configItems.useHoldInsteadOfToggle = b;

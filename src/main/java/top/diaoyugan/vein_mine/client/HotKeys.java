@@ -4,8 +4,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import top.diaoyugan.vein_mine.networking.keybindreciever.KeybindingPayload;
-import top.diaoyugan.vein_mine.networking.keybindreciever.KeybindingPayloadResponse;
+import top.diaoyugan.vein_mine.networking.keypacket.KeyPressPacket;
+import top.diaoyugan.vein_mine.networking.keypacket.KeyResponsePacket;
 import top.diaoyugan.vein_mine.utils.Utils;
 
 public class HotKeys {
@@ -13,7 +13,7 @@ public class HotKeys {
     private static boolean lastPressed = false;         // 用于按住模式的状态比较
 
     // 接收服务端返回的状态
-    protected static void receiveKeybindingResponse(KeybindingPayloadResponse response, ClientPlayNetworking.Context context) {
+    protected static void receiveKeybindingResponse(KeyResponsePacket response, ClientPlayNetworking.Context context) {
         veinMineSwitchState = response.state();  // 同步状态
     }
     // 获取客户端状态
@@ -32,12 +32,12 @@ public class HotKeys {
             // 【按住模式】只在状态变化时发送包
             if (isPressed != lastPressed) {
                 lastPressed = isPressed;
-                ClientPlayNetworking.send(KeybindingPayload.INSTANCE);
+                ClientPlayNetworking.send(KeyPressPacket.INSTANCE);
             }
         } else {
             // 【切换模式】按一下切换一次状态
             if (CLI.KeyWasPressed()) {
-                ClientPlayNetworking.send(KeybindingPayload.INSTANCE);
+                ClientPlayNetworking.send(KeyPressPacket.INSTANCE);
             }
         }
 

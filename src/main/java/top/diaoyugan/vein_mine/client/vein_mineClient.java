@@ -3,7 +3,7 @@ package top.diaoyugan.vein_mine.client;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import top.diaoyugan.vein_mine.networking.keybindreciever.KeybindingPayloadResponse;
+import top.diaoyugan.vein_mine.networking.keypacket.KeyResponsePacket;
 
 public class vein_mineClient implements ClientModInitializer {
 
@@ -16,6 +16,6 @@ public class vein_mineClient implements ClientModInitializer {
         ClientVersionInterface CLI = new CLInterfaceOverride();
         CLI.OnInitialize();
 
-        ClientPlayNetworking.registerGlobalReceiver(KeybindingPayloadResponse.ID, HotKeys::receiveKeybindingResponse);
+        ClientPlayNetworking.registerGlobalReceiver(KeyResponsePacket.ID, HotKeys::receiveKeybindingResponse);
     }
 }

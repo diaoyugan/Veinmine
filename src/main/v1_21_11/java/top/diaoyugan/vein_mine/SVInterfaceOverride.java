@@ -6,7 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import top.diaoyugan.vein_mine.networking.HighlightBlock;
+import top.diaoyugan.vein_mine.networking.highlightingpacket.BlockHighlightRequest;
 import top.diaoyugan.vein_mine.networking.HighlightBlockOverride;
 import top.diaoyugan.vein_mine.utils.MessagesOverride;
 import top.diaoyugan.vein_mine.utils.ServerVersionInterface;
@@ -26,7 +26,7 @@ public class SVInterfaceOverride implements ServerVersionInterface {
     }
 
     @Override
-    public void PacketReceive(HighlightBlock.BlockHighlightPayloadC2S payload, ServerPlayNetworking.Context context) {
+    public void PacketReceive(BlockHighlightRequest payload, ServerPlayNetworking.Context context) {
         HighlightBlockOverride.receive(payload, context);
     }
 }

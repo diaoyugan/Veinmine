@@ -12,7 +12,7 @@ import java.util.*;
 public class HighlightBlockOverride {
     protected static final Map<UUID, Set<BlockPos>> playerGlowingBlocks = new HashMap<>();
 
-    public static void receive(HighlightBlock.BlockHighlightPayloadC2S payload, ServerPlayNetworking.Context context) {
+    public static void receive(BlockHighlightRequest payload, ServerPlayNetworking.Context context) {
         BlockPos pos = payload.blockPos();
         ServerPlayerEntity player = context.player();
         ServerWorld world = (ServerWorld) player.getEntityWorld();
@@ -28,7 +28,7 @@ public class HighlightBlockOverride {
                 // 收集所有需要发送的方块
                 newGlowingBlocks.addAll(blocksToBreak);
 
-                ServerPlayNetworking.send(player, new HighlightBlock.BlockHighlightPayloadS2C(new ArrayList<>(newGlowingBlocks)));
+                ServerPlayNetworking.send(player, new BlockHighlightResponse(new ArrayList<>(newGlowingBlocks)));
 
             }
         }
