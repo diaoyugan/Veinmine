@@ -1,12 +1,17 @@
 package top.diaoyugan.vein_mine.client.render;
 
 import com.mojang.blaze3d.opengl.GlStateManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.*;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import top.diaoyugan.vein_mine.client.ClientBlockHighlighting;
 import top.diaoyugan.vein_mine.config.ConfigItems;
@@ -40,35 +45,35 @@ public class RenderOutlines {
         WorldRenderEvents.END_MAIN.register(context -> {
             if (!Utils.getConfig().enableHighlights) return;
 
-            MinecraftClient client = MinecraftClient.getInstance();
-            VertexConsumerProvider.Immediate immediate = client.getBufferBuilders().getEntityVertexConsumers();
-            MatrixStack matrices = context.matrices();
-            Camera camera = context.gameRenderer().getCamera();
+            Minecraft client = Minecraft.getInstance();
+            MultiBufferSource.BufferSource immediate = client.renderBuffers().bufferSource();
+            PoseStack matrices = context.matrices();
+            Camera camera = context.gameRenderer().getMainCamera();
 
             renderHighlights(matrices, immediate, camera);
         });
     }
 
     // 渲染高亮主逻辑
-    public static void renderHighlights(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, Camera camera) {
-        if (MinecraftClient.getInstance().world == null || ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.isEmpty()) return;
+    public static void renderHighlights(PoseStack matrices, MultiBufferSource.BufferSource vertexConsumers, Camera camera) {
+        if (Minecraft.getInstance().level == null || ClientBlockHighlighting.HIGHLIGHTED_BLOCKS.isEmpty()) return;
 
         if (!initialized) {
             initialized = true;
             CustomLayers.init();
         }
 
-        Vec3d camPos = camera.getCameraPos();
+        Vec3 camPos = camera.position();
 
         prepareGlState();
-        matrices.push();
+        matrices.pushPose();
 
         // 选择 layer：如果启用了 IntrusiveConfig，使用自定义 layer，否则用内置 lines
-        RenderLayer layer = IntrusiveConfig.isEnabled() ? CustomLayers.getLinesNoDepth() : RenderLayers.lines();
+        RenderType layer = IntrusiveConfig.isEnabled() ? CustomLayers.getLinesNoDepth() : RenderTypes.lines();
         Color color = getConfigColor();
 
         // 获取 Matrix4f（world -> view）
-        Matrix4f matrix = matrices.peek().getPositionMatrix();
+        Matrix4f matrix = matrices.last().pose();
 
         // 对每个高亮方块写顶点
         for (BlockPos pos : ClientBlockHighlighting.HIGHLIGHTED_BLOCKS) {
@@ -76,20 +81,20 @@ public class RenderOutlines {
             double y = pos.getY() - camPos.y;
             double z = pos.getZ() - camPos.z;
 
-            Vec3d[] corners = new Vec3d[]{
-                    new Vec3d(x, y, z),
-                    new Vec3d(x + 1, y, z),
-                    new Vec3d(x + 1, y + 1, z),
-                    new Vec3d(x, y + 1, z),
-                    new Vec3d(x, y, z + 1),
-                    new Vec3d(x + 1, y, z + 1),
-                    new Vec3d(x + 1, y + 1, z + 1),
-                    new Vec3d(x, y + 1, z + 1)
+            Vec3[] corners = new Vec3[]{
+                    new Vec3(x, y, z),
+                    new Vec3(x + 1, y, z),
+                    new Vec3(x + 1, y + 1, z),
+                    new Vec3(x, y + 1, z),
+                    new Vec3(x, y, z + 1),
+                    new Vec3(x + 1, y, z + 1),
+                    new Vec3(x + 1, y + 1, z + 1),
+                    new Vec3(x, y + 1, z + 1)
             };
 
             for (int[] edge : EDGES) {
-                Vec3d p1 = corners[edge[0]];
-                Vec3d p2 = corners[edge[1]];
+                Vec3 p1 = corners[edge[0]];
+                Vec3 p2 = corners[edge[1]];
                 switch (STYLE) {
                     case THIN_LINES -> drawLineSimple(vertexConsumers.getBuffer(layer), matrix, p1, p2, color);
                     case RIBBON_THICK_LINES -> {
@@ -104,9 +109,9 @@ public class RenderOutlines {
         }
 
         // 提交缓冲（必须）
-        vertexConsumers.draw();
+        vertexConsumers.endBatch();
 
-        matrices.pop();
+        matrices.popPose();
         resetGlState();
     }
 
@@ -135,46 +140,46 @@ public class RenderOutlines {
     // --------------------------
     // 真·线（每条线提交两个顶点 -> DrawMode.LINES）
     // --------------------------
-    private static void drawLineSimple(VertexConsumer consumer, Matrix4f matrix, Vec3d p1, Vec3d p2, Color color) {
-        consumer.vertex(matrix, (float)p1.x, (float)p1.y, (float)p1.z)
-                .color(color.r, color.g, color.b, color.a).lineWidth(1.0f)
-                .normal(0, 1, 0);
-        consumer.vertex(matrix, (float)p2.x, (float)p2.y, (float)p2.z)
-                .color(color.r, color.g, color.b, color.a).lineWidth(1.0f)
-                .normal(0, 1, 0);
+    private static void drawLineSimple(VertexConsumer consumer, Matrix4f matrix, Vec3 p1, Vec3 p2, Color color) {
+        consumer.addVertex(matrix, (float)p1.x, (float)p1.y, (float)p1.z)
+                .setColor(color.r, color.g, color.b, color.a).setLineWidth(1.0f)
+                .setNormal(0, 1, 0);
+        consumer.addVertex(matrix, (float)p2.x, (float)p2.y, (float)p2.z)
+                .setColor(color.r, color.g, color.b, color.a).setLineWidth(1.0f)
+                .setNormal(0, 1, 0);
     }
 
     // --------------------------
     // 粗线：摄像机对齐的 ribbon（保留 TRIANGLES 提交）
     // --------------------------
     private static void drawBillboardRibbon(VertexConsumer consumer, Matrix4f matrix,
-                                            Vec3d p1, Vec3d p2, Color color, float thickness) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        Camera camera = client.gameRenderer.getCamera();
-        Vec3d camPos = camera.getCameraPos();
+                                            Vec3 p1, Vec3 p2, Color color, float thickness) {
+        Minecraft client = Minecraft.getInstance();
+        Camera camera = client.gameRenderer.getMainCamera();
+        Vec3 camPos = camera.position();
 
-        Vec3d dir = p2.subtract(p1);
+        Vec3 dir = p2.subtract(p1);
         double len = dir.length();
         if (len == 0) return;
         dir = dir.normalize();
 
         // 摄像机方向（从点到摄像机）
-        Vec3d camDir = camPos.subtract(p1).normalize();
+        Vec3 camDir = camPos.subtract(p1).normalize();
 
         // 计算侧向向量 = dir x camDir（垂直于线段和平视向量）
-        Vec3d side = dir.crossProduct(camDir);
+        Vec3 side = dir.cross(camDir);
         double sideLen = side.length();
         if (sideLen == 0) {
             // 在极端情况下（线段方向与摄像机方向共线），选一个任意向量保证不为零
-            side = new Vec3d(0, 1, 0);
+            side = new Vec3(0, 1, 0);
         } else {
-            side = side.normalize().multiply(thickness / 2.0);
+            side = side.normalize().scale(thickness / 2.0);
         }
 
-        Vec3d p1a = p1.add(side);
-        Vec3d p1b = p1.subtract(side);
-        Vec3d p2a = p2.add(side);
-        Vec3d p2b = p2.subtract(side);
+        Vec3 p1a = p1.add(side);
+        Vec3 p1b = p1.subtract(side);
+        Vec3 p2a = p2.add(side);
+        Vec3 p2b = p2.subtract(side);
 
         // 两个三角形组成矩形带（提交给 TRIANGLES）
         drawTriangle(consumer, matrix, p1a, p2a, p2b, color);
@@ -184,15 +189,15 @@ public class RenderOutlines {
     // --------------------------
     // 旧三角实现（保留）
     // --------------------------
-    private static void drawLineAsQuad_Old(VertexConsumer consumer, Matrix4f matrix, Vec3d p1, Vec3d p2, float thickness, Color color) {
-        Vec3d dir = p2.subtract(p1).normalize();
-        Vec3d up = (Math.abs(dir.y) > 0.999) ? new Vec3d(1, 0, 0) : new Vec3d(0, 1, 0);
-        Vec3d side = dir.crossProduct(up).normalize().multiply(thickness / 2);
+    private static void drawLineAsQuad_Old(VertexConsumer consumer, Matrix4f matrix, Vec3 p1, Vec3 p2, float thickness, Color color) {
+        Vec3 dir = p2.subtract(p1).normalize();
+        Vec3 up = (Math.abs(dir.y) > 0.999) ? new Vec3(1, 0, 0) : new Vec3(0, 1, 0);
+        Vec3 side = dir.cross(up).normalize().scale(thickness / 2);
 
-        Vec3d p1a = p1.add(side);
-        Vec3d p1b = p1.subtract(side);
-        Vec3d p2a = p2.add(side);
-        Vec3d p2b = p2.subtract(side);
+        Vec3 p1a = p1.add(side);
+        Vec3 p1b = p1.subtract(side);
+        Vec3 p2a = p2.add(side);
+        Vec3 p2b = p2.subtract(side);
 
         drawTriangle(consumer, matrix, p1a, p2a, p2b, color);
         drawTriangle(consumer, matrix, p2b, p1b, p1a, color);
@@ -201,13 +206,13 @@ public class RenderOutlines {
     // --------------------------
     // 基础三角形提交（用于粗线与旧三角）
     // --------------------------
-    private static void drawTriangle(VertexConsumer consumer, Matrix4f matrix, Vec3d v1, Vec3d v2, Vec3d v3, Color color) {
+    private static void drawTriangle(VertexConsumer consumer, Matrix4f matrix, Vec3 v1, Vec3 v2, Vec3 v3, Color color) {
         // texture coords 设为 0,0；normal 固定为 0,1,0（用于简单渲染）
-        consumer.vertex(matrix, (float) v1.x, (float) v1.y, (float) v1.z)
-                .color(color.r, color.g, color.b, color.a).texture(0.0f, 0.0f).normal(0, 1, 0);
-        consumer.vertex(matrix, (float) v2.x, (float) v2.y, (float) v2.z)
-                .color(color.r, color.g, color.b, color.a).texture(0.0f, 0.0f).normal(0, 1, 0);
-        consumer.vertex(matrix, (float) v3.x, (float) v3.y, (float) v3.z)
-                .color(color.r, color.g, color.b, color.a).texture(0.0f, 0.0f).normal(0, 1, 0);
+        consumer.addVertex(matrix, (float) v1.x, (float) v1.y, (float) v1.z)
+                .setColor(color.r, color.g, color.b, color.a).setUv(0.0f, 0.0f).setNormal(0, 1, 0);
+        consumer.addVertex(matrix, (float) v2.x, (float) v2.y, (float) v2.z)
+                .setColor(color.r, color.g, color.b, color.a).setUv(0.0f, 0.0f).setNormal(0, 1, 0);
+        consumer.addVertex(matrix, (float) v3.x, (float) v3.y, (float) v3.z)
+                .setColor(color.r, color.g, color.b, color.a).setUv(0.0f, 0.0f).setNormal(0, 1, 0);
     }
 }

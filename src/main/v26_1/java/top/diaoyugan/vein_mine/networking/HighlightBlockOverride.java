@@ -1,9 +1,9 @@
 package top.diaoyugan.vein_mine.networking;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import top.diaoyugan.vein_mine.networking.highlightingpacket.BlockHighlightRequest;
 import top.diaoyugan.vein_mine.networking.highlightingpacket.BlockHighlightResponse;
 import top.diaoyugan.vein_mine.utils.SmartVein;
@@ -16,8 +16,8 @@ public class HighlightBlockOverride {
 
     public static void receive(BlockHighlightRequest payload, ServerPlayNetworking.Context context) {
         BlockPos pos = payload.blockPos();
-        ServerPlayerEntity player = context.player();
-        ServerWorld world = (ServerWorld) player.getEntityWorld();
+        ServerPlayer player = context.player();
+        ServerLevel world = (ServerLevel) player.level();
 
         // 获取方块的命名空间 ID
         Set<BlockPos> newGlowingBlocks = new HashSet<>();
@@ -36,7 +36,7 @@ public class HighlightBlockOverride {
         }
 
         // 更新存储的活跃实体
-        Set<BlockPos> playerGlowingPos = playerGlowingBlocks.computeIfAbsent(player.getUuid(), k -> new HashSet<>());
+        Set<BlockPos> playerGlowingPos = playerGlowingBlocks.computeIfAbsent(player.getUUID(), k -> new HashSet<>());
         playerGlowingPos.clear();
         playerGlowingPos.addAll(newGlowingBlocks);
     }

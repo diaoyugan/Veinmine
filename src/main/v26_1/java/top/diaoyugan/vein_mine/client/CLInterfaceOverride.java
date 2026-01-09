@@ -1,7 +1,7 @@
 
 package top.diaoyugan.vein_mine.client;
 
-import net.minecraft.client.util.InputUtil;
+import com.mojang.blaze3d.platform.InputConstants;
 import top.diaoyugan.vein_mine.client.keybinding.KeyBinding;
 import top.diaoyugan.vein_mine.client.render.RenderOutlines;
 
@@ -14,16 +14,16 @@ public class CLInterfaceOverride implements ClientVersionInterface {
 
     @Override
     public boolean KeyIsPressed() {
-        return KeyBinding.BINDING.isPressed();
+        return KeyBinding.BINDING.isDown();
     }
 
     @Override
     public boolean KeyWasPressed() {
-        return KeyBinding.BINDING.wasPressed();
+        return KeyBinding.BINDING.consumeClick();
     }
 
     @Override
-    public net.minecraft.client.option.KeyBinding getBinding() {
+    public net.minecraft.client.KeyMapping getBinding() {
         return KeyBinding.BINDING;
     }
 
@@ -33,12 +33,12 @@ public class CLInterfaceOverride implements ClientVersionInterface {
     }
 
     @Override
-    public InputUtil.Key getDefaultKey() {
+    public InputConstants.Key getDefaultKey() {
         return KeyBinding.getDefaultKey(); // 从 KeyProvider 拿
     }
 
     @Override
-    public InputUtil.Key getConfigKey(int keyCode) {
+    public InputConstants.Key getConfigKey(int keyCode) {
         return KeyBinding.getConfigKey(keyCode); // 从 KeyProvider 拿
     }
 }
