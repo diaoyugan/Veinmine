@@ -42,17 +42,11 @@ If you encounter any issues or have any suggestions, feel free to open an issue 
 Or, if you're interested in contribution to our code, welcome to open a PR on GitHub!
 
 ## Build
-For 1.21.3 to 1.21.4 run
+THIS BRANCH TARGETS MINECRAFT 26.1. FOR UPDATES ON 1.21, REFER TO THE 1.21-LEGACY BRANCH.
 
-`./gradlew build -PmcVersion v1_21_3_4`
+For 26.1 run
 
-For 1.21.5 run
-
-`./gradlew build -PmcVersion v1_21_5`
-
-For 1.21.6 to 1.21.8 run
-
-`./gradlew build -PmcVersion v1_21_6_8`
+`./gradlew build -PmcVersion v26_1`
 
 ## License
 This mod is licensed under the GNU General Public License Version 3. See [LICENSE](LICENSE) for details.
