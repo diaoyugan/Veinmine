@@ -3,10 +3,9 @@ package top.diaoyugan.vein_mine.client.render;
 import com.mojang.blaze3d.opengl.GlStateManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.render.*;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -42,12 +41,12 @@ public class RenderOutlines {
 
     // 初始化事件注册（放在 mod 初始化时调用）
     public static void init() {
-        WorldRenderEvents.END_MAIN.register(context -> {
+        LevelRenderEvents.END_MAIN.register(context -> {
             if (!Utils.getConfig().enableHighlights) return;
 
             Minecraft client = Minecraft.getInstance();
             MultiBufferSource.BufferSource immediate = client.renderBuffers().bufferSource();
-            PoseStack matrices = context.matrices();
+            PoseStack matrices = context.poseStack();
             Camera camera = context.gameRenderer().getMainCamera();
 
             renderHighlights(matrices, immediate, camera);

@@ -58,7 +58,7 @@ def clothConfigVersions = [
 ]
 
 def loaderVersion = [
-        "v26_1": "0.18.2"
+        "v26_1": "0.18.4"
 ]
 
 // ========================

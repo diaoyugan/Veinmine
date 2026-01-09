@@ -1,7 +1,7 @@
 package top.diaoyugan.vein_mine.client.keybinding;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping.Category;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.KeyEvent;
@@ -22,7 +22,7 @@ public class KeyBinding {
         InputConstants.Key key = InputConstants.getKey(new KeyEvent(keyCode, 0, 0));
 
 
-        BINDING = KeyBindingHelper.registerKeyBinding(new net.minecraft.client.KeyMapping(
+        BINDING = KeyMappingHelper.registerKeyMapping(new net.minecraft.client.KeyMapping(
                 "key.vm.switch",
                 key.getValue(),
                 VM_CATEGORY

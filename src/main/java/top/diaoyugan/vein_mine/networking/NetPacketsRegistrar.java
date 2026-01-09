@@ -15,12 +15,12 @@ public final class NetPacketsRegistrar {
 
     public static void init() {
         // Keybinding packets
-        PayloadTypeRegistry.playC2S().register(KeyPressPacket.ID, KeyPressPacket.CODEC);
-        PayloadTypeRegistry.playS2C().register(KeyResponsePacket.ID, KeyResponsePacket.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(KeyPressPacket.ID, KeyPressPacket.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(KeyResponsePacket.ID, KeyResponsePacket.CODEC);
 
         // Block highlight packets
-        PayloadTypeRegistry.playC2S().register(BlockHighlightRequest.ID, BlockHighlightRequest.CODEC);
-        PayloadTypeRegistry.playS2C().register(BlockHighlightResponse.ID, BlockHighlightResponse.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(BlockHighlightRequest.ID, BlockHighlightRequest.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(BlockHighlightResponse.ID, BlockHighlightResponse.CODEC);
 
         // Register C2S receiver for BlockHighlightRequest when a player connection initializes.
         ServerPlayConnectionEvents.INIT.register((handler, server) ->

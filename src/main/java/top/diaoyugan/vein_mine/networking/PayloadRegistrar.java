@@ -8,12 +8,12 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 public final class PayloadRegistrar {
     private PayloadRegistrar() {}
 
-    public static <T extends CustomPacketPayload> void registerPlayC2S(CustomPacketPayload.Type<T> id, StreamCodec<FriendlyByteBuf, T> codec) {
-        PayloadTypeRegistry.playC2S().register(id, codec);
+    public static <T extends CustomPacketPayload> void registerServerboundPlay(CustomPacketPayload.Type<T> id, StreamCodec<FriendlyByteBuf, T> codec) {
+        PayloadTypeRegistry.serverboundPlay().register(id, codec);
     }
 
-    public static <T extends CustomPacketPayload> void registerPlayS2C(CustomPacketPayload.Type<T> id, StreamCodec<FriendlyByteBuf, T> codec) {
-        PayloadTypeRegistry.playS2C().register(id, codec);
+    public static <T extends CustomPacketPayload> void registerClientboundPlay(CustomPacketPayload.Type<T> id, StreamCodec<FriendlyByteBuf, T> codec) {
+        PayloadTypeRegistry.clientboundPlay().register(id, codec);
     }
 
     // 初始化入口（方便未来统一调用）
