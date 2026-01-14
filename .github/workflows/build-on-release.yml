@@ -53,7 +53,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: veinmine-all.zip
-          path: **/build/libs/*.jar
+          path: |
+            fabric/build/libs/*.jar
+            neoforge/build/libs/*.jar
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
