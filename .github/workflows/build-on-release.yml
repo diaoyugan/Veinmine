@@ -37,12 +37,7 @@ jobs:
         run: rm -rf ~/.gradle/caches/fabric-loom
 
       - name: Build All Versions
-        run: |
-          versions=(v26_1)
-          for version in "${versions[@]}"; do
-            echo "Building for $version"
-            ./gradlew build -Pmc_version=$version || exit 1
-          done
+        run: ./gradlew build --no-daemon
 
       - name: Extract Release Notes
         id: extract-release-info
@@ -58,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: veinmine-all.zip
-          path: build/libs/*.jar
+          path: **/build/libs/*.jar
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -67,8 +62,8 @@ jobs:
           name: ${{ steps.extract-release-info.outputs.title }}
           body: ${{ steps.extract-release-info.outputs.body }}
           files: |
-            build/libs/*.jar
-            build/libs/*.json
+            **/build/libs/*.jar
+            **/build/libs/*.json
           draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
