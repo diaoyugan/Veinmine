@@ -1,0 +1,48 @@
+modLoader = "javafml"
+loaderVersion = "${neoforge_loader_version_range}"
+license = "${license}"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${version}"
+displayName = "vein mine"
+logoFile = "${mod_id}.png"
+
+authors = "钓鱼竿呀(diaoyugan), momo(HarukaB, aka HarukaC on modrinth)"
+
+description = '''
+A mod that allows you to mine veins of blocks
+'''
+
+# ===== 联系信息（fabric 的 contact 对应）=====
+displayURL = "https://modrinth.com/mod/veinmine"
+issueTrackerURL = "https://github.com/diaoyugan/Veinmine/issues"
+
+# ===== Mixin =====
+[[mixins]]
+config = "${mod_id}.mixins.json"
+
+[[mixins]]
+config = "${mod_id}.neoforge.mixins.json"
+
+# ===== 依赖 =====
+[[dependencies."${mod_id}"]]
+modId = "neoforge"
+type = "required"
+versionRange = "[${neoforge_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+
+# Features are specific properties of the game environment, that you may want to declare you require. This example declares
+# that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
+# stop your mod loading on the server for example.
+#[features.${mod_id}]
+#openGLVersion="[3.2,)"
