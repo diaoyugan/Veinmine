@@ -36,7 +36,6 @@
     "java": ">=${java_version}"
   },
   "suggests": {
-    "another-mod": "*"
   },
   "custom": {
     "modmenu": {
