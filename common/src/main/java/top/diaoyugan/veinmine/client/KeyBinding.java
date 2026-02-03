@@ -6,10 +6,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
+import top.diaoyugan.veinmine.Constants;
 import top.diaoyugan.veinmine.config.Config;
 
 public class KeyBinding {
-    public static final KeyMapping.Category VM_CATEGORY = KeyMapping.Category.register(Identifier.parse("key.category.vm.switch"));
+    //mojang小时候出生取名叫mojang但是强制继承其父姓于是叫做Markus.Persson.Mojang.Studios
+    //后来被微软收购了 现在叫做Microsoft.Xbox.Game.Studios.Mojang.Studios
+    //什么傻逼会没事干给你的命名强制加前缀啊？？
+    public static final KeyMapping.Category VM_CATEGORY =
+            KeyMapping.Category.register(
+                    Identifier.fromNamespaceAndPath(
+                            Constants.ID,"switch"
+                    ))
+            ;
     public static net.minecraft.client.KeyMapping BINDING;
 
 

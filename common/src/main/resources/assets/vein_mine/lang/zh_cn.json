@@ -2,7 +2,7 @@
   "modmenu.nameTranslation.vein_mine": "连锁挖掘",
   "modmenu.descriptionTranslation.vein_mine": "一个可以让你破坏多个相连方块的 mod",
   "modmenu.summaryTranslation.vein_mine": "一个可以让你破坏多个相连方块的 mod",
-  "key.category.vm.switch": "连锁挖掘",
+  "key.category.vein_mine.switch": "连锁挖掘",
   "key.vm.switch": "激活按键",
   "vm.switch_state": "连锁挖掘",
   "vm.config.screen.title": "连锁挖掘 配置",
@@ -52,5 +52,7 @@
   "vm.config.useIntrusiveCode": "使用入侵性的代码",
   "vm.config.useIntrusiveCode.tooltip": "开启此选项将启用专用RenderLayer和RenderPipeline以渲染可穿墙的高亮边框。\n若与其他模组冲突导致崩溃或高亮不可见，请关闭此选项。\n更改此选项需要重启游戏才能生效。\n\n关闭后，方块高亮将无法穿透方块显示。",
   "vm.config.enableHighlights": "是否渲染高亮预览",
-  "vm.config.enableHighlights.tooltip": "关闭后将不会渲染高亮线框"
+  "vm.config.enableHighlights.tooltip": "关闭后将不会渲染高亮线框",
+  "vm.config.save_and_exit": "保存并退出",
+  "vm.config.cancel": "取消"
 }

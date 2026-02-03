@@ -2,7 +2,7 @@
   "modmenu.nameTranslation.vein_mine": "Vein Mine",
   "modmenu.descriptionTranslation.vein_mine": "Allow you to mine multiple blocks at the same time",
   "modmenu.summaryTranslation.vein_mine": "Allow you to mine multiple blocks at the same time",
-  "key.category.vm.switch": "Vein Mine",
+  "key.category.vein_mine.switch": "Vein Mine",
   "key.vm.switch": "Activation Key",
   "key.vm.switch.tooltip": "Bind activation key here",
   "vm.switch_state": "Vein Mining",
@@ -52,5 +52,7 @@
   "vm.config.useIntrusiveCode": "Enable Intrusive Code",
   "vm.config.useIntrusiveCode.tooltip": "Enabling this option will activate a dedicated RenderLayer and RenderPipeline to render wall-penetrating highlight outlines.\nIf it causes crashes or invisible highlights due to conflicts with other mods, please disable this option.\nChanging this setting requires restarting the game to take effect.\n\nWhen disabled, block highlights will no longer be visible through blocks.",
   "vm.config.enableHighlights": "Render highlight preview",
-  "vm.config.enableHighlights.tooltip": "When disabled, highlight outlines will not be rendered"
+  "vm.config.enableHighlights.tooltip": "When disabled, highlight outlines will not be rendered",
+  "vm.config.save_and_exit": "Save & Exit",
+  "vm.config.cancel": "Cancel"
 }

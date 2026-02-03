@@ -5,14 +5,12 @@ license = "${license}"
 [[mods]]
 modId = "${mod_id}"
 version = "${version}"
-displayName = "vein mine"
-logoFile = "${mod_id}.png"
+displayName = "Vein Mine"
+logoFile = "assets/${mod_id}/icon.png"
 
 authors = "钓鱼竿呀(diaoyugan), momo(HarukaB, aka HarukaC on modrinth)"
 
-description = '''
-A mod that allows you to mine veins of blocks
-'''
+description = "Allow you to mine multiple blocks at the same time"
 
 # ===== 联系信息（fabric 的 contact 对应）=====
 displayURL = "https://modrinth.com/mod/veinmine"

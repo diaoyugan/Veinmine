@@ -2,7 +2,7 @@
   "modmenu.nameTranslation.vein_mine": "連鎖挖掘",
   "modmenu.descriptionTranslation.vein_mine": "可以一次破壞多個相連方塊的模組",
   "modmenu.summaryTranslation.vein_mine": "可以一次破壞多個相連方塊的模組",
-  "key.category.vm.switch": "連鎖挖掘",
+  "key.category.vein_mine.switch": "連鎖挖掘",
   "key.vm.switch": "切換啟動",
   "vm.switch_state": "連鎖挖掘狀態",
   "vm.config.screen.title": "連鎖挖掘設定選單",
@@ -52,5 +52,7 @@
   "vm.config.useIntrusiveCode": "使用侵入式程式碼",
   "vm.config.useIntrusiveCode.tooltip": "啟用後會使用專用 RenderLayer 與 RenderPipeline，使高亮框線可穿牆顯示。\n若與其他模組衝突導致遊戲崩潰或高亮無法顯示，請關閉此選項。\n更改此設定需重新啟動遊戲。\n關閉後，高亮方塊將無法穿透方塊顯示。",
   "vm.config.enableHighlights": "是否顯示高亮預覽",
-  "vm.config.enableHighlights.tooltip": "關閉後不會顯示高亮框線"
+  "vm.config.enableHighlights.tooltip": "關閉後不會顯示高亮框線",
+  "vm.config.save_and_exit": "儲存並離開",
+  "vm.config.cancel": "取消"
 }

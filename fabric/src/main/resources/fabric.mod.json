@@ -15,7 +15,7 @@
     "homepage": "https://modrinth.com/mod/veinmine"
   },
   "license": "${license}",
-  "icon": "${mod_id}.png",
+  "icon": "assets/${mod_id}/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -23,6 +23,9 @@
     ],
     "client": [
       "top.diaoyugan.veinmine.client.VeinmineClient"
+    ],
+    "modmenu": [
+      "top.diaoyugan.veinmine.client.configScreen.ModMenuIntegration"
     ]
   },
   "mixins": [
