@@ -2,6 +2,7 @@ package top.diaoyugan.veinmine.client.configScreen.widget;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
@@ -13,6 +14,7 @@ public class BooleanOptionWidget extends BaseOptionWidget {
 
     private final BooleanSupplier getter;
     private final Consumer<Boolean> setter;
+    private Component tooltip;
 
     public BooleanOptionWidget(
             int x, int y, int width, int height,
@@ -23,6 +25,10 @@ public class BooleanOptionWidget extends BaseOptionWidget {
         super(x, y, width, height, label);
         this.getter = getter;
         this.setter = setter;
+    }
+
+    public void tooltip(Component tooltip) {
+        setTooltip(Tooltip.create(tooltip));
     }
 
     @Override
