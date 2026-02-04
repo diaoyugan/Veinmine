@@ -25,7 +25,6 @@ public class ConfigItems { // Default configuration
     public int green = 255;
     public int blue = 255;
     public int alpha = 255;
-    public int renderTime = 1;
     public boolean useHoldInsteadOfToggle = false;
     public int keyBindingCode = GLFW.GLFW_KEY_GRAVE_ACCENT; // 默认是 ~ 键
     public final Set<String> defaultProtectedTools = Set.of( // No GUI for this, this is by design!

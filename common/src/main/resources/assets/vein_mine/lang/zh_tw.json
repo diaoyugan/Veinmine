@@ -11,7 +11,7 @@
   "vm.config.bfs_limit": "連鎖模式搜尋上限",
   "vm.config.bfs_limit.tooltip": "設定連鎖模式搜尋的方塊上限",
   "vm.config.ignored_blocks": "連鎖模式忽略方塊",
-  "vm.config.ignored_blocks.tooltip": "連鎖模式會忽略這些方塊，改為使用範圍搜尋\n格式：命名空間:路徑\n例如 minecraft:air",
+  "vm.config.ignored_blocks.tooltip": "連鎖模式會忽略這些方塊，改為使用範圍搜尋\n格式：命名空間:路徑\n例如 minecraft:air\n每一行只寫一項",
   "vm.config.use_bfs": "啟用連鎖搜尋模式",
   "vm.config.use_bfs.tooltip": "是否啟用連鎖搜尋，若關閉，搜尋任何方塊都會使用範圍模式",
   "vm.config.use_radius_search": "啟用範圍搜尋模式",

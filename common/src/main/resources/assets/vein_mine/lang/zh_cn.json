@@ -12,7 +12,7 @@
   "vm.config.bfs_limit": "连锁搜索上限",
   "vm.config.bfs_limit.tooltip": "设置连锁模式搜索的方块上限",
   "vm.config.ignored_blocks": "连锁忽略方块",
-  "vm.config.ignored_blocks.tooltip": "被连锁模式忽略的方块将会使用范围搜索\n格式应为：\n命名空间:路径\n如minecraft:air",
+  "vm.config.ignored_blocks.tooltip": "被连锁模式忽略的方块将会使用范围搜索\n格式应为：\n命名空间:路径\n如minecraft:air\n一行写一条",
   "vm.config.use_bfs": "启用连锁搜索",
   "vm.config.use_bfs.tooltip": "设置是否启用连锁搜索\n如果关闭，搜索任何方块将使用范围搜索模式",
   "vm.config.use_radius_search": "启用范围搜索",

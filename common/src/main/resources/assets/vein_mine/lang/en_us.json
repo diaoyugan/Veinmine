@@ -17,7 +17,7 @@
   "vm.config.bfs_limit": "Chain Search Limit",
   "vm.config.bfs_limit.tooltip": "Set the maximum number of blocks\nfor chain mode search",
   "vm.config.ignored_blocks": "Chain Ignored Blocks",
-  "vm.config.ignored_blocks.tooltip": "Blocks ignored in chain mode\nwill use range search instead\nFormat: namespace:path, e.g. minecraft:air",
+  "vm.config.ignored_blocks.tooltip": "Blocks ignored in chain mode\nwill use range search instead\nFormat: namespace:path, e.g. minecraft:air\nOne item per line",
   "vm.config.use_bfs": "Enable Chain Search",
   "vm.config.use_bfs.tooltip": "Enable or disable chain search mode\nIf disabled, range search mode\nwill be used for all blocks",
   "vm.config.use_radius_search": "Enable Range Search",
