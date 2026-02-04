@@ -65,8 +65,8 @@ public class ConfigScreen extends Screen {
                         20,              // 高度
                         Component.translatable("vm.config.bfs_limit"), // 标签
                         1, 256,           // min/max
-                        () -> items.searchRadius,           // getter: 读取缓存值
-                        v -> items.searchRadius = v // setter
+                        () -> items.BFSLimit,           // getter: 读取缓存值
+                        v -> items.BFSLimit = v // setter
                 );
         bfs_limitOption.tooltip(Component.translatable("vm.config.bfs_limit.tooltip"));
         addRenderableWidget(bfs_limitOption);
@@ -83,6 +83,31 @@ public class ConfigScreen extends Screen {
                 );
         search_radiusOption.tooltip(Component.translatable("vm.config.search_radius.tooltip"));
         addRenderableWidget(search_radiusOption);
+
+
+        BooleanOptionWidget useRadiusSearchWhenReachBFSLimitOption = new BooleanOptionWidget(
+                centerX - 100,
+                y + 96,
+                200,
+                20,
+                Component.translatable("vm.config.use_radius_search_when_reach_bfs_limit"),
+                () -> items.useRadiusSearchWhenReachBFSLimit,
+                v -> items.useRadiusSearchWhenReachBFSLimit = v
+        );
+        useRadiusSearchWhenReachBFSLimitOption.tooltip(Component.translatable("vm.config.use_radius_search_when_reach_bfs_limit.tooltip"));
+        addRenderableWidget(useRadiusSearchWhenReachBFSLimitOption);
+
+        BooleanOptionWidget highlightBlocksMessageOption = new BooleanOptionWidget(
+                centerX - 100,
+                y + 120,
+                200,
+                20,
+                Component.translatable("vm.config.highlight_blocks_message"),
+                () -> items.highlightBlocksMessage,
+                v -> items.highlightBlocksMessage = v
+        );
+        highlightBlocksMessageOption.tooltip(Component.translatable("vm.config.highlight_blocks_message.tooltip"));
+        addRenderableWidget(highlightBlocksMessageOption);
 
 
         int btnY = height - 28;
@@ -104,20 +129,15 @@ public class ConfigScreen extends Screen {
     private void saveAndExit() {
         Config.getInstance().save();
 
-        if (minecraft != null) {
-            minecraft.setScreen(parent);
-        }
+        minecraft.setScreen(parent);
     }
 
     private void discardAndExit() {
-        if (minecraft != null) {
-            minecraft.setScreen(parent);
-        }
+        minecraft.setScreen(parent);
     }
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float delta) {
-        //renderBackground(g,mouseX,mouseY,delta);
         super.render(g, mouseX, mouseY, delta);
     }
 
