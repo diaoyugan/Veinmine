@@ -1,16 +1,11 @@
 package top.diaoyugan.veinmine.client;
 
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-import net.neoforged.neoforge.client.network.registration.ClientNetworkRegistry;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import top.diaoyugan.veinmine.Constants;
 import top.diaoyugan.veinmine.client.highlight.ClientHighlightCallbacks;
-import top.diaoyugan.veinmine.client.highlight.ClientHighlightLogic;
 import top.diaoyugan.veinmine.networking.highlightingpacket.BlockHighlightRequest;
 import top.diaoyugan.veinmine.networking.highlightingpacket.BlockHighlightResponse;
 import top.diaoyugan.veinmine.utils.SmartVein;

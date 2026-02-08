@@ -9,7 +9,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import top.diaoyugan.veinmine.Constants;
-import top.diaoyugan.veinmine.VeinmineCore;
 
 @EventBusSubscriber(modid = Constants.ID)
 public class PlayerBreakBlock {
@@ -19,7 +18,7 @@ public class PlayerBreakBlock {
         BlockPos pos = event.getPos();
         BlockState state = event.getState();
         Level level = event.getPlayer().level();
-        VeinmineCore.onBlockBreak(level, player , pos, state, null);
+        BlockBreak.onBlockBreak(level, player , pos, state, null);
     }
 }
 

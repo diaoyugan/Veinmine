@@ -45,7 +45,6 @@ public final class OutlineRenderer {
         Vec3 camPos = camera.position();
         Matrix4f matrix = matrices.last().pose();
 
-        prepareGlState();
         matrices.pushPose();
 
         VertexConsumer consumer = buffers.getBuffer(renderType);
@@ -87,7 +86,6 @@ public final class OutlineRenderer {
 
         buffers.endBatch();
         matrices.popPose();
-        resetGlState();
     }
 
     /* ================= GL ================= */

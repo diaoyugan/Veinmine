@@ -3,11 +3,9 @@ package top.diaoyugan.veinmine.client.render;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import top.diaoyugan.veinmine.Constants;
 import top.diaoyugan.veinmine.client.highlight.ClientHighlightState;
 import top.diaoyugan.veinmine.config.IntrusiveConfig;
@@ -28,7 +26,7 @@ public final class NeoOutlineRenderHook {
                 mc.gameRenderer.getMainCamera(),
                 ClientHighlightState.HIGHLIGHTED_BLOCKS,
                 IntrusiveConfig.isEnabled()
-                        ? CustomLayers.getLinesNoDepth()
+                        ? CustomRenderTypes.getLinesNoDepth()
                         : RenderTypes.lines(),
                 OutlineRenderer.LineStyle.RIBBON_THICK_LINES,
                 UtilsColorHelper.fromConfig(),

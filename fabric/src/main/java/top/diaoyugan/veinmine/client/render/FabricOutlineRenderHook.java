@@ -21,7 +21,7 @@ public final class FabricOutlineRenderHook {
                     ctx.gameRenderer().getMainCamera(),
                     ClientHighlightState.HIGHLIGHTED_BLOCKS,
                     IntrusiveConfig.isEnabled()
-                            ? CustomLayers.getLinesNoDepth()
+                            ? CustomRenderTypes.getLinesNoDepth()
                             : RenderTypes.lines(),
                     OutlineRenderer.LineStyle.RIBBON_THICK_LINES,
                     UtilsColorHelper.fromConfig(),

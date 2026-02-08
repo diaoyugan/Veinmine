@@ -10,7 +10,8 @@ public final class ClientHighlightLogic {
     private ClientHighlightLogic() {}
 
     public static BlockPos getLookedBlock(LocalPlayer player) {
-        HitResult hit = player.pick(player.getPickRadius(), 0, false);
+        //TODO:密切关注这群傻逼什么时候改回来
+        HitResult hit = player.pick(/*player.getPickRadius() 幽默ojang让这个值永远返回0*/ 10, 0, false);
         if (hit.getType() == HitResult.Type.BLOCK) {
             return ((BlockHitResult) hit).getBlockPos();
         } else {

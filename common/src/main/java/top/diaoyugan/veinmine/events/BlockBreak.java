@@ -1,4 +1,4 @@
-package top.diaoyugan.veinmine;
+package top.diaoyugan.veinmine.events;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -25,7 +25,7 @@ import java.util.List;
 
 import static top.diaoyugan.veinmine.utils.Utils.*;
 
-public class VeinmineCore {
+public class BlockBreak {
 
     public static void onBlockBreak(Level world, Player player, BlockPos pos, BlockState state, BlockEntity entity) {
         if (!getVeinMineSwitchState(player)) return; // 玩家未开启连锁采集，直接返回
