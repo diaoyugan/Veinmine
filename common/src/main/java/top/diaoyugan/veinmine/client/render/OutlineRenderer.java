@@ -107,10 +107,10 @@ public final class OutlineRenderer {
     private static void drawLineSimple(VertexConsumer c, Matrix4f m, Vec3 p1, Vec3 p2, Color col) {
         c.addVertex(m, (float)p1.x, (float)p1.y, (float)p1.z)
                 .setColor(col.r, col.g, col.b, col.a)
-                .setNormal(0, 1, 0);
+                .setNormal(0, 1, 0).setLineWidth(2);
         c.addVertex(m, (float)p2.x, (float)p2.y, (float)p2.z)
                 .setColor(col.r, col.g, col.b, col.a)
-                .setNormal(0, 1, 0);
+                .setNormal(0, 1, 0).setLineWidth(2);
     }
 
     private static void drawBillboardRibbon(
