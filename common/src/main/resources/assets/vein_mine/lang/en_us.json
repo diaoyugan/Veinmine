@@ -50,7 +50,7 @@
   "vm.config.screen.keysAndBinding": "Keys & Binding",
   "vm.config.screen.final_resort": "Advanced",
   "vm.config.useIntrusiveCode": "Enable Intrusive Code",
-  "vm.config.useIntrusiveCode.tooltip": "Enabling this option will activate a dedicated RenderLayer and RenderPipeline to render wall-penetrating highlight outlines.\nIf it causes crashes or invisible highlights due to conflicts with other mods, please disable this option.\nChanging this setting requires restarting the game to take effect.\n\nWhen disabled, block highlights will no longer be visible through blocks.",
+  "vm.config.useIntrusiveCode.tooltip": "Enabling this option will activate a dedicated RenderTypes and RenderPipeline to render wall-penetrating highlight outlines.\nIf it causes crashes or invisible highlights due to conflicts with other mods, please disable this option.\nChanging this setting requires restarting the game to take effect.\n\nWhen disabled, block highlights will no longer be visible through blocks.",
   "vm.config.enableHighlights": "Render highlight preview",
   "vm.config.enableHighlights.tooltip": "When disabled, highlight outlines will not be rendered",
   "vm.config.save_and_exit": "Save & Exit",

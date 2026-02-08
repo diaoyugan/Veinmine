@@ -15,21 +15,24 @@ public class IntSliderOptionWidget extends AbstractSliderButton {
     private final IntSupplier getter;
     private final IntConsumer setter;
     private final Component label;
+    private final boolean isPercentage;  // 新增的参数，用于判断是否显示百分比
 
     public IntSliderOptionWidget(
             int x, int y, int width, int height,
             Component label,
             int min, int max,
             IntSupplier getter,
-            IntConsumer setter
+            IntConsumer setter,
+            boolean isPercentage  // 添加参数来控制是否显示百分比
     ) {
         super(x, y, width, height, label, (getter.getAsInt() - min) / (double) (max - min));
         this.min = min;
         this.max = max;
         this.getter = getter;
         this.setter = setter;
-        this.label = label; // 保留原始文字
-        updateMessage();
+        this.label = label;
+        this.isPercentage = isPercentage;  // 保存传入的值
+        updateMessage();  // 初始化时更新显示消息
     }
 
     public void tooltip(Component tooltip) {
@@ -39,7 +42,17 @@ public class IntSliderOptionWidget extends AbstractSliderButton {
     @Override
     protected void updateMessage() {
         int value = getValue();
-        setMessage(Component.literal(label.getString() + ": " + value));
+        String displayValue;
+
+        if (isPercentage) {
+            // 如果是百分比，显示百分比格式
+            displayValue = String.format("%s: %.0f%%", label.getString(), value * 100.0 / (max - min));
+        } else {
+            // 否则显示原始值
+            displayValue = label.getString() + ": " + value;
+        }
+
+        setMessage(Component.literal(displayValue));  // 更新显示的文本
     }
 
     @Override
@@ -48,8 +61,8 @@ public class IntSliderOptionWidget extends AbstractSliderButton {
     }
 
     private int getValue() {
-        return min + (int) Math.round(value * (max - min));
+        return min + (int) Math.round(value * (max - min));  // 根据滑块的值计算实际值
     }
-
 }
+
 

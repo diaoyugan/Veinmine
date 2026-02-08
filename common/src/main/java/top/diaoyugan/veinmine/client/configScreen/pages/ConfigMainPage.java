@@ -1,10 +1,11 @@
-package top.diaoyugan.veinmine.client.configScreen;
+package top.diaoyugan.veinmine.client.configScreen.pages;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
+import top.diaoyugan.veinmine.client.configScreen.widget.VerticalLayout;
 import top.diaoyugan.veinmine.client.configScreen.widget.BooleanOptionWidget;
 import top.diaoyugan.veinmine.client.configScreen.widget.IntSliderOptionWidget;
 import top.diaoyugan.veinmine.client.configScreen.widget.TitleWidget;
@@ -66,7 +67,8 @@ public class ConfigMainPage {
                 "vm.config.bfs_limit",
                 1, 256,
                 () -> items.BFSLimit,
-                v -> items.BFSLimit = v
+                v -> items.BFSLimit = v,
+                false
         ));
         layout.next(20);
 
@@ -76,7 +78,8 @@ public class ConfigMainPage {
                 "vm.config.search_radius",
                 1, 10,
                 () -> items.searchRadius,
-                v -> items.searchRadius = v
+                v -> items.searchRadius = v,
+                false
         ));
         layout.next(20);
 
@@ -163,7 +166,8 @@ public class ConfigMainPage {
             int min,
             int max,
             IntSupplier getter,
-            IntConsumer setter
+            IntConsumer setter,
+            Boolean isPercentage
     ) {
         IntSliderOptionWidget widget = new IntSliderOptionWidget(
                 layout.x(),
@@ -174,7 +178,8 @@ public class ConfigMainPage {
                 min,
                 max,
                 getter,
-                setter
+                setter,
+                isPercentage
         );
         widget.tooltip(Component.translatable(key + ".tooltip"));
         return widget;

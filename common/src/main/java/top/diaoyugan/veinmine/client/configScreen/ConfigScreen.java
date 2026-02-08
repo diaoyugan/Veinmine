@@ -1,8 +1,13 @@
 package top.diaoyugan.veinmine.client.configScreen;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Style;
+import top.diaoyugan.veinmine.client.configScreen.pages.ConfigAdvancedPage;
+import top.diaoyugan.veinmine.client.configScreen.pages.ConfigHighlightsPage;
+import top.diaoyugan.veinmine.client.configScreen.pages.ConfigMainPage;
 import top.diaoyugan.veinmine.client.configScreen.widget.TitleWidget;
 import top.diaoyugan.veinmine.config.Config;
 
@@ -18,9 +23,11 @@ public class ConfigScreen extends Screen {
     private final ConfigItems items = Config.getInstance().getConfigItems();
 
     private final List<List<AbstractWidget>> pages = new ArrayList<>();
-    private int currentPage = 0;
+    public int currentPage = 0;
 
     private ConfigMainPage mainPage;
+    private ConfigAdvancedPage advancedPage;
+    private ConfigHighlightsPage configHighlightsPage;
 
     public ConfigScreen(Screen parent) {
         super(Component.translatable("vm.config.screen.title"));
@@ -33,11 +40,11 @@ public class ConfigScreen extends Screen {
 
         pages.clear();
 
-        // Page 1
+        // Page 1 index 0
         mainPage = new ConfigMainPage(items);
         pages.add(mainPage.build(centerX));
 
-        // Page 2
+        // Page 2 index 1
         List<AbstractWidget> page2 = new ArrayList<>();
         page2.add(new TitleWidget(
                 centerX - 100,
@@ -46,14 +53,22 @@ public class ConfigScreen extends Screen {
         ));
         pages.add(page2);
 
-        // Page 3
-        List<AbstractWidget> page3 = new ArrayList<>();
-        page3.add(new TitleWidget(
+        // Page 3 index 2
+        configHighlightsPage = new ConfigHighlightsPage(items);
+        pages.add(configHighlightsPage.build(centerX));
+
+        // Page 4 index 3
+        List<AbstractWidget> page4 = new ArrayList<>();
+        page4.add(new TitleWidget(
                 centerX - 100,
                 30,
-                Component.translatable("vm.config.screen.highlights")
+                Component.translatable("vm.config.screen.keysAndBinding")
         ));
-        pages.add(page3);
+        pages.add(page4);
+
+        // Page 5 index 4
+        advancedPage = new ConfigAdvancedPage(items);
+        pages.add(advancedPage.build(centerX));
 
         // 顶部翻页按钮
         addRenderableWidget(Button.builder(
@@ -74,6 +89,19 @@ public class ConfigScreen extends Screen {
                 .bounds(10, 58, 60, 20)
                 .build());
 
+        addRenderableWidget(Button.builder(
+                        Component.translatable("vm.config.screen.keysAndBinding"),
+                        b -> showPage(3))
+                .bounds(10, 82, 60, 20)
+                .build());
+
+        addRenderableWidget(Button.builder(
+                        Component.translatable("vm.config.screen.final_resort")
+                                .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)),
+                        b -> showPage(4))
+                .bounds(10, 106, 60, 20)
+                .build());
+
         int bottomY = height - 28;
 
         addRenderableWidget(Button.builder(
@@ -91,7 +119,7 @@ public class ConfigScreen extends Screen {
         showPage(0);
     }
 
-    private void showPage(int index) {
+    public void showPage(int index) {
         if (currentPage < pages.size()) {
             for (AbstractWidget w : pages.get(currentPage)) {
                 removeWidget(w);

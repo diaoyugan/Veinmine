@@ -1,4 +1,4 @@
-package top.diaoyugan.veinmine.client.configScreen;
+package top.diaoyugan.veinmine.client.configScreen.widget;
 
 public class VerticalLayout {
 
