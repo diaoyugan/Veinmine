@@ -15,7 +15,7 @@ For fabric, it's recommended to install [**ModMenu**](https://modrinth.com/mod/m
 
 
 ## Configuration
-- Open the **modmenu** to customize Vein Mine's behavior. OR
+- Open the **mods** menu to customize Vein Mine's behavior. OR
 - Edit the configuration file located in `.minecraft/config/veinmine.json`.
 - [Configuration Guide](~~~~https://github.com/diaoyugan/Veinmine/blob/master/config_docs/config_en_us.md)
 
