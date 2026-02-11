@@ -1,10 +1,7 @@
-
-
 # Vein Mine - Minecraft Mod
-English [简体中文](readme_zhcn.md)
-
+English | [简体中文](https://github.com/diaoyugan/Veinmine/blob/master/readme_zhcn.md)
 ## Introduction
-Veinmine is a simple, lightweight, and fast-updating Minecraft mod that allows players to efficiently mine connected blocks of the same type. that allows players to efficiently mine connected blocks of the same type. Whether you're mining ores, chopping trees, or gathering resources, this mod makes the process faster and more convenient!
+Veinmine is a simple, lightweight, mulity-loader, and fast-updating Minecraft mod that allows players to efficiently mine connected blocks of the same type. Whether you're mining ores, chopping trees, or gathering resources, this mod makes the process faster and more convenient!
 
 ## Features
 - **Vein Mining:** Break an entire vein of ores or a group of connected blocks with a single action.
@@ -13,27 +10,15 @@ Veinmine is a simple, lightweight, and fast-updating Minecraft mod that allows p
 - **Blacklist:** Control which blocks can't be vein-mined.
 - **Compatibility:** Works seamlessly with other mods and custom blocks.
 
-## Installation
-### Requirements
-- Minecraft
-- Fabric API ([Download](https://modrinth.com/mod/fabric-api))
-- Fabric Loader ([Download](https://fabricmc.net/use/))
-
 ### Recommends
-It's recommended to install [**ModMenu**](https://modrinth.com/mod/modmenu) and [**Cloth Config API**](https://www.curseforge.com/minecraft/mc-mods/cloth-config) for better mod management and easier configuration.
+For fabric, it's recommended to install [**ModMenu**](https://modrinth.com/mod/modmenu) for better mod management and easier configuration.
 
-### Steps
-1. Install [Fabric Loader](https://fabricmc.net/use/).
-2. Download and install [Fabric API](https://modrinth.com/mod/fabric-api).
-3. Download the latest version that's compatible with your game version of Vein Mine.
-4. Place the mod file into the `mods` folder of your Minecraft directory.
-5. Launch the game and enjoy!
 
 ## Configuration
 - Open the **modmenu** to customize Vein Mine's behavior. OR
 - Edit the configuration file located in `.minecraft/config/veinmine.json`.
-- For servers, the configuration file located in `[your Minecraft server directory]/config/veinmine.json`
-- [Configuration Guide](config_docs/config_en_us.md)
+- [Configuration Guide](~~~~https://github.com/diaoyugan/Veinmine/blob/master/config_docs/config_en_us.md)
+
 ## Controls
 - **Press `(~) (default)** to toggle Vein Mine.
 
@@ -41,12 +26,6 @@ It's recommended to install [**ModMenu**](https://modrinth.com/mod/modmenu) and 
 If you encounter any issues or have any suggestions, feel free to open an issue on our [GitHub Issues](https://github.com/diaoyugan/Veinmine/issues) page.
 Or, if you're interested in contribution to our code, welcome to open a PR on GitHub!
 
-## Build
-THIS BRANCH TARGETS MINECRAFT 26.1. FOR UPDATES ON 1.21, REFER TO THE 1.21-LEGACY BRANCH.
-
-For 26.1 run
-
-`./gradlew build -PmcVersion v26_1`
-
 ## License
-This mod is licensed under the GNU General Public License Version 3. See [LICENSE](LICENSE) for details.
+This mod is licensed under the GNU General Public License Version 3. See [LICENSE](https://raw.githubusercontent.com/diaoyugan/Veinmine/refs/heads/master/LICENSE) for details.
+

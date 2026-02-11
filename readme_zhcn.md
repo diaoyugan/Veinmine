@@ -3,7 +3,7 @@
 [English](readme.md) 简体中文
 
 ## 简介
-连锁挖掘是一个简洁，轻量化，更新快速的 Minecraft 模组，允许玩家高效地挖掘相连的相同类型方块。无论是挖矿、砍树还是收集资源，该模组都能让过程更加快捷便利
+连锁挖掘是一个简洁，轻量化，多加载器，更新快速的 Minecraft 模组，允许玩家高效地挖掘相连的相同类型方块。无论是挖矿、砍树还是收集资源，该模组都能让过程更加快捷便利
 
 ## 特性
 - **连锁破坏**：一次性破坏整个矿脉或一组相连方块。
@@ -12,23 +12,11 @@
 - **黑名单**：控制哪些方块可以被连锁挖掘。
 - **兼容性**：与其他模组及自定义方块兼容。
 
-## 安装
-### 需求
-- Minecraft
-- Fabric API ([下载](https://modrinth.com/mod/fabric-api))
-- Fabric Loader ([下载](https://fabricmc.net/use/))
 ### 推荐安装
-推荐安装 [**ModMenu**](https://modrinth.com/mod/modmenu) 和 [**Cloth Config API**](https://www.curseforge.com/minecraft/mc-mods/cloth-config) 以便更好地管理和配置模组。
-
-### 步骤
-1. 安装 [Fabric Loader](https://fabricmc.net/use/)。
-2. 下载并安装 [Fabric API](https://modrinth.com/mod/fabric-api)。
-3. 下载 Vein Mine 的最新版本。
-4. 将模组文件放入 Minecraft 目录下的 `mods` 文件夹。
-5. 启动游戏并享受！
+对于Fabric 推荐安装 [**ModMenu**](https://modrinth.com/mod/modmenu) 和 [**Cloth Config API**](https://www.curseforge.com/minecraft/mc-mods/cloth-config) 以便更好地管理和配置模组。
 
 ## 配置
-- 打开 **modmenu** 自定义 Vein Mine 的行为。
+- 打开 **模组**页面 进行配置。
 - 或者可以编辑 `.minecraft/config/veinmine.json`进行设置。
 - 对于服务端 可以编辑 `[服务端根目录]/config/veinmine.json`
 - [配置文件说明](config_docs/config_zh_cn.md)
