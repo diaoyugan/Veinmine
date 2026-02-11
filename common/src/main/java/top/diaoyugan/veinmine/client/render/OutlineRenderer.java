@@ -88,20 +88,6 @@ public final class OutlineRenderer {
         matrices.popPose();
     }
 
-    /* ================= GL ================= */
-
-    private static void prepareGlState() {
-        GlStateManager._disableDepthTest();
-        GlStateManager._depthMask(false);
-        GlStateManager._enableBlend();
-    }
-
-    private static void resetGlState() {
-        GlStateManager._depthMask(true);
-        GlStateManager._enableDepthTest();
-        GlStateManager._disableBlend();
-    }
-
     /* ================= Draw ================= */
 
     private static void drawLineSimple(VertexConsumer c, Matrix4f m, Vec3 p1, Vec3 p2, Color col) {
