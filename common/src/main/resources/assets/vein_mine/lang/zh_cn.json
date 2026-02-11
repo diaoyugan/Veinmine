@@ -23,7 +23,7 @@
   "vm.config.protect_tools": "启用工具保护",
   "vm.config.protect_tools.tooltip": "设置是否在工具即将损坏时\n弹出警告并不进行连锁破坏\n如果关闭,工具即使会损坏也会继续连锁采集",
   "vm.config.protected_tools": "受保护的工具",
-  "vm.config.protected_tools.tooltip": "受保护的工具将会触发工具保护\n格式应为：\n命名空间:路径\n如minecraft:diamond_pickaxe",
+  "vm.config.protected_tools.tooltip": "受保护的工具将会触发工具保护\n格式应为：\n命名空间:路径\n如minecraft:diamond_pickaxe\n一行写一条",
   "vm.config.protect_allValuable_tools": "保护所有贵重工具",
   "vm.config.protect_allValuable_tools.tooltip": "自动保护所有贵重工具\n如果开启，将会自动保护黄金、钻石\n和下界合金工具",
   "vm.config.durability_threshold": "耐久度保护阈值",
@@ -54,5 +54,7 @@
   "vm.config.enableHighlights": "渲染高亮预览",
   "vm.config.enableHighlights.tooltip": "关闭后将不会渲染高亮线框",
   "vm.config.save_and_exit": "保存并退出",
-  "vm.config.cancel": "取消"
+  "vm.config.cancel": "取消",
+  "vm.config.open_keybindings": "打开游戏按键绑定…",
+  "vm.config.open_keybindings.tooltip": "在游戏内建的设置页中编辑本模组的按键"
 }

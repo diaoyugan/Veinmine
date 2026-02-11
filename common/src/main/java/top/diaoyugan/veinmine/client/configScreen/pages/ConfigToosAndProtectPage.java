@@ -5,10 +5,10 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
-import top.diaoyugan.veinmine.client.configScreen.widget.VerticalLayout;
 import top.diaoyugan.veinmine.client.configScreen.widget.BooleanOptionWidget;
 import top.diaoyugan.veinmine.client.configScreen.widget.IntSliderOptionWidget;
 import top.diaoyugan.veinmine.client.configScreen.widget.TitleWidget;
+import top.diaoyugan.veinmine.client.configScreen.widget.VerticalLayout;
 import top.diaoyugan.veinmine.config.ConfigItems;
 
 import java.util.ArrayList;
@@ -18,14 +18,13 @@ import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
 
-public class ConfigMainPage {
+public class ConfigToosAndProtectPage {
 
     private final ConfigItems items;
-    private MultiLineEditBox ignoredBlocksBox;
-    private IntSliderOptionWidget BFSLimitSlider;
-    private IntSliderOptionWidget searchRadiusSlider;
+    private MultiLineEditBox protectedToolsBox;
+    private IntSliderOptionWidget durabilityThresholdSlider;
 
-    public ConfigMainPage(ConfigItems items) {
+    public ConfigToosAndProtectPage(ConfigItems items) {
         this.items = items;
     }
 
@@ -41,82 +40,52 @@ public class ConfigMainPage {
         widgets.add(new TitleWidget(
                 layout.x(),
                 layout.y(),
-                Component.translatable("vm.config.screen.main")
+                Component.translatable("vm.config.screen.toolsandprotect")
         ));
         layout.next(16);
 
         widgets.add(bool(
                 layout,
                 contentWidth,
-                "vm.config.use_bfs",
-                () -> items.useBFS,
-                v -> items.useBFS = v
+                "vm.config.protect_tools",
+                () -> items.protectTools,
+                v -> items.protectTools = v
         ));
         layout.next(20);
 
         widgets.add(bool(
                 layout,
                 contentWidth,
-                "vm.config.use_radius_search",
-                () -> items.useRadiusSearch,
-                v -> items.useRadiusSearch = v
+                "vm.config.protect_allValuable_tools",
+                () -> items.protectAllDefaultValuableTools,
+                v -> items.protectAllDefaultValuableTools = v
         ));
         layout.next(20);
 
-        BFSLimitSlider = intSlider(
+        durabilityThresholdSlider = intSlider(
                 layout,
                 contentWidth,
-                "vm.config.bfs_limit",
+                "vm.config.durability_threshold",
                 1, 256,
-                () -> items.BFSLimit,
-                v -> items.BFSLimit = v,
+                () -> items.durabilityThreshold,
+                v -> items.durabilityThreshold = v,
                 false
         );
-        BFSLimitSlider.setCustomValueKey("vm.config.value.block");
-        widgets.add(BFSLimitSlider);
-
-        layout.next(20);
-
-        searchRadiusSlider = intSlider(
-                layout,
-                contentWidth,
-                "vm.config.search_radius",
-                1, 10,
-                () -> items.searchRadius,
-                v -> items.searchRadius = v,
-                false
+        durabilityThresholdSlider.setCustomValueKey(
+                "vm.config.value.durability"
         );
-        searchRadiusSlider.setCustomValueKey("vm.config.value.block");
-        widgets.add(searchRadiusSlider);
+        widgets.add(durabilityThresholdSlider);
 
         layout.next(20);
-
-        widgets.add(bool(
-                layout,
-                contentWidth,
-                "vm.config.use_radius_search_when_reach_bfs_limit",
-                () -> items.useRadiusSearchWhenReachBFSLimit,
-                v -> items.useRadiusSearchWhenReachBFSLimit = v
-        ));
-        layout.next(20);
-
-        widgets.add(bool(
-                layout,
-                contentWidth,
-                "vm.config.highlight_blocks_message",
-                () -> items.highlightBlocksMessage,
-                v -> items.highlightBlocksMessage = v
-        ));
-        layout.next(24);
 
         widgets.add(new TitleWidget(
                 layout.x(),
                 layout.y(),
-                Component.translatable("vm.config.ignored_blocks")
+                Component.translatable("vm.config.protected_tools")
         ));
         layout.next(16);
 
-        ignoredBlocksBox = MultiLineEditBox.builder()
+        protectedToolsBox = MultiLineEditBox.builder()
                 .setX(layout.x())
                 .setY(layout.y())
                 .setShowBackground(true)
@@ -125,24 +94,24 @@ public class ConfigMainPage {
                         Minecraft.getInstance().font,
                         contentWidth,
                         40,
-                        Component.translatable("vm.config.ignored_blocks")
+                        Component.translatable("vm.config.protected_tools")
                 );
 
-        ignoredBlocksBox.setValue(String.join("\n", items.ignoredBlocks));
-        ignoredBlocksBox.setTooltip(
-                Tooltip.create(Component.translatable("vm.config.ignored_blocks.tooltip"))
+        protectedToolsBox.setValue(String.join("\n", items.protectedTools));
+        protectedToolsBox.setTooltip(
+                Tooltip.create(Component.translatable("vm.config.protected_tools.tooltip"))
         );
 
-        widgets.add(ignoredBlocksBox);
+        widgets.add(protectedToolsBox);
 
         return widgets;
     }
 
     public void save() {
-        items.ignoredBlocks.clear();
-        for (String line : ignoredBlocksBox.getValue().split("\n")) {
+        items.protectedTools.clear();
+        for (String line : protectedToolsBox.getValue().split("\n")) {
             if (!line.isBlank()) {
-                items.ignoredBlocks.add(line.trim());
+                items.protectedTools.add(line.trim());
             }
         }
     }

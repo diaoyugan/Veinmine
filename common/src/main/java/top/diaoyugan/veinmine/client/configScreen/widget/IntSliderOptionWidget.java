@@ -6,7 +6,6 @@ import net.minecraft.network.chat.Component;
 
 import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
-import java.util.function.Function;
 
 public class IntSliderOptionWidget extends AbstractSliderButton {
 
@@ -16,6 +15,7 @@ public class IntSliderOptionWidget extends AbstractSliderButton {
     private final IntConsumer setter;
     private final Component label;
     private final boolean isPercentage;  // 新增的参数，用于判断是否显示百分比
+    private String customValueKey;
 
     public IntSliderOptionWidget(
             int x, int y, int width, int height,
@@ -42,18 +42,25 @@ public class IntSliderOptionWidget extends AbstractSliderButton {
     @Override
     protected void updateMessage() {
         int value = getValue();
-        String displayValue;
+        Component message;
 
-        if (isPercentage) {
-            // 如果是百分比，显示百分比格式
-            displayValue = String.format("%s: %.0f%%", label.getString(), value * 100.0 / (max - min));
+        if (customValueKey != null) {
+            message = Component.empty()
+                    .append(label)
+                    .append(Component.literal(": "))
+                    .append(Component.translatable(customValueKey, value));
+        } else if (isPercentage) {
+            double percent = (value - min) * 100.0 / (max - min);
+            message = Component.literal(
+                    String.format("%s: %.0f%%", label.getString(), percent)
+            );
         } else {
-            // 否则显示原始值
-            displayValue = label.getString() + ": " + value;
+            message = Component.literal(label.getString() + ": " + value);
         }
 
-        setMessage(Component.literal(displayValue));  // 更新显示的文本
+        setMessage(message);
     }
+
 
     @Override
     protected void applyValue() {
@@ -62,6 +69,11 @@ public class IntSliderOptionWidget extends AbstractSliderButton {
 
     private int getValue() {
         return min + (int) Math.round(value * (max - min));  // 根据滑块的值计算实际值
+    }
+
+    public void setCustomValueKey(String key) {
+        this.customValueKey = key;
+        updateMessage();
     }
 }
 

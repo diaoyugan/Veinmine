@@ -1,14 +1,12 @@
 package top.diaoyugan.veinmine.client.configScreen;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Style;
-import top.diaoyugan.veinmine.client.configScreen.pages.ConfigAdvancedPage;
-import top.diaoyugan.veinmine.client.configScreen.pages.ConfigHighlightsPage;
-import top.diaoyugan.veinmine.client.configScreen.pages.ConfigMainPage;
-import top.diaoyugan.veinmine.client.configScreen.widget.TitleWidget;
+import top.diaoyugan.veinmine.client.configScreen.pages.*;
 import top.diaoyugan.veinmine.config.Config;
 
 import net.minecraft.network.chat.Component;
@@ -24,10 +22,15 @@ public class ConfigScreen extends Screen {
 
     private final List<List<AbstractWidget>> pages = new ArrayList<>();
     public int currentPage = 0;
+    private final List<PendingTab> pendingTabs = new ArrayList<>();
+    private static final int TAB_MIN_WIDTH = 60;
+    private static final int TAB_PADDING = 10;
 
     private ConfigMainPage mainPage;
     private ConfigAdvancedPage advancedPage;
-    private ConfigHighlightsPage configHighlightsPage;
+    private ConfigHighlightsPage highlightsPage;
+    private ConfigToosAndProtectPage toosAndProtectPage;
+    private ConfigKeysAndBindingsPage keysAndBindingsPage;
 
     public ConfigScreen(Screen parent) {
         super(Component.translatable("vm.config.screen.title"));
@@ -45,62 +48,34 @@ public class ConfigScreen extends Screen {
         pages.add(mainPage.build(centerX));
 
         // Page 2 index 1
-        List<AbstractWidget> page2 = new ArrayList<>();
-        page2.add(new TitleWidget(
-                centerX - 100,
-                30,
-                Component.translatable("vm.config.screen.toolsandprotect")
-        ));
-        pages.add(page2);
+        toosAndProtectPage = new ConfigToosAndProtectPage(items);
+        pages.add(toosAndProtectPage.build(centerX));
 
         // Page 3 index 2
-        configHighlightsPage = new ConfigHighlightsPage(items);
-        pages.add(configHighlightsPage.build(centerX));
+        highlightsPage = new ConfigHighlightsPage(items);
+        pages.add(highlightsPage.build(centerX));
 
         // Page 4 index 3
-        List<AbstractWidget> page4 = new ArrayList<>();
-        page4.add(new TitleWidget(
-                centerX - 100,
-                30,
-                Component.translatable("vm.config.screen.keysAndBinding")
-        ));
-        pages.add(page4);
+        keysAndBindingsPage = new ConfigKeysAndBindingsPage(items);
+        pages.add(keysAndBindingsPage.build(centerX));
 
         // Page 5 index 4
         advancedPage = new ConfigAdvancedPage(items);
         pages.add(advancedPage.build(centerX));
 
-        // 顶部翻页按钮
-        addRenderableWidget(Button.builder(
-                        Component.translatable("vm.config.screen.main"),
-                        b -> showPage(0))
-                .bounds(10, 10, 60, 20)
-                .build());
+        addTabButton(10, 10,  Component.translatable("vm.config.screen.main"),
+                20, () -> showPage(0));
+        addTabButton(10, 34,  Component.translatable("vm.config.screen.toolsandprotect"),
+                20, () -> showPage(1));
+        addTabButton(10, 58,  Component.translatable("vm.config.screen.highlights"),
+                20, () -> showPage(2));
+        addTabButton(10, 82,  Component.translatable("vm.config.screen.keysAndBinding"),
+                20, () -> showPage(3));
+        addTabButton(10, 106, Component.translatable("vm.config.screen.final_resort")
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), 20, () -> showPage(4));
 
-        addRenderableWidget(Button.builder(
-                        Component.translatable("vm.config.screen.toolsandprotect"),
-                        b -> showPage(1))
-                .bounds(10, 34, 60, 20)
-                .build());
+        buildTabButtons();
 
-        addRenderableWidget(Button.builder(
-                        Component.translatable("vm.config.screen.highlights"),
-                        b -> showPage(2))
-                .bounds(10, 58, 60, 20)
-                .build());
-
-        addRenderableWidget(Button.builder(
-                        Component.translatable("vm.config.screen.keysAndBinding"),
-                        b -> showPage(3))
-                .bounds(10, 82, 60, 20)
-                .build());
-
-        addRenderableWidget(Button.builder(
-                        Component.translatable("vm.config.screen.final_resort")
-                                .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)),
-                        b -> showPage(4))
-                .bounds(10, 106, 60, 20)
-                .build());
 
         int bottomY = height - 28;
 
@@ -119,6 +94,35 @@ public class ConfigScreen extends Screen {
         showPage(0);
     }
 
+    private void addTabButton(
+            int x, int y,
+            Component text,
+            int height,
+            Runnable action
+    ) {
+        pendingTabs.add(new PendingTab(x, y, height, text, action));
+    }
+
+    private void buildTabButtons() {
+        Font font = minecraft.font;
+
+        int width = TAB_MIN_WIDTH;
+        for (PendingTab tab : pendingTabs) {
+            width = Math.max(width, font.width(tab.text) + TAB_PADDING);
+        }
+
+        for (PendingTab tab : pendingTabs) {
+            Button btn = Button.builder(tab.text, b -> tab.action.run())
+                    .bounds(tab.x, tab.y, width, tab.height)
+                    .build();
+            addRenderableWidget(btn);
+        }
+
+        pendingTabs.clear();
+    }
+
+
+
     public void showPage(int index) {
         if (currentPage < pages.size()) {
             for (AbstractWidget w : pages.get(currentPage)) {
@@ -135,6 +139,7 @@ public class ConfigScreen extends Screen {
 
     private void saveAndExit() {
         mainPage.save();
+        toosAndProtectPage.save();
         Config.getInstance().save();
         minecraft.setScreen(parent);
     }

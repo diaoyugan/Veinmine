@@ -29,7 +29,7 @@
   "vm.config.protect_tools": "Enable Tool Protection",
   "vm.config.protect_tools.tooltip": "If enabled, mining stops when\ntool is about to break\nIf disabled, mining continues",
   "vm.config.protected_tools": "Protected Tools List",
-  "vm.config.protected_tools.tooltip": "Tools that will trigger tool protection\nFormat: namespace:path\ne.g. minecraft:diamond_pickaxe",
+  "vm.config.protected_tools.tooltip": "Tools that will trigger tool protection\nFormat: namespace:path\ne.g. minecraft:diamond_pickaxe\nOne item per line",
   "vm.config.protect_allValuable_tools": "Protect All Valuable Tools",
   "vm.config.protect_allValuable_tools.tooltip": "Whether to automatically protect\nall valuable tools\nIf enabled, gold, diamond, and\nnetherite tools will be protected",
   "vm.config.durability_threshold": "Durability Protection Threshold",
@@ -54,5 +54,7 @@
   "vm.config.enableHighlights": "Render highlight preview",
   "vm.config.enableHighlights.tooltip": "When disabled, highlight outlines will not be rendered",
   "vm.config.save_and_exit": "Save & Exit",
-  "vm.config.cancel": "Cancel"
+  "vm.config.cancel": "Cancel",
+  "vm.config.open_keybindings": "Game Key Binds…",
+  "vm.config.open_keybindings.tooltip": "Change this mod's keys in the game's built-in Key Binds screen"
 }
