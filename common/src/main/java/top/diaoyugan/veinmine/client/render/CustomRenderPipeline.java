@@ -1,7 +1,8 @@
 package top.diaoyugan.veinmine.client.render;
 
+import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.DepthTestFunction;
+import com.mojang.blaze3d.platform.CompareOp;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.resources.Identifier;
@@ -13,11 +14,12 @@ public class CustomRenderPipeline {
             RenderPipeline.builder(RenderPipelinesInvoker.getLinesSnippet())
                     .withLocation(Identifier.fromNamespaceAndPath(Constants.ID, "pipeline/lines_no_depth"))
                     .withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.TRIANGLES)
-                    .withDepthWrite(false)
-                    .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
+                    .withDepthStencilState(ALWAYS_PASS())
                     .withCull(false)
-                    .withColorWrite(true)
                     .build()
     );
 
+    protected static DepthStencilState ALWAYS_PASS(){
+        return new DepthStencilState(CompareOp.ALWAYS_PASS, false);
+    }
 }

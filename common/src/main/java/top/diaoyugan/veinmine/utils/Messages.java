@@ -25,7 +25,7 @@ public class Messages {
         if (isOnActionbar)
             client.gui.setOverlayMessage(message, false);
         else
-            client.gui.getChat().addMessage(message);
+            client.gui.getChat().addClientSystemMessage(message);
     }
 
     /**
@@ -43,7 +43,7 @@ public class Messages {
 
             var server = player.level().getServer();
 
-            server.execute(() -> player.displayClientMessage(message, isOnActionbar));
+            server.execute(() -> player.sendSystemMessage(message, isOnActionbar));
         } catch (NullPointerException e) {
             // 输出错误和堆栈，但不抛出异常
             Logger.throwLog(LoggerLevels.ERROR,"Failed to send message due to null parameter!",e);
