@@ -29,8 +29,7 @@ public final class NeoOutlineRenderHook {
                         ? CustomRenderTypes.getLinesNoDepth()
                         : RenderTypes.lines(),
                 OutlineRenderer.LineStyle.RIBBON_THICK_LINES,
-                UtilsColorHelper.fromConfig(),
-                IntrusiveConfig.isEnabled()
+                UtilsColorHelper.fromConfig()
         );
     }
 }

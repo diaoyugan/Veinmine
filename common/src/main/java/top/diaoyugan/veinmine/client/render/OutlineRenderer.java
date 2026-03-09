@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
+import top.diaoyugan.veinmine.config.IntrusiveConfig;
 
 import java.util.Collection;
 
@@ -37,8 +38,7 @@ public final class OutlineRenderer {
             Collection<BlockPos> blocks,
             RenderType renderType,
             LineStyle style,
-            Color color,
-            boolean intrusive
+            Color color
     ) {
         if (blocks.isEmpty()) return;
 
@@ -73,7 +73,7 @@ public final class OutlineRenderer {
                     case THIN_LINES ->
                             drawLineSimple(consumer, matrix, p1, p2, color);
                     case RIBBON_THICK_LINES -> {
-                        if (intrusive)
+                        if (IntrusiveConfig.isEnabled())
                             drawBillboardRibbon(consumer, matrix, camera, p1, p2, color, 0.04f);
                         else
                             drawLineSimple(consumer, matrix, p1, p2, color);
