@@ -60,6 +60,9 @@ jobs:
           files: |
             **/build/libs/*.jar
             **/build/libs/*.json
+            !**/build/libs/*common*.jar
+            !**/build/libs/*javadoc*.jar
+            !**/build/libs/buildSrc.jar
           draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
