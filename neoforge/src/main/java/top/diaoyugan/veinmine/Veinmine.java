@@ -1,6 +1,5 @@
 package top.diaoyugan.veinmine;
 
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 

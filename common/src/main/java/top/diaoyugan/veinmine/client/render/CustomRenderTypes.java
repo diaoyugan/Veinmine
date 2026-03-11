@@ -4,7 +4,10 @@ import net.minecraft.client.renderer.rendertype.LayeringTransform;
 import net.minecraft.client.renderer.rendertype.OutputTarget;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import top.diaoyugan.veinmine.mixin.RenderTypeInvoker;
+
+import java.util.Objects;
 
 
 public final class CustomRenderTypes {
@@ -16,7 +19,7 @@ public final class CustomRenderTypes {
     public static void init() {
         if (LINES_NO_DEPTH != null) return;
 
-        RenderSetup setup = RenderSetup.builder(CustomRenderPipeline.LINES_NO_DEPTH)
+        RenderSetup setup = RenderSetup.builder(Objects.requireNonNull(CustomRenderPipeline.LINES_NO_DEPTH))
                 .setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
                 .setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)
                 .createRenderSetup();

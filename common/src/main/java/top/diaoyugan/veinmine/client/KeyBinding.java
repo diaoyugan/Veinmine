@@ -20,23 +20,23 @@ public class KeyBinding {
                     ))
             ;
     public static net.minecraft.client.KeyMapping BINDING;
-
-
-    /** 默认键 */
-    public static int defaultKey() {
-        return GLFW.GLFW_KEY_GRAVE_ACCENT;
-    }
-
-    /** 配置里的键 */
-    public static int configuredKey() {
-        return Config.getInstance().getConfigItems().keyBindingCode;
-    }
-
-    public static void updateKeyBinding(int newCode) {
-        KeyBinding.BINDING.setKey(InputConstants.getKey(new KeyEvent(newCode, 0, 0)));
-        // 强制保存新的按键设置
-        Minecraft.getInstance().options.save();
-        // 更新按键绑定 没有这一行会导致游戏内不会立刻生效
-        net.minecraft.client.KeyMapping.resetMapping();
-    }
+//
+//
+//    /** 默认键 */
+//    public static int defaultKey() {
+//        return GLFW.GLFW_KEY_GRAVE_ACCENT;
+//    }
+//
+//    /** 配置里的键 */
+//    public static int configuredKey() {
+//        return Config.getInstance().getConfigItems().keyBindingCode;
+//    }
+//
+//    public static void updateKeyBinding(int newCode) {
+//        KeyBinding.BINDING.setKey(InputConstants.getKey(new KeyEvent(newCode, 0, 0)));
+//        // 强制保存新的按键设置
+//        Minecraft.getInstance().options.save();
+//        // 更新按键绑定 没有这一行会导致游戏内不会立刻生效
+//        net.minecraft.client.KeyMapping.resetMapping();
+//    }
 }
