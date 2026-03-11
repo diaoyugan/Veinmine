@@ -74,9 +74,15 @@ public class ConfigScreen extends Screen {
         addTabButton(10, 106, Component.translatable("vm.config.screen.final_resort")
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), 20, () -> showPage(4));
 
+        showPage(0);
+        buildTabButtons();
+        buildButtons();
+    }
+
+    private void buildButtons() {
         buildTabButtons();
 
-
+        int centerX = width / 2;
         int bottomY = height - 28;
 
         addRenderableWidget(Button.builder(
@@ -90,8 +96,6 @@ public class ConfigScreen extends Screen {
                         b -> saveAndExit())
                 .bounds(centerX + 4, bottomY, 150, 20)
                 .build());
-
-        showPage(0);
     }
 
     private void addTabButton(
@@ -135,6 +139,7 @@ public class ConfigScreen extends Screen {
         }
 
         currentPage = index;
+        buildButtons();
     }
 
     private void saveAndExit() {
