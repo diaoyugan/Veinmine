@@ -50,8 +50,6 @@ jobs:
           path: |
             fabric/build/libs/*fabric*.jar
             neoforge/build/libs/*neoforge*.jar
-            !fabric/build/libs/*javadoc.jar
-            !neoforge/build/libs/*javadoc*.jar
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -62,8 +60,6 @@ jobs:
           files: |
             **/build/libs/*neoforge*.jar
             **/build/libs/*fabric*.jar
-            !**/build/libs/*neoforge*-javadoc*.jar
-            !**/build/libs/*fabric*-javadoc*.jar
           draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
