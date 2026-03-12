@@ -13,7 +13,7 @@
 - **兼容性**：与其他模组及自定义方块兼容。
 
 ### 推荐安装
-对于Fabric 推荐安装 [**ModMenu**](https://modrinth.com/mod/modmenu) 和 [**Cloth Config API**](https://www.curseforge.com/minecraft/mc-mods/cloth-config) 以便更好地管理和配置模组。
+对于Fabric 推荐安装 [**ModMenu**](https://modrinth.com/mod/modmenu) 以便更好地管理和配置模组。
 
 ## 配置
 - 打开 **模组**页面 进行配置。
