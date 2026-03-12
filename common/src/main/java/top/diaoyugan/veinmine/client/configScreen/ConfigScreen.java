@@ -74,7 +74,7 @@ public class ConfigScreen extends Screen {
         addTabButton(10, 106, Component.translatable("vm.config.screen.final_resort")
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), 20, () -> showPage(4));
 
-        showPage(0);
+        showPage(currentPage);
         buildTabButtons();
         buildButtons();
     }
