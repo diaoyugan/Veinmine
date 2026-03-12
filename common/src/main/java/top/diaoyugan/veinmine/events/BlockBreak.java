@@ -35,7 +35,13 @@ public class BlockBreak {
 
         if (!checkDurabilityAndWarn(player, state, blocks)) return; // 工具耐久不足，提示玩家并返回
 
-        int destroyed = breakBlocks(world, player, pos, state, blocks); // 处理连锁破坏
+        int destroyed = breakBlocks(world, player, pos, state, blocks);
+
+        if (world instanceof ServerLevel serverWorld) {
+            AABB area = computeAABB(blocks);
+            moveDropsToCenter(serverWorld, pos, area);
+        }
+
         Utils.applyToolDurabilityDamage(player, destroyed); // 扣除耐久
     }
 
@@ -66,16 +72,15 @@ public class BlockBreak {
 
     private static int breakSingleBlock(Level world, Player player, BlockPos centerPos, BlockPos targetPos, BlockState originalState) {
         BlockState targetState = world.getBlockState(targetPos);
-        if (targetState.getBlock() != originalState.getBlock()) return 0; // 不同方块跳过
+
+        if (targetState.getBlock() != originalState.getBlock()) return 0;
 
         if (shouldDropItems(player, targetState, world, targetPos)) {
-            // 掉落物品
             Block.dropResources(targetState, world, targetPos, world.getBlockEntity(targetPos), player, player.getMainHandItem());
         }
 
-        world.destroyBlock(targetPos, false); // 破坏方块
+        world.destroyBlock(targetPos, false);
 
-        if (world instanceof ServerLevel serverWorld) moveDropsToCenter(serverWorld, centerPos); // 移动掉落到中心
         return 1;
     }
 
@@ -85,14 +90,46 @@ public class BlockBreak {
         return !Utils.shouldNotDropItem(state, world, pos, player); // 判断方块是否会掉落
     }
 
-    private static void moveDropsToCenter(ServerLevel world, BlockPos centerPos) {
+    private static void moveDropsToCenter(ServerLevel world, BlockPos centerPos, AABB area) {
         Vec3 center = Vec3.atCenterOf(centerPos);
-        // 查找中心附近的掉落物品和经验球
+
         List<Entity> drops = world.getEntitiesOfClass(
                 Entity.class,
-                new AABB(centerPos).inflate(6),
+                area.inflate(1),
                 e -> e instanceof ItemEntity || e instanceof ExperienceOrb
         );
-        drops.forEach(drop -> drop.setPos(center)); // 移动到中心位置
+
+        for (Entity drop : drops) {
+            drop.setPos(center);
+        }
+    }
+
+    public static AABB computeAABB(List<BlockPos> blocks) {
+        int minX = Integer.MAX_VALUE;
+        int minY = Integer.MAX_VALUE;
+        int minZ = Integer.MAX_VALUE;
+
+        int maxX = Integer.MIN_VALUE;
+        int maxY = Integer.MIN_VALUE;
+        int maxZ = Integer.MIN_VALUE;
+
+        for (BlockPos pos : blocks) {
+            int x = pos.getX();
+            int y = pos.getY();
+            int z = pos.getZ();
+
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (z < minZ) minZ = z;
+
+            if (x > maxX) maxX = x;
+            if (y > maxY) maxY = y;
+            if (z > maxZ) maxZ = z;
+        }
+
+        return new AABB(
+                minX, minY, minZ,
+                maxX + 1, maxY + 1, maxZ + 1
+        );
     }
 }
