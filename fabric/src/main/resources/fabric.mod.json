@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "${mod_id}",
   "version": "${version}",
-  "name": "vein mine",
+  "name": "Vein Mine",
   "description": "A mod that allows you to mine veins of blocks",
   "authors": [
     "钓鱼竿呀(diaoyugan)",
@@ -35,7 +35,7 @@
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": ">=${fabric_version}",
-    "minecraft": "${fabric_minecraft_version}",
+    "minecraft": ">=${fabric_minecraft_version}",
     "java": ">=${java_version}"
   },
   "suggests": {
