@@ -1,4 +1,4 @@
-package top.diaoyugan.veinmine.client;
+package top.diaoyugan.veinmine.networking;
 
 import net.minecraft.core.BlockPos;
 import net.neoforged.bus.api.SubscribeEvent;

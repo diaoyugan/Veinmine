@@ -22,32 +22,6 @@ public final class VeinmineClient {
 
     private VeinmineClient() {}
     @SubscribeEvent
-    public static void register(RegisterPayloadHandlersEvent event) {
-        var registrar = event.registrar("1.0");
-
-        // 服务端接收 KeyPressPacket
-        registrar.playToServer(
-                KeyPressPacket.ID,
-                KeyPressPacket.CODEC,
-                (payload, ctx) -> {
-                    ServerPlayer player = (ServerPlayer) ctx.player();
-
-                    KeyPacketLogic.handleKeyPress(
-                            player,
-                            state -> ctx.reply(
-                                    new KeyResponsePacket(state)
-                            )
-                    );
-                }
-        );
-        registrar.playToClient(
-                KeyResponsePacket.ID,
-                KeyResponsePacket.CODEC,
-                (msg, ctx) -> HotKeyState.updateFromServer(msg.state())
-        );
-
-    }
-    @SubscribeEvent
     public static void onEndClientTick(ClientTickEvent.Post event) {
         HotKeys.tickEvent(Minecraft.getInstance());
     }
