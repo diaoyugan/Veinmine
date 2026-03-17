@@ -22,7 +22,7 @@ public class SmartVein {
     static {
         try {
             Utils.getConfig().ignoredBlocks.add("minecraft:air");
-        } catch (Exception e) { // TODO: 找到更好的方式处理
+        } catch (Exception e) { //没这里的话你也不知道为什么有时候会炸
             if (!(e instanceof UnsupportedOperationException)) {
                 Logger.throwLog(LoggerLevels.ERROR, String.valueOf(e), e.fillInStackTrace());
             }

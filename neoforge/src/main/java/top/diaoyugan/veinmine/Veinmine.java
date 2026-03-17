@@ -1,7 +1,6 @@
 package top.diaoyugan.veinmine;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;

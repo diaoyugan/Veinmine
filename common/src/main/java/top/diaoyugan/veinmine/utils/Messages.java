@@ -13,7 +13,6 @@ import top.diaoyugan.veinmine.utils.logging.LoggerLevels;
  * 消息发送工具类，用于向玩家发送各种消息。
  */
 public class Messages {
-
     /**
      * 仅发送客户端消息，不经过服务端。
      *

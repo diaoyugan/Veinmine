@@ -1,7 +1,6 @@
 package top.diaoyugan.veinmine.networking;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
 import java.util.ArrayList;
@@ -15,19 +14,6 @@ public final class PacketCodecUtil {
     public static <B, P> StreamCodec<B, P> unit(P instance) {
         return StreamCodec.unit(instance);
     }
-
-    // Boolean codec using RegistryByteBuf or PacketByteBuf style buffers.
-    public static final StreamCodec<RegistryFriendlyByteBuf, Boolean> BOOLEAN_REGISTRY_CODEC = new StreamCodec<>() {
-        @Override
-        public void encode(RegistryFriendlyByteBuf buf, Boolean value) {
-            buf.writeBoolean(value);
-        }
-
-        @Override
-        public Boolean decode(RegistryFriendlyByteBuf buf) {
-            return buf.readBoolean();
-        }
-    };
 
     // Generic list codec for PacketByteBuf where elements have their own PacketCodec
     public static <T> StreamCodec<FriendlyByteBuf, List<T>> list(StreamCodec<FriendlyByteBuf, T> elementCodec) {
