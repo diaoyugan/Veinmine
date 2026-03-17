@@ -9,6 +9,9 @@ Veinmine is a simple, lightweight, muliti-loader, and fast-updating Minecraft mo
 - **Keybind Support:** Toggle vein mining on/off with a customizable key.
 - **Blacklist:** Control which blocks can't be vein-mined.
 - **Compatibility:** Works seamlessly with other mods and custom blocks.
+- **Tools Protections** Prevents your specified tools from breaking during vein mining. 
+- **Highlights** Highlights blocks and shows how many will be mined (highlight color fully customizable).
+
 
 ### Recommends
 For fabric, it's recommended to install [**ModMenu**](https://modrinth.com/mod/modmenu) for better mod management and easier configuration.
