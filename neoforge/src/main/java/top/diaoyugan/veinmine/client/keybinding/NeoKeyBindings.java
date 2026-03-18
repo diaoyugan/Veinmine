@@ -14,7 +14,7 @@ public final class NeoKeyBindings {
 
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
-        int keyCode = Config.getInstance().getConfigItems().keyBindingCode;
+        int keyCode = KeyBinding.defaultKey();
 
         KeyBinding.BINDING = new KeyMapping(
                 "key.vm.switch",

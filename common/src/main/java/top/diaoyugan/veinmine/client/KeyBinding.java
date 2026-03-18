@@ -22,10 +22,10 @@ public class KeyBinding {
     public static net.minecraft.client.KeyMapping BINDING;
 //
 //
-//    /** 默认键 */
-//    public static int defaultKey() {
-//        return GLFW.GLFW_KEY_GRAVE_ACCENT;
-//    }
+    /** 默认键 */
+    public static int defaultKey() {
+        return GLFW.GLFW_KEY_GRAVE_ACCENT;
+    }
 //
 //    /** 配置里的键 */
 //    public static int configuredKey() {

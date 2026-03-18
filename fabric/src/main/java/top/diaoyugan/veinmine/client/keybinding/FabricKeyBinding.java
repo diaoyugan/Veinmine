@@ -12,7 +12,7 @@ public class FabricKeyBinding {
     }
 
     public static void registerKeyBindingFromConfig() {
-        int keyCode = Config.getInstance().getConfigItems().keyBindingCode;
+        int keyCode = KeyBinding.defaultKey();
         InputConstants.Key key = InputConstants.getKey(new KeyEvent(keyCode, 0, 0));
 
 

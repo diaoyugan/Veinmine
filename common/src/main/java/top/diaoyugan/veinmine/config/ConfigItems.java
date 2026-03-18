@@ -26,7 +26,10 @@ public class ConfigItems { // Default configuration
     public int blue = 255;
     public int alpha = 255;
     public boolean useHoldInsteadOfToggle = false;
-    public int keyBindingCode = GLFW.GLFW_KEY_GRAVE_ACCENT; // 默认是 ~ 键
+
+    @Deprecated//暂时废弃 因为不需要从config screen里改按键了
+    public int keyBindingCode = GLFW.GLFW_KEY_GRAVE_ACCENT;
+
     public final Set<String> defaultProtectedTools = Set.of( // No GUI for this, this is by design!
             // 黄金工具
             "minecraft:golden_pickaxe",
