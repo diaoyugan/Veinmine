@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(RenderType.class)
 public interface RenderTypeInvoker {
 
-    // 这个方法会被 Mixin 自动重定向到 RenderLayer.of(...)
+    // 这个方法会被 Mixin 自动重定向到 RenderType.of(...)
     @Invoker("create")
     static RenderType callCreate(String name, RenderSetup setup) {
         throw new AssertionError();
