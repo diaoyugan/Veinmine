@@ -11,6 +11,7 @@ import top.diaoyugan.veinmine.config.Config;
 
 import net.minecraft.network.chat.Component;
 import top.diaoyugan.veinmine.config.ConfigItems;
+import top.diaoyugan.veinmine.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 public class ConfigScreen extends Screen {
 
     private final Screen parent;
-    private final ConfigItems items = Config.getInstance().getConfigItems();
+    private final ConfigItems items = Utils.getConfig();
 
     private final List<List<AbstractWidget>> pages = new ArrayList<>();
     public int currentPage = 0;
