@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import top.diaoyugan.veinmine.client.highlight.ClientHighlightLogic;
+import top.diaoyugan.veinmine.client.highlight.ClientHighlightState;
 import top.diaoyugan.veinmine.client.hotkey.HotKeyState;
 import top.diaoyugan.veinmine.networking.highlightingpacket.BlockHighlightRequest;
 import top.diaoyugan.veinmine.networking.keypacket.KeyPressPacket;
@@ -34,6 +35,9 @@ public final class HotKeys {
             if(pos != null) {
                 ClientPacketDistributor.sendToServer(new BlockHighlightRequest(pos));
             }
+        }
+        else {
+            ClientHighlightState.HIGHLIGHTED_BLOCKS.clear();
         }
     }
 

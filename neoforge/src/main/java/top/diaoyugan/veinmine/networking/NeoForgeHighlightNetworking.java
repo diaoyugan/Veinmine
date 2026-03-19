@@ -11,12 +11,12 @@ import top.diaoyugan.veinmine.networking.highlightingpacket.BlockHighlightRespon
 import top.diaoyugan.veinmine.utils.SmartVein;
 import top.diaoyugan.veinmine.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @EventBusSubscriber(modid = Constants.ID)
 public final class NeoForgeHighlightNetworking {
-
+    private static final Map<UUID, BlockPos> LAST_POS = new HashMap<>();
+    private static final Map<UUID, Boolean> LAST_PROCESSED_STATE = new HashMap<>();
     private NeoForgeHighlightNetworking() {}
 
     /** 注册客户端/服务端包 */
@@ -31,18 +31,31 @@ public final class NeoForgeHighlightNetworking {
                 (msg, ctx) -> {
                     var player = ctx.player();
                     var level = player.level();
+                    UUID playerId = player.getUUID();
 
-                    List<BlockPos> result = new ArrayList<>();
+                    BlockPos lastPos = LAST_POS.get(playerId);
+                    Boolean lastState = LAST_PROCESSED_STATE.get(playerId);
+                    boolean currentState = Utils.getVeinMineSwitchState(player);
 
-                    if (Utils.getVeinMineSwitchState(player)) {
-                        var blocks = SmartVein.findBlocks(level, msg.blockPos());
-                        if (blocks != null) {
-                            result.addAll(blocks);
-                        }
+                    var pos = msg.blockPos();
+
+                    if (lastState != null
+                            && pos.equals(lastPos)
+                            && currentState == lastState) {
+                        return;
+                    }
+
+                    LAST_POS.put(playerId, pos);
+                    LAST_PROCESSED_STATE.put(playerId, currentState);
+
+                    ArrayList<BlockPos> result = new ArrayList<>();
+                    var blocks = SmartVein.findBlocks(level, pos);
+                    if (blocks != null) {
+                        result.addAll(blocks);
                     }
 
                     // 回包给这个玩家（S2C）
-                    ctx.reply(new BlockHighlightResponse(new ArrayList<>(result)));
+                    ctx.reply(new BlockHighlightResponse(result));
                 }
         );
 
@@ -53,5 +66,10 @@ public final class NeoForgeHighlightNetworking {
                 (msg, ctx) ->
                         ClientHighlightLogic.onHighlightResponse(msg.positions())
         );
+    }
+
+    public static void clearLastStates(UUID playerId){
+        LAST_PROCESSED_STATE.remove(playerId);
+        LAST_POS.remove(playerId);
     }
 }

@@ -18,6 +18,7 @@ import java.util.*;
  * 提供根据玩家起始位置查找相同方块的功能，支持立方体搜索和基于 BFS 的智能连锁搜索。
  */
 public class SmartVein {
+    private static final BlockPos[] OFFSETS = createOffsets();
 
     static {
         try {
@@ -132,7 +133,7 @@ public class SmartVein {
     private static List<BlockPos> findConnectedBlocks(Level world, BlockPos startPos, BlockState targetState) {
         List<BlockPos> foundBlocks = new ArrayList<>();
         Set<BlockPos> visited = new HashSet<>();
-        Queue<BlockPos> queue = new LinkedList<>();
+        Queue<BlockPos> queue = new ArrayDeque<>();
 
         queue.add(startPos);
         visited.add(startPos);
@@ -151,7 +152,7 @@ public class SmartVein {
                 }
             }
 
-            for (BlockPos offset : getAllNeighborOffsets()) {
+            for (BlockPos offset : OFFSETS) {
                 BlockPos neighborPos = current.offset(offset);
                 if (!visited.contains(neighborPos) && isSameBlock(world, targetState, neighborPos)) {
                     queue.add(neighborPos);
@@ -174,7 +175,7 @@ public class SmartVein {
     private static List<BlockPos> findConnectedBlocks(Level world, BlockPos startPos, Identifier startBlockID) {
         List<BlockPos> foundBlocks = new ArrayList<>();
         Set<BlockPos> visited = new HashSet<>();
-        Queue<BlockPos> queue = new LinkedList<>();
+        Queue<BlockPos> queue = new ArrayDeque<>();
 
         Block block = BuiltInRegistries.BLOCK.getValue(startBlockID);
         BlockState startState = block.defaultBlockState();
@@ -196,7 +197,7 @@ public class SmartVein {
                 }
             }
 
-            for (BlockPos offset : getAllNeighborOffsets()) {
+            for (BlockPos offset : OFFSETS) {
                 BlockPos neighborPos = current.offset(offset);
                 if (!visited.contains(neighborPos) && isSameBlock(world, startState, neighborPos)) {
                     queue.add(neighborPos);
@@ -210,9 +211,10 @@ public class SmartVein {
 
     /**
      * 获取相对 26 个方向的偏移量。
-     *
+     * 暂时废弃 新算法应该能代替这个(OFFSETS)
      * @return 偏移量列表
      */
+    @Deprecated
     private static List<BlockPos> getAllNeighborOffsets() {
         List<BlockPos> offsets = new ArrayList<>();
         for (int x = -1; x <= 1; x++) {
@@ -237,5 +239,19 @@ public class SmartVein {
      */
     private static boolean isSameBlock(Level world, BlockState targetState, BlockPos pos) {
         return world.getBlockState(pos).getBlock() == targetState.getBlock();
+    }
+
+    private static BlockPos[] createOffsets() {
+        List<BlockPos> list = new ArrayList<>();
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    if (x != 0 || y != 0 || z != 0) {
+                        list.add(new BlockPos(x, y, z));
+                    }
+                }
+            }
+        }
+        return list.toArray(new BlockPos[0]);
     }
 }
