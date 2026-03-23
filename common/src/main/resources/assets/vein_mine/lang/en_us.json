@@ -1,60 +1,90 @@
 {
   "modmenu.nameTranslation.vein_mine": "Vein Mine",
-  "modmenu.descriptionTranslation.vein_mine": "Allow you to mine multiple blocks at the same time",
-  "modmenu.summaryTranslation.vein_mine": "Allow you to mine multiple blocks at the same time",
+  "modmenu.descriptionTranslation.vein_mine": "Mine multiple blocks at once",
+  "modmenu.summaryTranslation.vein_mine": "Mine multiple blocks at once",
+
   "key.category.vein_mine.switch": "Vein Mine",
   "key.vm.switch": "Activation Key",
-  "key.vm.switch.tooltip": "Bind activation key here",
+  "key.vm.switch.tooltip": "Set the activation key",
+
   "vm.switch_state": "Vein Mining",
-  "vm.config.use_hold_instead_of_toggle": "Use hold instead of toggle",
-  "vm.config.use_hold_instead_of_toggle.tooltip": "If enabled, you can toggle activation instead of a single tap by holding down the key",
+
+  "vm.config.use_hold_instead_of_toggle": "Hold Mode",
+  "vm.config.use_hold_instead_of_toggle.tooltip": "Hold key to activate instead of toggling",
+
   "vm.config.screen.title": "Vein Mine Config",
   "vm.config.screen.main": "General",
-  "vm.config.screen.highlights": "Highlights Settings",
+  "vm.config.screen.highlights": "Highlights",
+
   "vm.config.translation_note": "§7The translation may not be 100% accurate. \nIf you have any suggestions, please give us feedback.\nWant to help translate this mod? Contribute on GitHub or contact us!",
-  "vm.config.search_radius": "Range Search Radius",
+
+  "vm.config.search_radius": "Range Radius",
   "vm.config.search_radius.tooltip": "Range mode search radius\n1 means 8 blocks in all directions\nplus 9 blocks in each layer and the center block",
-  "vm.config.bfs_limit": "Chain Search Limit",
-  "vm.config.bfs_limit.tooltip": "Set the maximum number of blocks\nfor chain mode search",
-  "vm.config.ignored_blocks": "Chain Ignored Blocks",
-  "vm.config.ignored_blocks.tooltip": "Blocks ignored in chain mode\nwill use range search instead\nFormat: namespace:path, e.g. minecraft:air\nOne item per line",
-  "vm.config.use_bfs": "Enable Chain Search",
-  "vm.config.use_bfs.tooltip": "Enable or disable chain search mode\nIf disabled, range search mode\nwill be used for all blocks",
-  "vm.config.use_radius_search": "Enable Range Search",
-  "vm.config.use_radius_search.tooltip": "Enable or disable range search mode\nIf disabled, range search\nwill not be used",
-  "vm.config.use_radius_search_when_reach_bfs_limit": "Switch to Range After Limit",
-  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "Whether to switch to range mode\nwhen target blocks exceed chain limit\nIf disabled, chain mining stops at limit",
-  "vm.warn.breakthroughs": "Your tool is about to break. Vein mining stopped.",
+
+  "vm.config.bfs_limit": "Chain Limit",
+  "vm.config.bfs_limit.tooltip": "Max blocks in chain mode",
+
+  "vm.config.ignored_blocks": "Chain Ignore List",
+  "vm.config.ignored_blocks.tooltip": "Blocks ignored in chain mode\nFormat: namespace:path\nOne per line",
+
+  "vm.config.use_bfs": "Chain Mode",
+  "vm.config.use_bfs.tooltip": "Enable or disable chain mode\nIf disabled, range mode will be used for all blocks",
+
+  "vm.config.use_radius_search": "Range Mode",
+  "vm.config.use_radius_search.tooltip": "Enable or disable range mode\nIf disabled, range mode will not be used",
+
+  "vm.config.use_radius_search_when_reach_bfs_limit": "Switch to Range on Limit",
+  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "Switch to range mode when 'Chain Limit' is reached",
+
+  "vm.warn.breakthroughs": "Tool almost broken. Vein mining stopped.",
+
   "vm.config.screen.toolsandprotect": "Tools & Protection",
-  "vm.config.protect_tools": "Enable Tool Protection",
-  "vm.config.protect_tools.tooltip": "If enabled, mining stops when\ntool is about to break\nIf disabled, mining continues",
-  "vm.config.protected_tools": "Protected Tools List",
-  "vm.config.protected_tools.tooltip": "Tools that will trigger tool protection\nFormat: namespace:path\ne.g. minecraft:diamond_pickaxe\nOne item per line",
-  "vm.config.protect_allValuable_tools": "Protect All Valuable Tools",
-  "vm.config.protect_allValuable_tools.tooltip": "Whether to automatically protect\nall valuable tools\nIf enabled, gold, diamond, and\nnetherite tools will be protected",
-  "vm.config.durability_threshold": "Durability Protection Threshold",
-  "vm.config.durability_threshold.tooltip": "If durability after mining\nwill be below this value\ntool protection will be triggered",
+
+  "vm.config.protect_tools": "Tool Protection",
+  "vm.config.protect_tools.tooltip": "Stop vein mining before tool breaks",
+
+  "vm.config.protected_tools": "Protected Tools",
+  "vm.config.protected_tools.tooltip": "Tools that trigger protection\nFormat: namespace:path\nOne per line",
+
+  "vm.config.protect_allValuable_tools": "Protect Valuable Tools",
+  "vm.config.protect_allValuable_tools.tooltip": "Protect gold, diamond, and netherite tools by default",
+
+  "vm.config.durability_threshold": "Min Durability",
+  "vm.config.durability_threshold.tooltip": "Trigger protection below this durability",
+
   "vm.config.value.block": "%d Blocks",
-  "vm.config.value.durability": "%d Durability",
-  "vm.config.color_preview": "Highlight Color Preview",
+  "vm.config.value.durability": "%d Dur.",
+
+  "vm.config.color_preview": "Color Preview",
+
   "vm.config.renderRed": "Red",
   "vm.config.renderGreen": "Green",
   "vm.config.renderBlue": "Blue",
   "vm.config.renderAlpha": "Opacity",
-  "vm.config.renderTime": "Render Passes",
-  "vm.config.renderTime.tooltip": "Increasing render passes will draw multiple times at a small offset from the last render position, significantly improving border visibility but reducing performance",
-  "vm.config.value.times": "%d Times",
-  "vm.message.highlightblocks": "Target blocks: %d",
-  "vm.config.highlight_blocks_message": "Show Target Block Count",
-  "vm.config.highlight_blocks_message.tooltip": "When enabled, the client will display how many blocks will be break",
-  "vm.config.screen.keysAndBinding": "Keys & Binding",
+
+  "vm.config.renderTime": "Passes",
+  "vm.config.renderTime.tooltip": "More passes improve visibility but reduce performance",
+
+  "vm.config.value.times": "%d Passes",
+
+  "vm.message.highlightblocks": "Blocks: %d",
+
+  "vm.config.highlight_blocks_message": "Show Block Count",
+  "vm.config.highlight_blocks_message.tooltip": "Show how many blocks will be broken",
+
+  "vm.config.screen.keysAndBinding": "Keys & Bindings",
   "vm.config.screen.final_resort": "Advanced",
+
   "vm.config.useIntrusiveCode": "Enable Intrusive Code",
-  "vm.config.useIntrusiveCode.tooltip": "Enabling this option will activate a dedicated RenderTypes and RenderPipeline to render wall-penetrating highlight outlines.\nIf it causes crashes or invisible highlights due to conflicts with other mods, please disable this option.\nChanging this setting requires restarting the game to take effect.\n\nWhen disabled, block highlights will no longer be visible through blocks.",
-  "vm.config.enableHighlights": "Render highlight preview",
-  "vm.config.enableHighlights.tooltip": "When disabled, highlight outlines will not be rendered",
-  "vm.config.save_and_exit": "Save & Exit",
-  "vm.config.cancel": "Cancel",
+  "vm.config.useIntrusiveCode.tooltip": "Enabling this option will activate dedicated RenderType and RenderPipeline to render highlight outlines.\nIf it causes crashes or invisible highlights, please disable this option.\nChanging this setting requires restarting the game to take effect.\n\nWhen disabled, highlights will not be visible through blocks.",
+
+  "vm.config.enableHighlights": "Highlight Preview",
+  "vm.config.enableHighlights.tooltip": "Enable highlight rendering",
+
+  "vm.config.save_and_exit": "Save & Close",
+  "vm.config.close": "Close",
+
   "vm.config.open_keybindings": "Game Key Binds…",
-  "vm.config.open_keybindings.tooltip": "Change this mod's keys in the game's built-in Key Binds screen"
+  "vm.config.open_keybindings.tooltip": "Edit keys in the game settings",
+  "vm.config.saveTip": "All changes apply and save immediately except text fields"
 }

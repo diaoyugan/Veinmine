@@ -34,7 +34,7 @@ public class ConfigToosAndProtectPage {
         final int contentWidth = 200;
         final int leftX = centerX - contentWidth / 2;
 
-        VerticalLayout layout = new VerticalLayout(leftX, 30, 4);
+        VerticalLayout layout = new VerticalLayout(leftX, 10, 4);
 
         // 标题
         widgets.add(new TitleWidget(
@@ -42,7 +42,7 @@ public class ConfigToosAndProtectPage {
                 layout.y(),
                 Component.translatable("vm.config.screen.toolsandprotect")
         ));
-        layout.next(16);
+        layout.next(10);
 
         widgets.add(bool(
                 layout,
@@ -83,7 +83,7 @@ public class ConfigToosAndProtectPage {
                 layout.y(),
                 Component.translatable("vm.config.protected_tools")
         ));
-        layout.next(16);
+        layout.next(10);
 
         protectedToolsBox = MultiLineEditBox.builder()
                 .setX(layout.x())

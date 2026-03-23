@@ -27,8 +27,8 @@ public class ConfigHighlightsPage {
         final int numSliders = 4;  // 颜色滑块的数量
         final int previewHeight = (sliderHeight * numSliders) + 24;  // 预览框的高度等于滑块的总高度
 
-        final int leftX = centerX - 90;
-        VerticalLayout layout = new VerticalLayout(leftX, 30, 4);
+        final int leftX = centerX - contentWidth / 2;
+        VerticalLayout layout = new VerticalLayout(leftX, 10, 4);
 
         // 标题
         widgets.add(new TitleWidget(
@@ -36,7 +36,7 @@ public class ConfigHighlightsPage {
                 layout.y(),
                 Component.translatable("vm.config.screen.highlights")
         ));
-        layout.next(16);
+        layout.next(10);
 
         // Enable Highlights Checkbox
         widgets.add(bool(

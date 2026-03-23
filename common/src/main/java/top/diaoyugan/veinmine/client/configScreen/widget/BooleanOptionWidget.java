@@ -15,6 +15,7 @@ public class BooleanOptionWidget extends BaseOptionWidget {
     private final BooleanSupplier getter;
     private final Consumer<Boolean> setter;
     private Component tooltip;
+    private boolean isHalfWidth = false;
 
     public BooleanOptionWidget(
             int x, int y, int width, int height,
@@ -25,6 +26,10 @@ public class BooleanOptionWidget extends BaseOptionWidget {
         super(x, y, width, height, label);
         this.getter = getter;
         this.setter = setter;
+    }
+
+    public void setHalfWidth(){
+        isHalfWidth = true;
     }
 
     public void tooltip(Component tooltip) {
@@ -53,15 +58,25 @@ public class BooleanOptionWidget extends BaseOptionWidget {
         Component state = value
                 ? Component.translatable("options.on")
                 : Component.translatable("options.off");
-
-        g.text(
-                mc.font,
-                state,
-                x + width - 40,
-                y + 6,
-                value ? 0xFF55FF55 : 0xFFFF5555,
-                false
-        );
+        if (!isHalfWidth){
+            g.text(
+                    mc.font,
+                    state,
+                    x + width - 40,
+                    y + 6,
+                    value ? 0xFF55FF55 : 0xFFFF5555,
+                    false
+            );
+        }else{
+            g.text(
+                    mc.font,
+                    state,
+                    x + width - 20,
+                    y + 6,
+                    value ? 0xFF55FF55 : 0xFFFF5555,
+                    false
+            );
+        }
     }
 
 

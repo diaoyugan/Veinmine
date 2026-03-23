@@ -40,7 +40,7 @@ public class ConfigScreen extends Screen {
 
     @Override
     protected void init() {
-        int centerX = width / 2;
+        int centerX = width / 2 + 10;
 
         pages.clear();
 
@@ -64,15 +64,15 @@ public class ConfigScreen extends Screen {
         advancedPage = new ConfigAdvancedPage(items);
         pages.add(advancedPage.build(centerX));
 
-        addTabButton(10, 10,  Component.translatable("vm.config.screen.main"),
+        addTabButton(10, 30,  Component.translatable("vm.config.screen.main"),
                 20, () -> showPage(0));
-        addTabButton(10, 34,  Component.translatable("vm.config.screen.toolsandprotect"),
+        addTabButton(10, 54,  Component.translatable("vm.config.screen.toolsandprotect"),
                 20, () -> showPage(1));
-        addTabButton(10, 58,  Component.translatable("vm.config.screen.highlights"),
+        addTabButton(10, 78,  Component.translatable("vm.config.screen.highlights"),
                 20, () -> showPage(2));
-        addTabButton(10, 82,  Component.translatable("vm.config.screen.keysAndBinding"),
+        addTabButton(10, 102,  Component.translatable("vm.config.screen.keysAndBinding"),
                 20, () -> showPage(3));
-        addTabButton(10, 106, Component.translatable("vm.config.screen.final_resort")
+        addTabButton(10, 126, Component.translatable("vm.config.screen.final_resort")
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), 20, () -> showPage(4));
 
         showPage(currentPage);
@@ -87,7 +87,7 @@ public class ConfigScreen extends Screen {
         int bottomY = height - 28;
 
         addRenderableWidget(Button.builder(
-                        Component.translatable("vm.config.cancel"),
+                        Component.translatable("vm.config.close"),
                         b -> onClose())
                 .bounds(centerX - 154, bottomY, 150, 20)
                 .build());
@@ -115,7 +115,6 @@ public class ConfigScreen extends Screen {
         for (PendingTab tab : pendingTabs) {
             width = Math.max(width, font.width(tab.text) + TAB_PADDING);
         }
-
         for (PendingTab tab : pendingTabs) {
             Button btn = Button.builder(tab.text, b -> tab.action.run())
                     .bounds(tab.x, tab.y, width, tab.height)
@@ -140,7 +139,6 @@ public class ConfigScreen extends Screen {
         }
 
         currentPage = index;
-        buildButtons();
     }
 
     private void saveAndExit() {
@@ -152,7 +150,37 @@ public class ConfigScreen extends Screen {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float delta) {
+        g.fill(
+                0, height - 45,
+                width, height,
+                0x55000000
+        );
+        g.fill(
+                0, height - 45,
+                width, height - 45 + 1,
+                0xFF888888
+        );
+        g.fillGradient(
+                0, height - 45 - 4,
+                width, height - 45,
+                0x00000000,
+                0x55000000
+        );
         super.extractRenderState(g, mouseX, mouseY, delta);
+        g.text(
+                this.font,
+                Component.translatable("vm.config.screen.title"),
+                11,
+                14,
+                0xFFFFFFFF
+        );
+        g.centeredText(
+                this.font,
+                Component.translatable("vm.config.saveTip"),
+                width / 2,
+                height - 40,
+                0xFFFFFFFF
+        );
     }
 
     @Override

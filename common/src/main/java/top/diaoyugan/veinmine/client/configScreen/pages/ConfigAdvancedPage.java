@@ -28,7 +28,7 @@ public class ConfigAdvancedPage {
         final int contentWidth = 200;
         final int leftX = centerX - contentWidth / 2;
 
-        VerticalLayout layout = new VerticalLayout(leftX, 30, 4);
+        VerticalLayout layout = new VerticalLayout(leftX, 10, 4);
 
         // 标题
         widgets.add(new TitleWidget(
@@ -37,7 +37,7 @@ public class ConfigAdvancedPage {
                 Component.translatable("vm.config.screen.final_resort")
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.RED))
         ));
-        layout.next(16);
+        layout.next(10);
 
         widgets.add(bool(
                 layout,

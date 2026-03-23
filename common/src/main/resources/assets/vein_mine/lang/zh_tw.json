@@ -54,7 +54,8 @@
   "vm.config.enableHighlights": "是否顯示高亮預覽",
   "vm.config.enableHighlights.tooltip": "關閉後不會顯示高亮框線",
   "vm.config.save_and_exit": "儲存並離開",
-  "vm.config.cancel": "取消",
+  "vm.config.close": "離開",
   "vm.config.open_keybindings": "遊戲按鍵綁定…",
-  "vm.config.open_keybindings.tooltip": "在遊戲內建的按鍵綁定畫面中修改本模組的按鍵"
+  "vm.config.open_keybindings.tooltip": "在遊戲內建的按鍵綁定畫面中修改本模組的按鍵",
+  "vm.config.saveTip": "除輸入框外，所有變更都會立即套用並儲存"
 }

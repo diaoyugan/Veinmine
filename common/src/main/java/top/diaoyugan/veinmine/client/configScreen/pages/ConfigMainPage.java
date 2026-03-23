@@ -35,7 +35,8 @@ public class ConfigMainPage {
         final int contentWidth = 200;
         final int leftX = centerX - contentWidth / 2;
 
-        VerticalLayout layout = new VerticalLayout(leftX, 30, 4);
+        VerticalLayout layout = new VerticalLayout(leftX, 10, 4);
+        int halfWidth = (contentWidth - 4) / 2;
 
         // 标题
         widgets.add(new TitleWidget(
@@ -43,20 +44,21 @@ public class ConfigMainPage {
                 layout.y(),
                 Component.translatable("vm.config.screen.main")
         ));
-        layout.next(16);
+        layout.next(10);
 
         widgets.add(bool(
-                layout,
-                contentWidth,
+                layout.x(),
+                layout.y(),
+                halfWidth,
                 "vm.config.use_bfs",
                 () -> items.useBFS,
                 v -> items.useBFS = v
         ));
-        layout.next(20);
 
         widgets.add(bool(
-                layout,
-                contentWidth,
+                layout.x() + halfWidth + 4,
+                layout.y(),
+                halfWidth,
                 "vm.config.use_radius_search",
                 () -> items.useRadiusSearch,
                 v -> items.useRadiusSearch = v
@@ -114,7 +116,7 @@ public class ConfigMainPage {
                 layout.y(),
                 Component.translatable("vm.config.ignored_blocks")
         ));
-        layout.next(16);
+        layout.next(10);
 
         ignoredBlocksBox = MultiLineEditBox.builder()
                 .setX(layout.x())
@@ -124,7 +126,7 @@ public class ConfigMainPage {
                 .build(
                         Minecraft.getInstance().font,
                         contentWidth,
-                        40,
+                        30,
                         Component.translatable("vm.config.ignored_blocks")
                 );
 
@@ -163,6 +165,28 @@ public class ConfigMainPage {
                 getter,
                 setter
         );
+        widget.tooltip(Component.translatable(key + ".tooltip"));
+        return widget;
+    }
+
+    private BooleanOptionWidget bool(
+            int x,
+            int y,
+            int width,
+            String key,
+            BooleanSupplier getter,
+            Consumer<Boolean> setter
+    ) {
+        BooleanOptionWidget widget = new BooleanOptionWidget(
+                x,
+                y,
+                width,
+                20,
+                Component.translatable(key),
+                getter,
+                setter
+        );
+        widget.setHalfWidth();
         widget.tooltip(Component.translatable(key + ".tooltip"));
         return widget;
     }
