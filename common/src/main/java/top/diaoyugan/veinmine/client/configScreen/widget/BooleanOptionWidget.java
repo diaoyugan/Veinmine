@@ -1,7 +1,7 @@
 package top.diaoyugan.veinmine.client.configScreen.widget;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -33,7 +33,7 @@ public class BooleanOptionWidget extends BaseOptionWidget {
 
     @Override
     protected void renderContent(
-            GuiGraphics g,
+            GuiGraphicsExtractor g,
             int x, int y,
             int width, int height,
             int mouseX, int mouseY
@@ -41,7 +41,7 @@ public class BooleanOptionWidget extends BaseOptionWidget {
         Minecraft mc = Minecraft.getInstance();
         boolean value = getter.getAsBoolean();
 
-        g.drawString(
+        g.text(
                 mc.font,
                 getMessage(),
                 x + 6,
@@ -54,7 +54,7 @@ public class BooleanOptionWidget extends BaseOptionWidget {
                 ? Component.translatable("options.on")
                 : Component.translatable("options.off");
 
-        g.drawString(
+        g.text(
                 mc.font,
                 state,
                 x + width - 40,

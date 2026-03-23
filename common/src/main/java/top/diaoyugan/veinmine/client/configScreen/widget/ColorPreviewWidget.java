@@ -1,6 +1,6 @@
 package top.diaoyugan.veinmine.client.configScreen.widget;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -25,10 +25,11 @@ public class ColorPreviewWidget extends AbstractWidget {
         this.alpha = alpha;
     }
 
+
     @Override
-    protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    protected void extractWidgetRenderState(GuiGraphicsExtractor guiGraphicsExtractor, int i, int i1, float v) {
         int color = 0xFF000000 | (red.get() << 16) | (green.get() << 8) | blue.get() | (alpha.get() << 24);
-        graphics.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), color);
+        guiGraphicsExtractor.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), color);
     }
 
     @Override

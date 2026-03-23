@@ -1,8 +1,7 @@
 package top.diaoyugan.veinmine.client.configScreen.widget;
 
-import net.minecraft.client.gui.GuiGraphics;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -15,8 +14,8 @@ public class TitleWidget extends AbstractWidget {
     }
 
     @Override
-    protected void renderWidget(GuiGraphics g, int mouseX, int mouseY, float delta) {
-        g.drawString(
+    protected void extractWidgetRenderState(GuiGraphicsExtractor guiGraphicsExtractor, int i, int i1, float v) {
+        guiGraphicsExtractor.text(
                 Minecraft.getInstance().font,
                 getMessage(),
                 getX(),
