@@ -29,13 +29,11 @@ public final class HotKeys {
 
         // 按键处理 → 根据模式决定是否发送 KeyPress 包
         if (useHold) {
-            if (HotKeyState.consumeLastPressedChange(isPressed) && isPressed) {
+            if (HotKeyState.consumeLastPressedChange(isPressed)) {
                 ClientPlayNetworking.send(KeyPressPacket.INSTANCE);
             }
-        } else {
-            if (click) {
-                ClientPlayNetworking.send(KeyPressPacket.INSTANCE);
-            }
+        } else if (click) {
+            ClientPlayNetworking.send(KeyPressPacket.INSTANCE);
         }
 
         // 客户端高亮逻辑，根据服务端状态决定
