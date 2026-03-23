@@ -20,7 +20,7 @@ public class TitleWidget extends AbstractWidget {
                 getMessage(),
                 getX(),
                 getY(),
-                0xFFAAAAAA,
+                0xFFFFFFFF,
                 false
         );
     }

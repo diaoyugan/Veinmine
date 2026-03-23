@@ -161,7 +161,7 @@ public class ConfigScreen extends Screen {
                 0xFF888888
         );
         g.fillGradient(
-                0, height - 45 - 4,
+                0, height - 45 - 1,
                 width, height - 45,
                 0x00000000,
                 0x55000000
