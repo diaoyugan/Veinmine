@@ -5,17 +5,12 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
-public class TabButton extends Button {
+public class TabButton extends Button.Plain {
     public TabButton(int x, int y, int width, int height,
                      Component text, OnPress onPress) {
         super(x, y, width, height, text, onPress, DEFAULT_NARRATION);
     }
 
-    @Override
-    protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        this.extractDefaultSprite(graphics);
-        this.extractDefaultLabel(graphics.textRendererForWidget(this, GuiGraphicsExtractor.HoveredTextEffects.NONE));
-    }
     @Override
     protected void handleCursor(GuiGraphicsExtractor graphics) {
         if (this.isHovered()) {
