@@ -8,7 +8,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Style;
 import top.diaoyugan.veinmine.client.configScreen.pages.*;
 import top.diaoyugan.veinmine.config.Config;
-
+import top.diaoyugan.veinmine.client.configScreen.widget.TabButton;
 import net.minecraft.network.chat.Component;
 import top.diaoyugan.veinmine.config.ConfigItems;
 import top.diaoyugan.veinmine.utils.Utils;
@@ -26,7 +26,7 @@ public class ConfigScreen extends Screen {
     private final List<PendingTab> pendingTabs = new ArrayList<>();
     private static final int TAB_MIN_WIDTH = 60;
     private static final int TAB_PADDING = 10;
-
+    private final List<Button> tabButtons = new ArrayList<>();
     private ConfigMainPage mainPage;
     private ConfigAdvancedPage advancedPage;
     private ConfigHighlightsPage highlightsPage;
@@ -65,23 +65,23 @@ public class ConfigScreen extends Screen {
         pages.add(advancedPage.build(centerX));
 
         addTabButton(10, 30,  Component.translatable("vm.config.screen.main"),
-                20, () -> showPage(0));
+                20,0, () -> showPage(0));
         addTabButton(10, 54,  Component.translatable("vm.config.screen.toolsandprotect"),
-                20, () -> showPage(1));
+                20,1,() -> showPage(1));
         addTabButton(10, 78,  Component.translatable("vm.config.screen.highlights"),
-                20, () -> showPage(2));
+                20,2, () -> showPage(2));
         addTabButton(10, 102,  Component.translatable("vm.config.screen.keysAndBinding"),
-                20, () -> showPage(3));
+                20,3, () -> showPage(3));
         addTabButton(10, 126, Component.translatable("vm.config.screen.final_resort")
-                .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), 20, () -> showPage(4));
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), 20,4, () -> showPage(4));
 
         showPage(currentPage);
         buildTabButtons();
         buildButtons();
+        updateTabButtons();
     }
 
     private void buildButtons() {
-        buildTabButtons();
 
         int centerX = width / 2;
         int bottomY = height - 28;
@@ -103,9 +103,10 @@ public class ConfigScreen extends Screen {
             int x, int y,
             Component text,
             int height,
+            int pageIndex,
             Runnable action
     ) {
-        pendingTabs.add(new PendingTab(x, y, height, text, action));
+        pendingTabs.add(new PendingTab(x, y, height, text, action,pageIndex));
     }
 
     private void buildTabButtons() {
@@ -116,16 +117,24 @@ public class ConfigScreen extends Screen {
             width = Math.max(width, font.width(tab.text) + TAB_PADDING);
         }
         for (PendingTab tab : pendingTabs) {
-            Button btn = Button.builder(tab.text, b -> tab.action.run())
-                    .bounds(tab.x, tab.y, width, tab.height)
-                    .build();
+            Button btn = new TabButton(
+                    tab.x, tab.y, width, tab.height,
+                    tab.text,
+                    b -> tab.action.run()
+            );
+
+            tabButtons.add(btn);
             addRenderableWidget(btn);
         }
 
         pendingTabs.clear();
     }
 
-
+    private void updateTabButtons() {
+        for (int i = 0; i < tabButtons.size(); i++) {
+            tabButtons.get(i).active = (i != currentPage);
+        }
+    }
 
     public void showPage(int index) {
         if (currentPage < pages.size()) {
@@ -137,8 +146,8 @@ public class ConfigScreen extends Screen {
         for (AbstractWidget w : pages.get(index)) {
             addRenderableWidget(w);
         }
-
         currentPage = index;
+        updateTabButtons();
     }
 
     private void saveAndExit() {
