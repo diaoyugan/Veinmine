@@ -5,7 +5,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
-import top.diaoyugan.veinmine.client.configScreen.widget.VerticalLayout;
+import top.diaoyugan.veinmine.client.configScreen.layout.VerticalLayout;
 import top.diaoyugan.veinmine.client.configScreen.widget.BooleanOptionWidget;
 import top.diaoyugan.veinmine.client.configScreen.widget.IntSliderOptionWidget;
 import top.diaoyugan.veinmine.client.configScreen.widget.TitleWidget;

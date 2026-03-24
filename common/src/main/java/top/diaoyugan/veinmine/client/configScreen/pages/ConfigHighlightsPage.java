@@ -2,6 +2,7 @@ package top.diaoyugan.veinmine.client.configScreen.pages;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
+import top.diaoyugan.veinmine.client.configScreen.layout.VerticalLayout;
 import top.diaoyugan.veinmine.client.configScreen.widget.*;
 import top.diaoyugan.veinmine.config.ConfigItems;
 

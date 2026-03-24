@@ -5,9 +5,9 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
-public class TabButton extends Button.Plain {
-    public TabButton(int x, int y, int width, int height,
-                     Component text, OnPress onPress) {
+public class TabButtonWidget extends Button.Plain {
+    public TabButtonWidget(int x, int y, int width, int height,
+                           Component text, OnPress onPress) {
         super(x, y, width, height, text, onPress, DEFAULT_NARRATION);
     }
 

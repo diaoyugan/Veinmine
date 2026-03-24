@@ -6,9 +6,10 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Style;
+import top.diaoyugan.veinmine.client.configScreen.layout.PendingTab;
 import top.diaoyugan.veinmine.client.configScreen.pages.*;
 import top.diaoyugan.veinmine.config.Config;
-import top.diaoyugan.veinmine.client.configScreen.widget.TabButton;
+import top.diaoyugan.veinmine.client.configScreen.widget.TabButtonWidget;
 import net.minecraft.network.chat.Component;
 import top.diaoyugan.veinmine.config.ConfigItems;
 import top.diaoyugan.veinmine.utils.Utils;
@@ -117,7 +118,7 @@ public class ConfigScreen extends Screen {
             width = Math.max(width, font.width(tab.text) + TAB_PADDING);
         }
         for (PendingTab tab : pendingTabs) {
-            Button btn = new TabButton(
+            Button btn = new TabButtonWidget(
                     tab.x, tab.y, width, tab.height,
                     tab.text,
                     b -> tab.action.run()

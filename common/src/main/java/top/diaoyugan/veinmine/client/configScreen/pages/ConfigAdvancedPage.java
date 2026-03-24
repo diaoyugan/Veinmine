@@ -4,7 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import top.diaoyugan.veinmine.client.configScreen.widget.VerticalLayout;
+import top.diaoyugan.veinmine.client.configScreen.layout.VerticalLayout;
 import top.diaoyugan.veinmine.client.configScreen.widget.BooleanOptionWidget;
 import top.diaoyugan.veinmine.client.configScreen.widget.TitleWidget;
 import top.diaoyugan.veinmine.config.ConfigItems;
