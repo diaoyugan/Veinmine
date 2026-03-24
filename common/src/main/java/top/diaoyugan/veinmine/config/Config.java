@@ -43,6 +43,11 @@ public class Config {
         }
     }
 
+    public void reset(){
+        configItems = new ConfigItems();
+        save();
+    }
+
     public void save() {
         try (Writer writer = Files.newBufferedWriter(configFilePath)) {
             jsonProcessor.toJson(configItems, writer);
@@ -70,8 +75,7 @@ public class Config {
             }
         } catch (JsonSyntaxException e) {
             Logger.throwLog(LoggerLevels.ERROR, "The configuration file is malformed, reset to the default configuration");
-            configItems = new ConfigItems();
-            save();
+            reset();
         } catch (IOException e) {
             Logger.throwLog(LoggerLevels.ERROR, "Failed to read the configuration file, using the default configuration");
             configItems = new ConfigItems();

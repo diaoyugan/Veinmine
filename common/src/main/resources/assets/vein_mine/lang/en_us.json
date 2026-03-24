@@ -86,5 +86,10 @@
 
   "vm.config.open_keybindings": "Game Key Binds…",
   "vm.config.open_keybindings.tooltip": "Edit keys in the game settings",
-  "vm.config.saveTip": "All changes apply and save immediately except text fields"
+  "vm.config.saveTip": "All changes apply and save immediately except text fields",
+
+  "vm.config.screen.reset.tooltip": "This Button Will Reset All Configs To Default And Exit Config Screen",
+
+  "vm.command.reload": "VeinMine config reloaded",
+  "vm.command.reload_failed":"An error occurred when reloading config. See Console for details"
 }

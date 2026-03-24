@@ -17,6 +17,7 @@ public class Veinmine implements ModInitializer {
         new KeyPacketImplements().onInitialize();
         PayloadRegistrar.init();
         PlayerDisconnect.register();
+        FabricCommandRegister.register();
     }
 
 }

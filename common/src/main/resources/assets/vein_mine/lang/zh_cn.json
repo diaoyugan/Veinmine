@@ -57,5 +57,9 @@
   "vm.config.close": "关闭",
   "vm.config.open_keybindings": "打开游戏按键绑定…",
   "vm.config.open_keybindings.tooltip": "在游戏内建的设置页中编辑本模组的按键",
-  "vm.config.saveTip": "输入框以外的更改会立即保存并应用"
+  "vm.config.saveTip": "输入框以外的更改会立即保存并应用",
+
+  "vm.config.screen.reset.tooltip": "此按钮将重置所有配置为默认值并退出配置界面",
+  "vm.command.reload": "连锁挖掘配置已重新加载",
+  "vm.command.reload_failed": "重新加载配置时发生错误，请查看控制台获取详细信息"
 }

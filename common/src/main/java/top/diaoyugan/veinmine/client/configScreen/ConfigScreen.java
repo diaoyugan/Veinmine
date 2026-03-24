@@ -98,16 +98,28 @@ public class ConfigScreen extends Screen {
                         b -> saveAndExit())
                 .bounds(centerX + 4, bottomY, 150, 20)
                 .build());
+
+        addRenderableWidget(Button.builder(
+                        Component.literal("🔄")
+                                .setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE)),
+                        b -> {
+                            Config.getInstance().reset();
+                            minecraft.setScreen(parent);
+                        }).tooltip(
+                                Tooltip.create(Component.translatable("vm.config.screen.reset.tooltip"))
+                        )
+                .bounds(centerX - 194, bottomY, 20, 20)
+                .build());
     }
 
     private void addTabButton(
             int x, int y,
             Component text,
             int height,
-            int pageIndex,
+            int index,
             Runnable action
     ) {
-        pendingTabs.add(new PendingTab(x, y, height, text, action,pageIndex));
+        pendingTabs.add(new PendingTab(x, y, height, text, action, index));
     }
 
     private void buildTabButtons() {
