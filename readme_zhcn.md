@@ -23,6 +23,7 @@
 - 或者可以编辑 `.minecraft/config/veinmine.json`进行设置。
 - 对于服务端 可以编辑 `[服务端根目录]/config/veinmine.json`
 - [配置文件说明](config_docs/config_zh_cn.md)
+- 可以使用`/veinmine reload`从配置文件重新加载配置
 
 ## 控制
 - **按下 `(~)（默认）** 切换激活连锁挖掘。

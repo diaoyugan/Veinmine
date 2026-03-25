@@ -22,6 +22,7 @@ For fabric, it's recommended to install [**ModMenu**](https://modrinth.com/mod/m
 - Edit the configuration file located in `.minecraft/config/veinmine.json` 
 - For dedicated servers, the configuration file located in `<your server's path>/config/veinmine.json`
 - [Configuration Guide](https://github.com/diaoyugan/Veinmine/blob/master/config_docs/config_en_us.md)
+- Use `/veinmine reload` command to reload configuration from file.
 
 ## Controls
 - **Press `(~) (default)** to toggle Vein Mine.
