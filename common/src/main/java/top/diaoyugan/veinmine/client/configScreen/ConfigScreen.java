@@ -110,15 +110,6 @@ public class ConfigScreen extends Screen {
                         )
                 .bounds(centerX - 194, bottomY, 20, 20)
                 .build());
-//        addRenderableWidget(new TextureButton.Builder(centerX - 194, bottomY, 20, 20)
-//                .texture(Identifier.fromNamespaceAndPath(Constants.ID,"button"), 20, 20)
-//                .hoverTexture(Identifier.fromNamespaceAndPath(Constants.ID,"texture/gui/button_hoverd.png"),20,20)
-//                .uv(0, 0)
-//                .hoverShift(20)
-//                .onPress(b -> {
-//                    System.out.println("clicked");
-//                }).tooltip(Component.translatable("vm.config.screen.reset.tooltip"))
-//                .build());
     }
 
     private void addTabButton(
