@@ -103,8 +103,8 @@ public final class OutlineRenderer {
             Vec3 p1, Vec3 p2, Color col, float thickness
     ) {
         Vec3 dir = p2.subtract(p1).normalize();
-        Vec3 camDir = camera.position().subtract(p1).normalize();
-        Vec3 side = dir.cross(camDir);
+        Vec3 viewDir = camera.entity().getForward();
+        Vec3 side = viewDir.cross(dir);
 
         if (side.lengthSqr() < 1e-6) side = new Vec3(0, 1, 0);
         side = side.normalize().scale(thickness / 2);
@@ -136,19 +136,13 @@ public final class OutlineRenderer {
             Vec3 a, Vec3 b, Vec3 c1, Vec3 d,
             Color col
     ) {
-        drawTriangle(c, m, a, b, c1, col);
-        drawTriangle(c, m, c1, d, a, col);
-    }
-
-    private static void drawTriangle(
-            VertexConsumer c, Matrix4f m,
-            Vec3 v1, Vec3 v2, Vec3 v3, Color col
-    ) {
-        c.addVertex(m, (float)v1.x, (float)v1.y, (float)v1.z)
-                .setColor(col.r, col.g, col.b, col.a).setNormal(0,1,0);
-        c.addVertex(m, (float)v2.x, (float)v2.y, (float)v2.z)
-                .setColor(col.r, col.g, col.b, col.a).setNormal(0,1,0);
-        c.addVertex(m, (float)v3.x, (float)v3.y, (float)v3.z)
-                .setColor(col.r, col.g, col.b, col.a).setNormal(0,1,0);
+        c.addVertex(m, (float)a.x, (float)a.y, (float)a.z)
+                .setColor(col.r, col.g, col.b, col.a).setNormal(0, 1, 0).setLineWidth(2);
+        c.addVertex(m, (float)b.x, (float)b.y, (float)b.z)
+                .setColor(col.r, col.g, col.b, col.a).setNormal(0, 1, 0).setLineWidth(2);
+        c.addVertex(m, (float)c1.x, (float)c1.y, (float)c1.z)
+                .setColor(col.r, col.g, col.b, col.a).setNormal(0, 1, 0).setLineWidth(2);
+        c.addVertex(m, (float)d.x, (float)d.y, (float)d.z)
+                .setColor(col.r, col.g, col.b, col.a).setNormal(0, 1, 0).setLineWidth(2);
     }
 }

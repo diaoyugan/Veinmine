@@ -13,7 +13,7 @@ public class CustomRenderPipeline {
     protected static final RenderPipeline LINES_NO_DEPTH = RenderPipelinesInvoker.invokeRegister(
             RenderPipeline.builder(RenderPipelinesInvoker.getLinesSnippet())
                     .withLocation(Identifier.fromNamespaceAndPath(Constants.ID, "pipeline/lines_no_depth"))
-                    .withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.TRIANGLES)
+                    .withVertexFormat(DefaultVertexFormat.POSITION_COLOR_NORMAL_LINE_WIDTH, VertexFormat.Mode.QUADS)
                     .withDepthStencilState(ALWAYS_PASS())
                     .withCull(false)
                     .build()

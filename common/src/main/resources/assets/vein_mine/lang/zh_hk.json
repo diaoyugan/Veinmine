@@ -58,7 +58,7 @@
   "vm.config.open_keybindings": "遊戲按鍵綁定…",
   "vm.config.open_keybindings.tooltip": "在遊戲內建的按鍵綁定畫面中修改本模組的按鍵",
   "vm.config.saveTip": "除輸入框外，所有變更都會立即套用並儲存",
-  "vm.config.screen.reset.tooltip": "此按鈕將重設所有設定為預設值並退出設定畫面",
+  "vm.config.screen.reset.tooltip": "重設所有設定為預設值並退出設定畫面",
   "vm.command.reload": "連鎖挖掘設定已重新載入",
   "vm.command.reload_failed": "重新載入設定時發生錯誤，請查看主控台以取得詳細資訊"
 }

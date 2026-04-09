@@ -4,6 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.network.chat.Component;
 import top.diaoyugan.veinmine.client.configScreen.layout.VerticalLayout;
@@ -12,14 +14,16 @@ import top.diaoyugan.veinmine.config.ConfigItems;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-public class ConfigKeysAndBindingsPage {
+public class ConfigKeysAndBindingsPage extends Screen {
 
     private final ConfigItems items;
 
     public ConfigKeysAndBindingsPage(ConfigItems items) {
+        super(Component.translatable("vm.config.screen.keysAndBinding"));
         this.items = items;
     }
 
@@ -42,14 +46,12 @@ public class ConfigKeysAndBindingsPage {
         widgets.add(Button.builder(
                 Component.translatable("vm.config.open_keybindings"),
                 b -> {
-                    if (Minecraft.getInstance().screen != null) {
-                        Minecraft.getInstance().setScreen(
+                        Minecraft.getInstance().setScreenAndShow(
                                 new KeyBindsScreen(
-                                        Minecraft.getInstance().screen,
+                                        this,
                                         Minecraft.getInstance().options
                                 )
                         );
-                    }
                 }
         ).bounds(
                 layout.x(),

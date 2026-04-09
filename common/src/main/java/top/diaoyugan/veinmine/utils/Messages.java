@@ -22,9 +22,9 @@ public class Messages {
     public static void clientMessage(Component message, Boolean isOnActionbar) {
         Minecraft client = Minecraft.getInstance();
         if (isOnActionbar)
-            client.gui.setOverlayMessage(message, false);
+            client.gui.hud.setOverlayMessage(message, false);
         else
-            client.gui.getChat().addClientSystemMessage(message);
+            client.gui.hud.getChat().addClientSystemMessage(message);
     }
 
     /**

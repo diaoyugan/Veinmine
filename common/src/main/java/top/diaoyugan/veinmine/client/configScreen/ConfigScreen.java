@@ -104,7 +104,7 @@ public class ConfigScreen extends Screen {
                                 .setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE)),
                         b -> {
                             Config.getInstance().reset();
-                            minecraft.setScreen(parent);
+                            minecraft.setScreenAndShow(parent);
                         }).tooltip(
                                 Tooltip.create(Component.translatable("vm.config.screen.reset.tooltip"))
                         )
@@ -167,7 +167,7 @@ public class ConfigScreen extends Screen {
         mainPage.save();
         toosAndProtectPage.save();
         Config.getInstance().save();
-        minecraft.setScreen(parent);
+        minecraft.setScreenAndShow(parent);
     }
 
     @Override
@@ -207,6 +207,6 @@ public class ConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        minecraft.setScreen(parent);
+        minecraft.setScreenAndShow(parent);
     }
 }

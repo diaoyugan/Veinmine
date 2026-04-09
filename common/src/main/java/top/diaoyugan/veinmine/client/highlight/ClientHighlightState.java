@@ -9,6 +9,7 @@ import java.util.Set;
 public final class ClientHighlightState {
 
     public static final Set<BlockPos> HIGHLIGHTED_BLOCKS = new HashSet<>();
+    public static boolean SHOW_HIGHLIGHT = true;
 
     private ClientHighlightState() {}
 

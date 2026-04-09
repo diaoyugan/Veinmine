@@ -41,6 +41,9 @@ public final class HotKeys {
             BlockPos pos = ClientHighlightLogic.getLookedBlock(client.player);
             if(pos != null) {
                 ClientPlayNetworking.send(new BlockHighlightRequest(pos));
+                ClientHighlightState.SHOW_HIGHLIGHT = true;
+            }else {
+                ClientHighlightState.SHOW_HIGHLIGHT = false;
             }
         } else {
             ClientHighlightState.HIGHLIGHTED_BLOCKS.clear();

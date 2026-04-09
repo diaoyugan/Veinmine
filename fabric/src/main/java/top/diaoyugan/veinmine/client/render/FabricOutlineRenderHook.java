@@ -3,6 +3,7 @@ package top.diaoyugan.veinmine.client.render;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import top.diaoyugan.veinmine.client.highlight.ClientHighlightLogic;
 import top.diaoyugan.veinmine.client.highlight.ClientHighlightState;
 import top.diaoyugan.veinmine.config.IntrusiveConfig;
 import top.diaoyugan.veinmine.utils.Utils;
@@ -12,6 +13,7 @@ public final class FabricOutlineRenderHook {
     public static void init() {
         LevelRenderEvents.END_MAIN.register(ctx -> {
             if (!Utils.getConfig().enableHighlights) return;
+            if (!ClientHighlightState.SHOW_HIGHLIGHT) return;
 
             Minecraft mc = Minecraft.getInstance();
 
