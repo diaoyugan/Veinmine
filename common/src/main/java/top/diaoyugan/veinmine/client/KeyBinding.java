@@ -9,14 +9,15 @@ public class KeyBinding {
     public static final KeyMapping.Category VM_CATEGORY =
             KeyMapping.Category.register(
                     Identifier.fromNamespaceAndPath(
-                            Constants.ID,"keys"
+                            Constants.ID,"bindings"
                     )
             );
-    public static net.minecraft.client.KeyMapping BINDING;
+    public static KeyMapping ACTIVATION_KEY;
+    public static KeyMapping CONFIGURATION_MENU;
 
 
     /** 默认键 */
-    public static int defaultKey() {
+    public static int defaultActivationKey() {
         return GLFW.GLFW_KEY_GRAVE_ACCENT;
     }
 }

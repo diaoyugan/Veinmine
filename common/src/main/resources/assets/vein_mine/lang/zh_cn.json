@@ -2,7 +2,7 @@
   "modmenu.nameTranslation.vein_mine": "连锁挖掘",
   "modmenu.descriptionTranslation.vein_mine": "一个可以让你破坏多个相连方块的 mod",
   "modmenu.summaryTranslation.vein_mine": "一个可以让你破坏多个相连方块的 mod",
-  "key.category.vein_mine.switch": "连锁挖掘",
+  "key.category.vein_mine.bindings": "连锁挖掘",
   "key.vm.switch": "激活按键",
   "vm.switch_state": "连锁挖掘",
   "vm.config.screen.title": "连锁挖掘 配置",

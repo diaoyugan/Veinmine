@@ -3,7 +3,7 @@
   "modmenu.descriptionTranslation.vein_mine": "Mine multiple blocks at once",
   "modmenu.summaryTranslation.vein_mine": "Mine multiple blocks at once",
 
-  "key.category.vein_mine.switch": "Vein Mine",
+  "key.category.vein_mine.bindings": "Vein Mine",
   "key.vm.switch": "Activation Key",
   "key.vm.switch.tooltip": "Set the activation key",
 

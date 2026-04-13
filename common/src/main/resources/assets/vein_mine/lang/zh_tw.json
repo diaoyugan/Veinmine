@@ -2,7 +2,7 @@
   "modmenu.nameTranslation.vein_mine": "連鎖挖掘",
   "modmenu.descriptionTranslation.vein_mine": "可以一次破壞多個相連方塊的模組",
   "modmenu.summaryTranslation.vein_mine": "可以一次破壞多個相連方塊的模組",
-  "key.category.vein_mine.switch": "連鎖挖掘",
+  "key.category.vein_mine.bindings": "連鎖挖掘",
   "key.vm.switch": "切換啟動",
   "vm.switch_state": "連鎖挖掘狀態",
   "vm.config.screen.title": "連鎖挖掘設定選單",

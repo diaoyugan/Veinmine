@@ -7,22 +7,21 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import top.diaoyugan.veinmine.Constants;
 import top.diaoyugan.veinmine.client.KeyBinding;
-import top.diaoyugan.veinmine.config.Config;
 
 @EventBusSubscriber(modid = Constants.ID,value = Dist.CLIENT)
 public final class NeoKeyBindings {
 
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
-        int keyCode = KeyBinding.defaultKey();
+        int keyCode = KeyBinding.defaultActivationKey();
 
-        KeyBinding.BINDING = new KeyMapping(
+        KeyBinding.ACTIVATION_KEY = new KeyMapping(
                 "key.vm.switch",
                 keyCode,
                 KeyBinding.VM_CATEGORY
         );
 
-        event.register(KeyBinding.BINDING);
+        event.register(KeyBinding.ACTIVATION_KEY);
     }
 }
 
