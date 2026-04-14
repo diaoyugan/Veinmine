@@ -3,7 +3,6 @@ package top.diaoyugan.vein_mine.client.configScreen;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
@@ -18,7 +17,7 @@ import net.minecraft.util.Formatting;
 import top.diaoyugan.vein_mine.client.ClientVersionInterface;
 import top.diaoyugan.vein_mine.client.CLInterfaceOverride;
 import top.diaoyugan.vein_mine.client.HotKeys;
-import top.diaoyugan.vein_mine.networking.keypacket.KeyPressPacket;
+import top.diaoyugan.vein_mine.networking.ClientNetBridge;
 import top.diaoyugan.vein_mine.config.Config;
 import top.diaoyugan.vein_mine.config.ConfigItems;
 
@@ -49,12 +48,6 @@ public class VeinmineConfigScreen extends Screen {
         } else {
             throw new IllegalStateException("Client not initialized");
         }
-    }
-
-    @Override
-    public void render(DrawContext dc, int mouseX, int mouseY, float delta) {
-        this.renderBackground(dc, mouseX, mouseY, delta);
-        super.render(dc, mouseX, mouseY, delta);
     }
 
     private Screen initConfigScreen(ConfigBuilder cb, ConfigItems ci) {
@@ -212,7 +205,7 @@ public class VeinmineConfigScreen extends Screen {
                 .setSaveConsumer((Boolean b) -> {
                     if (client != null && client.player != null) {
                         if (HotKeys.getVeinMineSwitchState()) {
-                            ClientPlayNetworking.send(KeyPressPacket.INSTANCE);
+                            ClientNetBridge.INSTANCE.sendKeyPress();
                         }
                     }
                     configItems.useHoldInsteadOfToggle = b;

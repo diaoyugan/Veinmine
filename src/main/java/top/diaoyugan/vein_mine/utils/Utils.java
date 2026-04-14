@@ -3,7 +3,6 @@ package top.diaoyugan.vein_mine.utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -91,14 +90,12 @@ public class Utils {
         if (tool == null) return;
 
         if (tool.isDamageable()) {
-            // 判断使用的是主手还是副手
             Hand usedHand = Hand.MAIN_HAND;
             if (player.getStackInHand(Hand.OFF_HAND) == tool) {
                 usedHand = Hand.OFF_HAND;
             }
-            EquipmentSlot slot = (usedHand == Hand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
-            tool.damage(blockCount, player, slot);
+            SVI.damageToolForVein(player, tool, blockCount, usedHand);
 
             if (tool.isEmpty()) {
                 player.setStackInHand(usedHand, ItemStack.EMPTY);

@@ -1,10 +1,9 @@
 plugins {
-    id 'fabric-loom' version '1.14-SNAPSHOT'
+    id 'fabric-loom' version '1.7-SNAPSHOT'
     id 'maven-publish'
-    id 'org.jetbrains.kotlin.jvm'
 }
 
-def targetVersion = project.hasProperty("mc_version") ? project.getProperty("mc_version") : "v1_21_9_10"
+def targetVersion = project.hasProperty("mc_version") ? project.getProperty("mc_version") : "v1_20_1"
 
 // 拼接 mod_version 和 targetVersion 成最终版本号
 def modVersionBase = project.hasProperty("mod_version") ? project.mod_version : "1.0.0"
@@ -32,43 +31,39 @@ base {
 }
 
 def yarnMappings = [ // Find them @ https://maven.fabricmc.net/net/fabricmc/yarn/
-        "v1_21_0_4": "1.21+build.9",
-        "v1_21_5": "1.21.5+build.1",
-        "v1_21_6_8": "1.21.6+build.1",
-        "v1_21_9_10":"1.21.9+build.1",
-        "v1_21_11":"1.21.11+build.1"
+        "v1_20_1": "1.20.1+build.10",
+        "v1_20_4": "1.20.4+build.3",
+        "v1_20_6": "1.20.6+build.3"
 ]
 
 def fabricApiVersions = [ // Find them @ https://modrinth.com/mod/fabric-api
-        "v1_21_0_4": "0.102.0+1.21",
-        "v1_21_5": "0.119.5+1.21.5",
-        "v1_21_6_8": "0.127.0+1.21.6",
-        "v1_21_9_10":"0.133.14+1.21.9",
-        "v1_21_11":"0.139.4+1.21.11"
+        "v1_20_1": "0.92.2+1.20.1",
+        "v1_20_4": "0.97.2+1.20.4",
+        "v1_20_6": "0.100.2+1.20.6"
 ]
 
 def modMenuVersions = [ // Find them @ https://modrinth.com/mod/modmenu
-        "v1_21_0_4": "11.0.3",
-        "v1_21_5": "14.0.0-rc.2",
-        "v1_21_6_8": "15.0.0",
-        "v1_21_9_10": "16.0.0-rc.1",
-        "v1_21_11":"17.0.0-alpha.1"
+        "v1_20_1": "7.2.2",
+        "v1_20_4": "9.2.0",
+        "v1_20_6": "10.0.0"
 ]
 
 def clothConfigVersions = [ // Find them @ https://modrinth.com/mod/cloth-config
-        "v1_21_0_4": "15.0.140",
-        "v1_21_5": "18.0.145",
-        "v1_21_6_8": "19.0.147",
-        "v1_21_9_10": "20.0.148",
-        "v1_21_11":"21.11.151"
+        "v1_20_1": "11.1.136",
+        "v1_20_4": "13.0.121",
+        "v1_20_6": "14.0.126"
 ]
 
 def loaderVersion= [ // Find them @ https://fabricmc.net/develop
-        "v1_21_0_4": "0.16.10",
-        "v1_21_5": "0.16.10",
-        "v1_21_6_8": "0.16.14",
-        "v1_21_9_10":"0.17.2",
-        "v1_21_11":"0.18.2"
+        "v1_20_1": "0.15.11",
+        "v1_20_4": "0.16.10",
+        "v1_20_6": "0.16.10"
+]
+
+def javaVersions = [
+        "v1_20_1": 17,
+        "v1_20_4": 17,
+        "v1_20_6": 21
 ]
 
 def resolvedMinecraftVersion = {
@@ -151,6 +146,7 @@ repositories {
     // for more information about repositories.
     maven { url 'https://maven.terraformersmc.com/releases' }
     maven { url 'https://maven.shedaniel.me/' }
+    maven { url 'https://maven.nucleoid.xyz/' }
     mavenCentral()
 }
 
@@ -166,7 +162,6 @@ dependencies {
     }
     modImplementation "com.terraformersmc:modmenu:${modMenuVersions[targetVersion]}" // Modmenu integration
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabricApiVersions[targetVersion]}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 
@@ -193,7 +188,7 @@ processResources {
 }
 
 
-def targetJavaVersion = project.hasProperty("targetJavaVersion") ? Integer.parseInt(project.targetJavaVersion) : 21
+def targetJavaVersion = javaVersions[targetVersion]
 tasks.withType(JavaCompile).configureEach {
     // ensure that the encoding is set to UTF-8, no matter what the system default is
     // this fixes some edge cases with special characters not displaying correctly
@@ -241,6 +236,3 @@ publishing {
     }
 }
 
-kotlin {
-    jvmToolchain(project.hasProperty("kotlin_jvm_toolchain") ? Integer.parseInt(project.kotlin_jvm_toolchain) : 23)
-}

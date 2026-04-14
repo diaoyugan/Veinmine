@@ -42,17 +42,14 @@ If you encounter any issues or have any suggestions, feel free to open an issue 
 Or, if you're interested in contribution to our code, welcome to open a PR on GitHub!
 
 ## Build
-For 1.21.3 to 1.21.4 run
+This branch backports Vein Mine to **Minecraft 1.20.1 / 1.20.4 / 1.20.6** only.
+Pick the target via the `mc_version` Gradle property:
 
-`./gradlew build -PmcVersion v1_21_3_4`
+- For Minecraft 1.20.1 (Java 17): `./gradlew build -Pmc_version=v1_20_1`
+- For Minecraft 1.20.4 (Java 17): `./gradlew build -Pmc_version=v1_20_4`
+- For Minecraft 1.20.6 (Java 21): `./gradlew build -Pmc_version=v1_20_6`
 
-For 1.21.5 run
-
-`./gradlew build -PmcVersion v1_21_5`
-
-For 1.21.6 to 1.21.8 run
-
-`./gradlew build -PmcVersion v1_21_6_8`
+Built jars end up in `build/libs/veinmine-<mod_version>+<mc>.jar`.
 
 ## License
 This mod is licensed under the GNU General Public License Version 3. See [LICENSE](LICENSE) for details.
