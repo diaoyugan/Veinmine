@@ -1,32 +1,43 @@
 package top.diaoyugan.veinmine.client.render;
 
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import top.diaoyugan.veinmine.client.highlight.ClientHighlightLogic;
 import top.diaoyugan.veinmine.client.highlight.ClientHighlightState;
-import top.diaoyugan.veinmine.config.IntrusiveConfig;
+import top.diaoyugan.veinmine.client.render.OutlineBuilder.Line;
 import top.diaoyugan.veinmine.utils.Utils;
+
+import java.util.List;
 
 public final class FabricOutlineRenderHook {
 
     public static void init() {
-        LevelRenderEvents.END_MAIN.register(ctx -> {
+        LevelRenderEvents.COLLECT_SUBMITS.register(ctx -> {
             if (!Utils.getConfig().enableHighlights) return;
             if (!ClientHighlightState.SHOW_HIGHLIGHT) return;
 
-            Minecraft mc = Minecraft.getInstance();
+            LineRenderProfile profile = RenderProfiles.of(Utils.getConfig());
 
-            OutlineRenderer.render(
-                    ctx.poseStack(),
-                    mc.renderBuffers().bufferSource(),
-                    ctx.gameRenderer().getMainCamera(),
+            List<OutlineBuilder.Line> lines = OutlineBuilder.buildLines(
+                    ctx.gameRenderer().mainCamera(),
                     ClientHighlightState.HIGHLIGHTED_BLOCKS,
-                    IntrusiveConfig.isEnabled()
-                            ? CustomRenderTypes.getLinesNoDepth()
-                            : RenderTypes.lines(),
-                    OutlineRenderer.LineStyle.RIBBON_THICK_LINES,
                     UtilsColorHelper.fromConfig()
+            );
+
+            if (lines.isEmpty()) return;
+
+            ctx.submitNodeCollector().submitCustomGeometry(
+                    ctx.poseStack(),
+                    profile.type(),
+                    (pose, consumer) -> {
+                        for (OutlineBuilder.Line line : lines) {
+                            LineRenderer.draw(
+                                    consumer,
+                                    pose,
+                                    ctx.gameRenderer().mainCamera(),
+                                    line,
+                                    profile.style()
+                            );
+                        }
+                    }
             );
         });
     }

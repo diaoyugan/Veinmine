@@ -20,16 +20,16 @@ public final class NeoOutlineRenderHook {
 
         Minecraft mc = Minecraft.getInstance();
 
-        OutlineRenderer.render(
-                event.getPoseStack(),
-                mc.renderBuffers().bufferSource(),
-                mc.gameRenderer.getMainCamera(),
-                ClientHighlightState.HIGHLIGHTED_BLOCKS,
-                IntrusiveConfig.isEnabled()
-                        ? CustomRenderTypes.getLinesNoDepth()
-                        : RenderTypes.lines(),
-                OutlineRenderer.LineStyle.RIBBON_THICK_LINES,
-                UtilsColorHelper.fromConfig()
-        );
+//        OutlineRenderer.render(
+//                event.getPoseStack(),
+//                mc.renderBuffers().bufferSource(),
+//                mc.gameRenderer.getMainCamera(),
+//                ClientHighlightState.HIGHLIGHTED_BLOCKS,
+//                IntrusiveConfig.isEnabled()
+//                        ? CustomRenderTypes.getLinesNoDepth()
+//                        : RenderTypes.lines(),
+//                OutlineRenderer.LineStyle.RIBBON_THICK_LINES,
+//                UtilsColorHelper.fromConfig()
+//        );
     }
 }
