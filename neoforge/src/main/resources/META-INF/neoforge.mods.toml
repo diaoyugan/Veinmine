@@ -8,7 +8,7 @@ version = "${version}"
 displayName = "Vein Mine"
 logoFile = "assets/${mod_id}/icon.png"
 
-authors = "钓鱼竿呀(diaoyugan), momo(HarukaB, aka HarukaC on modrinth)"
+authors = "钓鱼竿呀(diaoyugan), momo(HarukaB, aka AYARI on modrinth)"
 
 description = "Allow you to mine multiple blocks at the same time"
 
