@@ -2,15 +2,16 @@ package top.diaoyugan.veinmine.client.render;
 
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import top.diaoyugan.veinmine.client.highlight.ClientHighlightState;
-import top.diaoyugan.veinmine.client.render.OutlineBuilder.Line;
 import top.diaoyugan.veinmine.utils.Utils;
 
 import java.util.List;
 
 public final class FabricOutlineRenderHook {
+    private static boolean rendVanillaBlockOutline = true;
 
     public static void init() {
         LevelRenderEvents.COLLECT_SUBMITS.register(ctx -> {
+            rendVanillaBlockOutline = true;
             if (!Utils.getConfig().enableHighlights) return;
             if (!ClientHighlightState.SHOW_HIGHLIGHT) return;
 
@@ -23,6 +24,8 @@ public final class FabricOutlineRenderHook {
             );
 
             if (lines.isEmpty()) return;
+
+            rendVanillaBlockOutline = false;
 
             ctx.submitNodeCollector().submitCustomGeometry(
                     ctx.poseStack(),
@@ -40,5 +43,7 @@ public final class FabricOutlineRenderHook {
                     }
             );
         });
+        LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register((ctx,state)
+                -> rendVanillaBlockOutline);
     }
 }
