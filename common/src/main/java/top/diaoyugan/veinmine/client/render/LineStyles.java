@@ -11,7 +11,7 @@ public class LineStyles {
     }
 
     public static void drawThick(VertexConsumer c, PoseStack.Pose pose, OutlineBuilder.Line line) {
-        drawNativeLine(c, pose, line, 3f);
+        drawNativeLine(c, pose, line, 8f);
     }
 
     private static void drawNativeLine(VertexConsumer c, PoseStack.Pose pose, OutlineBuilder.Line line, float width) {

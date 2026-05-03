@@ -1,5 +1,6 @@
 package top.diaoyugan.veinmine.client.render;
 
+import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.CompareOp;
@@ -15,6 +16,7 @@ public class CustomRenderPipeline {
                     .withLocation(Identifier.fromNamespaceAndPath(Constants.ID, "pipeline/lines_no_depth"))
                     .withVertexFormat(DefaultVertexFormat.POSITION_COLOR_NORMAL_LINE_WIDTH, VertexFormat.Mode.LINES)
                     .withDepthStencilState(ALWAYS_PASS())
+                    .withColorTargetState(ColorTargetState.DEFAULT)
                     .withCull(false)
                     .build()
     );
