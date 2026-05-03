@@ -7,18 +7,28 @@ import net.minecraft.world.phys.Vec3;
 
 public class LineStyles {
     public static void drawThin(VertexConsumer c, PoseStack.Pose pose, OutlineBuilder.Line line) {
+        drawNativeLine(c, pose, line, 1f);
+    }
+
+    public static void drawThick(VertexConsumer c, PoseStack.Pose pose, OutlineBuilder.Line line) {
+        drawNativeLine(c, pose, line, 3f);
+    }
+
+    private static void drawNativeLine(VertexConsumer c, PoseStack.Pose pose, OutlineBuilder.Line line, float width) {
         var a = line.from();
         var b = line.to();
         var col = line.color();
+        Vec3 normal = b.subtract(a).normalize();
 
         c.addVertex(pose.pose(), (float)a.x, (float)a.y, (float)a.z)
                 .setColor(col.r(), col.g(), col.b(), col.a())
-                .setNormal(0, 1, 0).setLineWidth(1f);
+                .setNormal((float)normal.x, (float)normal.y, (float)normal.z).setLineWidth(width);
 
         c.addVertex(pose.pose(), (float)b.x, (float)b.y, (float)b.z)
                 .setColor(col.r(), col.g(), col.b(), col.a())
-                .setNormal(0, 1, 0).setLineWidth(1f);
+                .setNormal((float)normal.x, (float)normal.y, (float)normal.z).setLineWidth(width);
     }
+
     public static void drawRibbon(
             VertexConsumer c,
             PoseStack.Pose pose,
