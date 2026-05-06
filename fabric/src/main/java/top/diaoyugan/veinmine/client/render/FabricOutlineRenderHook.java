@@ -17,7 +17,7 @@ public final class FabricOutlineRenderHook {
 
             LineRenderProfile profile = RenderProfiles.of(Utils.getConfig());
 
-            List<OutlineBuilder.Line> lines = OutlineBuilder.buildLines(
+            List<BlockOutlineBuilder.Line> lines = BlockOutlineBuilder.buildLines(
                     ctx.gameRenderer().mainCamera(),
                     ClientHighlightState.HIGHLIGHTED_BLOCKS,
                     UtilsColorHelper.fromConfig()
@@ -31,11 +31,10 @@ public final class FabricOutlineRenderHook {
                     ctx.poseStack(),
                     profile.type(),
                     (pose, consumer) -> {
-                        for (OutlineBuilder.Line line : lines) {
-                            LineRenderer.draw(
+                        for (BlockOutlineBuilder.Line line : lines) {
+                            LineRenderDispatcher.draw(
                                     consumer,
                                     pose,
-                                    ctx.gameRenderer().mainCamera(),
                                     line,
                                     profile.style()
                             );

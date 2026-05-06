@@ -7,9 +7,9 @@ public final class UtilsColorHelper {
 
     private UtilsColorHelper() {}
 
-    public static OutlineBuilder.Color fromConfig() {
+    public static BlockOutlineBuilder.Color fromConfig() {
         ConfigItems cfg = Utils.getConfig();
-        return new OutlineBuilder.Color(
+        return new BlockOutlineBuilder.Color(
                 cfg.red   / 255f,
                 cfg.green / 255f,
                 cfg.blue  / 255f,

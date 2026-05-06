@@ -8,20 +8,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public final class OutlineBuilder {
-    private OutlineBuilder() {}
+public final class BlockOutlineBuilder {
+    private BlockOutlineBuilder() {}
 
     private static final int[][] EDGES = {
             {0,1},{1,2},{2,3},{3,0},
             {4,5},{5,6},{6,7},{7,4},
             {0,4},{1,5},{2,6},{3,7},
     };
-
-    public enum LineStyle {
-        THIN_LINES,
-        RIBBON_THICK_LINES,
-        OLD_TRIANGLES
-    }
 
     public record Color(float r, float g, float b, float a) {}
 

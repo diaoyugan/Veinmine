@@ -10,8 +10,8 @@ public final class RenderProfiles {
         return new LineRenderProfile(
                 intrusive ? CustomRenderTypes.getLinesNoDepth()
                         : RenderTypes.lines(),
-                intrusive ? OutlineBuilder.LineStyle.RIBBON_THICK_LINES
-                        : OutlineBuilder.LineStyle.THIN_LINES
+                intrusive ? LineStyles.RIBBON_THICK_LINES
+                        : LineStyles.THIN_LINES
         );
     }
 }
