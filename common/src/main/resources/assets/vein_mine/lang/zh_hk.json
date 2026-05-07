@@ -44,7 +44,6 @@
   "vm.message.highlightblocks": "目標方塊: %d 個",
   "vm.config.highlight_blocks_message": "提示目標方塊數量",
   "vm.config.highlight_blocks_message.tooltip": "開啟後，客戶端會提示有多少方塊將被破壞",
-  "key.vm.switch.tooltip": "可在此綁定按鍵",
   "vm.config.use_hold_instead_of_toggle": "按住啟動",
   "vm.config.use_hold_instead_of_toggle.tooltip": "開啟後，需按住按鍵才能啟動，而非切換開關",
   "vm.config.screen.keysAndBinding": "按鍵與綁定",
@@ -61,8 +60,11 @@
   "vm.config.screen.reset.tooltip": "重設所有設定為預設值並退出設定畫面",
   "vm.command.reload": "連鎖挖掘設定已重新載入",
   "vm.command.reload_failed": "重新載入設定時發生錯誤，請查看主控台以取得詳細資訊",
-  "vm.config.bind_menu_keys.none": "開啟設定選單：未綁定",
-  "vm.config.bind_menu_keys.current": "開啟設定選單：%s",
-  "vm.config.bind_menu_keys.tooltip": "點擊後按下按鍵進行綁定，支援組合鍵",
-  "vm.config.keys.listening": "請按下按鍵..."
+  "vm.config.keys.listening": "請按下按鍵…",
+  "vm.config.keybind.current": "%s：%s",
+  "vm.config.keybind.none": "%s：未綁定",
+  "vm.config.keybind.listening": "%s：請按下按鍵…",
+  "vm.config.keybinds.combination.tooltip": "點擊後按下按鍵即可綁定，支援組合鍵",
+  "vm.config.keybinds.tooltip": "可在此處設定按鍵綁定",
+  "vm.config.config_screen_keys": "開啟設定選單"
 }
