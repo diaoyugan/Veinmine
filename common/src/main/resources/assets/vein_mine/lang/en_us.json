@@ -5,7 +5,6 @@
 
   "key.category.vein_mine.bindings": "Vein Mine",
   "key.vm.switch": "Activation Key",
-  "key.vm.switch.tooltip": "Set the activation key",
 
   "vm.switch_state": "Vein Mining",
 
@@ -95,7 +94,10 @@
 
   "vm.config.keys.listening": "Waiting input...",
 
-  "vm.config.bind_menu_keys.none": "Open Config Screen: None",
-  "vm.config.bind_menu_keys.current": "Open Config Screen: %s",
-  "vm.config.bind_menu_keys.tooltip": "Click and press keys to set a new binding"
+  "vm.config.keybind.current": "%s: %s",
+  "vm.config.keybind.none": "%s: None",
+  "vm.config.keybind.listening": "%s: Press keys...",
+  "vm.config.keybinds.tooltip": "Set the activation key",
+  "vm.config.keybinds.combination.tooltip": "Click and press keys to set a new binding",
+  "vm.config.config_screen_keys": "Open Config Screen"
 }
