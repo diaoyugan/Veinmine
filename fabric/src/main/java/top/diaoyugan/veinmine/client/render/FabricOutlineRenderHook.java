@@ -2,6 +2,7 @@ package top.diaoyugan.veinmine.client.render;
 
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import top.diaoyugan.veinmine.client.highlight.ClientHighlightState;
+import top.diaoyugan.veinmine.config.IntrusiveConfig;
 import top.diaoyugan.veinmine.utils.Utils;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public final class FabricOutlineRenderHook {
             if (!Utils.getConfig().enableHighlights) return;
             if (!ClientHighlightState.SHOW_HIGHLIGHT) return;
 
-            LineRenderProfile profile = RenderProfiles.of(Utils.getConfig());
+            LineRenderProfile profile = RenderProfiles.of(IntrusiveConfig.isEnabled());
 
             List<BlockOutlineBuilder.Line> lines = BlockOutlineBuilder.buildLines(
                     ctx.gameRenderer().mainCamera(),
