@@ -5,6 +5,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Style;
 import top.diaoyugan.veinmine.client.configScreen.layout.PendingTab;
 import top.diaoyugan.veinmine.client.configScreen.pages.*;
@@ -166,6 +167,7 @@ public class ConfigScreen extends Screen {
     private void saveAndExit() {
         mainPage.save();
         toosAndProtectPage.save();
+        keysAndBindingsPage.save();
         Config.getInstance().save();
         minecraft.setScreenAndShow(parent);
     }
@@ -206,7 +208,26 @@ public class ConfigScreen extends Screen {
     }
 
     @Override
+    public boolean keyPressed(KeyEvent event) {
+        if (pages.get(currentPage) != null && currentPage == 3) {
+            ConfigKeysAndBindingsPage p = keysAndBindingsPage;
+            return p.onKeyDown(event);
+        }
+
+        return super.keyPressed(event);
+    }
+
+    @Override
     public void onClose() {
         minecraft.setScreenAndShow(parent);
+    }
+
+    @Override
+    public void tick(){
+        if (pages.get(currentPage) != null && currentPage == 3) {
+            ConfigKeysAndBindingsPage p = keysAndBindingsPage;
+            p.tick();
+        }
+        super.tick();
     }
 }

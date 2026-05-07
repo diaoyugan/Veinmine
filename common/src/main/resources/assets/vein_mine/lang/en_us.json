@@ -91,5 +91,11 @@
   "vm.config.screen.reset.tooltip": "Reset all configs to default and exit config screen",
 
   "vm.command.reload": "VeinMine config reloaded",
-  "vm.command.reload_failed":"An error occurred when reloading config. See Console for details"
+  "vm.command.reload_failed":"An error occurred when reloading config. See Console for details",
+
+  "vm.config.keys.listening": "Waiting input...",
+
+  "vm.config.bind_menu_keys.none": "Open Config Screen: None",
+  "vm.config.bind_menu_keys.current": "Open Config Screen: %s",
+  "vm.config.bind_menu_keys.tooltip": "Click and press keys to set a new binding"
 }

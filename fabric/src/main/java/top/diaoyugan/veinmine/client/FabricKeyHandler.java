@@ -5,19 +5,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import top.diaoyugan.veinmine.client.highlight.ClientHighlightLogic;
 import top.diaoyugan.veinmine.client.highlight.ClientHighlightState;
-import top.diaoyugan.veinmine.client.hotkey.HotKeyState;
+import top.diaoyugan.veinmine.client.hotkey.ActivationKeyState;
 import top.diaoyugan.veinmine.networking.highlightingpacket.BlockHighlightRequest;
 import top.diaoyugan.veinmine.networking.keypacket.KeyPressPacket;
 import top.diaoyugan.veinmine.networking.keypacket.KeyResponsePacket;
 import top.diaoyugan.veinmine.utils.Utils;
 
-public final class HotKeys {
+public final class FabricKeyHandler {
     // 服务端 → 客户端
     static void receiveKeybindingResponse(
             KeyResponsePacket response,
             ClientPlayNetworking.Context context
     ) {
-        HotKeyState.updateFromServer(response.state());
+        ActivationKeyState.updateFromServer(response.state());
     }
 
     public static void tickEvent(Minecraft client) {
@@ -29,7 +29,7 @@ public final class HotKeys {
 
         // 按键处理 → 根据模式决定是否发送 KeyPress 包
         if (useHold) {
-            if (HotKeyState.consumeLastPressedChange(isPressed)) {
+            if (ActivationKeyState.consumeLastPressedChange(isPressed)) {
                 ClientPlayNetworking.send(KeyPressPacket.INSTANCE);
             }
         } else if (click) {
@@ -37,7 +37,7 @@ public final class HotKeys {
         }
 
         // 客户端高亮逻辑，根据服务端状态决定
-        if (HotKeyState.isVeinMineEnabled()) {
+        if (ActivationKeyState.isVeinMineEnabled()) {
             BlockPos pos = ClientHighlightLogic.getLookedBlock(client.player);
             if(pos != null) {
                 ClientPlayNetworking.send(new BlockHighlightRequest(pos));

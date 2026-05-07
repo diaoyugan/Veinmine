@@ -13,12 +13,13 @@ public class VeinmineClient implements ClientModInitializer {
     public void onInitializeClient() {
 
         FabricHighlightNetworking.onInitialize();
-        ClientTickEvents.END_CLIENT_TICK.register(HotKeys::tickEvent);
+        ClientTickEvents.END_CLIENT_TICK.register(FabricKeyHandler::tickEvent);
+        ClientTickEvents.END_CLIENT_TICK.register(KeyHandler::clientTick);
 
         FabricKeyBinding.onInitialize();
         FabricOutlineRenderHook.init();
 
 
-        ClientPlayNetworking.registerGlobalReceiver(KeyResponsePacket.ID, HotKeys::receiveKeybindingResponse);
+        ClientPlayNetworking.registerGlobalReceiver(KeyResponsePacket.ID, FabricKeyHandler::receiveKeybindingResponse);
     }
 }

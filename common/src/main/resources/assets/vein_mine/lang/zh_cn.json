@@ -61,5 +61,11 @@
 
   "vm.config.screen.reset.tooltip": "重置所有配置为默认值并退出配置界面",
   "vm.command.reload": "连锁挖掘配置已重新加载",
-  "vm.command.reload_failed": "重新加载配置时发生错误，请查看控制台获取详细信息"
+  "vm.command.reload_failed": "重新加载配置时发生错误，请查看控制台获取详细信息",
+
+  "vm.config.keys.listening": "请按下按键...",
+
+  "vm.config.bind_menu_keys.none": "打开配置菜单: 未绑定",
+  "vm.config.bind_menu_keys.current": "打开配置菜单: %s",
+  "vm.config.bind_menu_keys.tooltip": "点击后按下按键进行绑定，支持组合键"
 }

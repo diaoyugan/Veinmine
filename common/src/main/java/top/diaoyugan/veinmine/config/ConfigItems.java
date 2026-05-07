@@ -1,6 +1,9 @@
 package top.diaoyugan.veinmine.config;
 
 
+import com.mojang.blaze3d.platform.InputConstants;
+import org.lwjgl.glfw.GLFW;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +28,10 @@ public class ConfigItems { // Default configuration
     public int blue = 255;
     public int alpha = 255;
     public boolean useHoldInsteadOfToggle = false;
+
+    public Set<Integer> configScreenKey = new HashSet<>(
+            Set.of(InputConstants.KEY_V, InputConstants.KEY_M)
+    );
 
     public final Set<String> defaultProtectedTools = Set.of( // No GUI for this, this is by design!
             // 黄金工具

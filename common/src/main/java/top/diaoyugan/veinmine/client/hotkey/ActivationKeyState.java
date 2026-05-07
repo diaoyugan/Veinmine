@@ -1,11 +1,11 @@
 package top.diaoyugan.veinmine.client.hotkey;
 
-public final class HotKeyState {
+public final class ActivationKeyState {
 
     private static boolean veinMineSwitchState = false;
     private static boolean lastPressed = false;
 
-    private HotKeyState() {}
+    private ActivationKeyState() {}
 
     // 服务端同步结果
     public static void updateFromServer(boolean state) {

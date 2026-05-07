@@ -5,7 +5,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import top.diaoyugan.veinmine.Constants;
-import top.diaoyugan.veinmine.client.hotkey.HotKeyState;
+import top.diaoyugan.veinmine.client.hotkey.ActivationKeyState;
 
 
 @EventBusSubscriber(modid = Constants.ID)
@@ -16,7 +16,7 @@ public final class KeyPacketImplements {
         registrar.playToClient(
                 KeyResponsePacket.ID,
                 KeyResponsePacket.CODEC,
-                (msg, ctx) -> HotKeyState.updateFromServer(msg.state())
+                (msg, ctx) -> ActivationKeyState.updateFromServer(msg.state())
         );
         registrar.playToServer(
                 KeyPressPacket.ID,

@@ -1,12 +1,14 @@
 package top.diaoyugan.veinmine.client.configScreen.pages;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import top.diaoyugan.veinmine.client.configScreen.layout.VerticalLayout;
 import top.diaoyugan.veinmine.client.configScreen.widget.*;
@@ -14,17 +16,22 @@ import top.diaoyugan.veinmine.config.ConfigItems;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class ConfigKeysAndBindingsPage extends Screen {
 
     private final ConfigItems items;
+    private final Set<Integer> currentKeys;
+    private boolean listening = false;
+    private Button bindButton;
 
     public ConfigKeysAndBindingsPage(ConfigItems items) {
         super(Component.translatable("vm.config.screen.keysAndBinding"));
         this.items = items;
+        this.currentKeys = items.configScreenKey;
     }
 
     public List<AbstractWidget> build(int centerX) {
@@ -65,7 +72,21 @@ public class ConfigKeysAndBindingsPage extends Screen {
 
         layout.next(20);
 
+        bindButton = Button.builder(
+                formatKeyBindingText(),
+                b -> {
+                    listening = true;
+                    currentKeys.clear();
+                    refreshButtonText();
+                }
+        ).bounds(layout.x(), layout.y(), contentWidth, 20)
+                .tooltip(
+                        Tooltip.create(Component.translatable("vm.config.bind_menu_keys.tooltip"))
+                )
+                .build();
+        widgets.add(bindButton);
 
+        layout.next(20);
         widgets.add(bool(
                 layout,
                 contentWidth,
@@ -79,6 +100,7 @@ public class ConfigKeysAndBindingsPage extends Screen {
     }
 
     public void save() {
+        items.configScreenKey = currentKeys;
     }
 
     private BooleanOptionWidget bool(
@@ -99,5 +121,63 @@ public class ConfigKeysAndBindingsPage extends Screen {
         );
         widget.tooltip(Component.translatable(key + ".tooltip"));
         return widget;
+    }
+
+    public void tick() {
+
+        if (!listening) return;
+
+        Window window = Minecraft.getInstance().getWindow();
+
+        // 监听所有候选键
+        for (int key : currentKeys) {
+
+            if (!InputConstants.isKeyDown(window, key)) {
+                finishBinding();
+                return;
+            }
+        }
+    }
+
+    public boolean onKeyDown(KeyEvent event) {
+
+        if (!listening) return false;
+
+        if (event.key() == InputConstants.KEY_ESCAPE) {
+            listening = false;
+            refreshButtonText();
+            return true;
+        }
+
+        currentKeys.add(event.key());
+        return true;
+    }
+
+    private void finishBinding() {
+        listening = false;
+        refreshButtonText();
+    }
+
+    private Component formatKeyBindingText() {
+
+        if (listening) {
+            return Component.translatable("vm.config.keys.listening");
+        }
+
+        if (currentKeys.isEmpty()) {
+            return Component.translatable("vm.config.bind_menu_keys.none");
+        }
+
+        String keys = currentKeys.stream()
+                .map(InputConstants.Type.KEYSYM::getOrCreate)
+                .map(InputConstants.Key::getDisplayName)
+                .map(Component::getString)
+                .collect(Collectors.joining(" + "));
+
+        return Component.translatable("vm.config.bind_menu_keys.current", keys);
+    }
+
+    private void refreshButtonText() {
+        bindButton.setMessage(formatKeyBindingText());
     }
 }

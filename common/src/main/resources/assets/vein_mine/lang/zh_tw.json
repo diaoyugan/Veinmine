@@ -60,5 +60,9 @@
   "vm.config.saveTip": "除輸入框外，所有變更都會立即套用並儲存",
   "vm.config.screen.reset.tooltip": "重設所有設定為預設值並退出設定畫面",
   "vm.command.reload": "連鎖挖掘設定已重新載入",
-  "vm.command.reload_failed": "重新載入設定時發生錯誤，請查看主控台以取得詳細資訊"
+  "vm.command.reload_failed": "重新載入設定時發生錯誤，請查看主控台以取得詳細資訊",
+  "vm.config.bind_menu_keys.none": "開啟設定選單：未綁定",
+  "vm.config.bind_menu_keys.current": "開啟設定選單：%s",
+  "vm.config.bind_menu_keys.tooltip": "點擊後按下按鍵進行綁定，支援組合鍵",
+  "vm.config.keys.listening": "請按下按鍵..."
 }

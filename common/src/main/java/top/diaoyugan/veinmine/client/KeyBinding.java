@@ -13,7 +13,6 @@ public class KeyBinding {
                     )
             );
     public static KeyMapping ACTIVATION_KEY;
-    public static KeyMapping CONFIGURATION_MENU;
 
 
     /** 默认键 */
