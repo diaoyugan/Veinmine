@@ -7,7 +7,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import top.diaoyugan.veinmine.client.configScreen.widget.BooleanOptionWidget;
 import top.diaoyugan.veinmine.client.configScreen.widget.IntSliderOptionWidget;
-import top.diaoyugan.veinmine.client.configScreen.widget.TitleWidget;
+import top.diaoyugan.veinmine.client.configScreen.widget.TextWidget;
 import top.diaoyugan.veinmine.client.configScreen.layout.VerticalLayout;
 import top.diaoyugan.veinmine.config.ConfigItems;
 
@@ -37,7 +37,7 @@ public class ConfigToosAndProtectPage {
         VerticalLayout layout = new VerticalLayout(leftX, 10, 4);
 
         // 标题
-        widgets.add(new TitleWidget(
+        widgets.add(new TextWidget(
                 layout.x(),
                 layout.y(),
                 Component.translatable("vm.config.screen.toolsandprotect")
@@ -78,7 +78,7 @@ public class ConfigToosAndProtectPage {
 
         layout.next(20);
 
-        widgets.add(new TitleWidget(
+        widgets.add(new TextWidget(
                 layout.x(),
                 layout.y(),
                 Component.translatable("vm.config.protected_tools")

@@ -32,7 +32,7 @@ public class ConfigHighlightsPage {
         VerticalLayout layout = new VerticalLayout(leftX, 10, 4);
 
         // 标题
-        widgets.add(new TitleWidget(
+        widgets.add(new TextWidget(
                 layout.x(),
                 layout.y(),
                 Component.translatable("vm.config.screen.highlights")

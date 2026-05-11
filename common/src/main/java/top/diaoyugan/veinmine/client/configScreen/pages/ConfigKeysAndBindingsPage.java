@@ -16,8 +16,8 @@ import java.util.function.Consumer;
 
 public class ConfigKeysAndBindingsPage extends Screen {
 
-    private SingleKeyBindingButtonWidget singelBindButton;
-    private KeyBindingButtonWidget bindButton;
+    private KeyBindingButtonWidget singelBindButton;
+    private CombinationKeyBindingButtonWidget bindButton;
     private final ConfigItems items;
 
     public ConfigKeysAndBindingsPage(ConfigItems items) {
@@ -34,14 +34,14 @@ public class ConfigKeysAndBindingsPage extends Screen {
         VerticalLayout layout = new VerticalLayout(leftX, 10, 4);
 
         // 标题
-        widgets.add(new TitleWidget(
+        widgets.add(new TextWidget(
                 layout.x(),
                 layout.y(),
                 Component.translatable("vm.config.screen.keysAndBinding")
         ));
         layout.next(10);
 
-        singelBindButton = (new SingleKeyBindingButtonWidget(
+        singelBindButton = (new KeyBindingButtonWidget(
                 layout.x(),
                 layout.y(),
                 contentWidth,
@@ -59,7 +59,7 @@ public class ConfigKeysAndBindingsPage extends Screen {
 
         layout.next(20);
 
-        bindButton = (new KeyBindingButtonWidget(
+        bindButton = (new CombinationKeyBindingButtonWidget(
                 layout.x(),
                 layout.y(),
                 contentWidth,

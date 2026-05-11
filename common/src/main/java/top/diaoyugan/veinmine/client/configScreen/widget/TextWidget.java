@@ -6,9 +6,9 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 
-public class TitleWidget extends AbstractWidget {
+public class TextWidget extends AbstractWidget {
 
-    public TitleWidget(int x, int y, Component title) {
+    public TextWidget(int x, int y, Component title) {
         super(x, y, 200, 12, title);
         this.active = false;
     }

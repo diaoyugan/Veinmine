@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import top.diaoyugan.veinmine.client.configScreen.layout.VerticalLayout;
 import top.diaoyugan.veinmine.client.configScreen.widget.BooleanOptionWidget;
-import top.diaoyugan.veinmine.client.configScreen.widget.TitleWidget;
+import top.diaoyugan.veinmine.client.configScreen.widget.TextWidget;
 import top.diaoyugan.veinmine.config.ConfigItems;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class ConfigAdvancedPage {
         VerticalLayout layout = new VerticalLayout(leftX, 10, 4);
 
         // 标题
-        widgets.add(new TitleWidget(
+        widgets.add(new TextWidget(
                 layout.x(),
                 layout.y(),
                 Component.translatable("vm.config.screen.final_resort")
