@@ -3,6 +3,7 @@ package top.diaoyugan.veinmine.client.inputs;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import top.diaoyugan.veinmine.client.configScreen.ConfigScreen;
 import top.diaoyugan.veinmine.utils.Utils;
 
@@ -28,7 +29,11 @@ public final class KeyHandler {
             }
         }
 
-        if (pressed && !wasPressed && !(minecraft.gui.screen() instanceof ConfigScreen)) {
+        if (pressed &&
+                !wasPressed &&
+                !(minecraft.gui.screen() instanceof ConfigScreen)&&
+                !(minecraft.gui.screen() instanceof KeyBindsScreen)
+        ) {
             minecraft.setScreenAndShow(
                     new ConfigScreen(minecraft.gui.screen())
             );
