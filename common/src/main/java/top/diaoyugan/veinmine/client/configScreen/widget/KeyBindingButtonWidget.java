@@ -6,23 +6,36 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.InputWithModifiers;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.client.input.KeyEvent;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.function.IntConsumer;
-import java.util.function.IntSupplier;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class KeyBindingButtonWidget extends Button.Plain {
-    private final Component label;
-    private final IntSupplier getter;
-    private final IntConsumer setter;
 
-    private final boolean syncVanilla;
+    private final Component label;
+
+    /**
+     * 保存按键结果
+     */
+    private final Consumer<InputConstants.Key> setter;
+
+    /**
+     * 当前按键显示文本来源
+     */
+    @Nullable
+    private final Supplier<Component> displaySupplier;
+
+    /**
+     * 可选 vanilla key mapping
+     */
     @Nullable
     private final KeyMapping vanillaKeyMapping;
 
     private boolean listening = false;
+    private final boolean syncVanilla;
 
     public KeyBindingButtonWidget(
             int x,
@@ -30,18 +43,26 @@ public class KeyBindingButtonWidget extends Button.Plain {
             int width,
             int height,
             Component label,
-            IntSupplier getter,
-            IntConsumer setter,
-            boolean syncVanilla,
-            @Nullable KeyMapping vanillaKeyMapping
+            Consumer<InputConstants.Key> setter,
+            @Nullable Supplier<Component> displaySupplier,
+            @Nullable KeyMapping vanillaKeyMapping,
+            boolean syncVanilla
     ) {
-        super(x, y, width, height, Component.empty(), b -> {}, DEFAULT_NARRATION);
+        super(
+                x,
+                y,
+                width,
+                height,
+                Component.empty(),
+                b -> {},
+                DEFAULT_NARRATION
+        );
 
         this.label = label;
-        this.getter = getter;
         this.setter = setter;
-        this.syncVanilla = syncVanilla;
+        this.displaySupplier = displaySupplier;
         this.vanillaKeyMapping = vanillaKeyMapping;
+        this.syncVanilla = syncVanilla;
 
         refreshMessage();
     }
@@ -61,63 +82,75 @@ public class KeyBindingButtonWidget extends Button.Plain {
     }
 
     public boolean keyPressed(KeyEvent event) {
-        if (!listening) return false;
-
-        if (event.key() == InputConstants.KEY_ESCAPE) {
-            listening = false;
-            refreshMessage();
-            return true;
+        if (!listening) {
+            return false;
         }
 
-        setter.accept(event.key());
-        finishBinding();
+        InputConstants.Key key;
+
+        if (event.key() == InputConstants.KEY_ESCAPE) {
+            key = InputConstants.UNKNOWN;
+        } else {
+            key = InputConstants.Type.KEYSYM.getOrCreate(event.key());
+        }
+
+        setter.accept(key);
+
+        syncVanillaKey(key);
+
+        listening = false;
+        refreshMessage();
 
         return true;
     }
 
     // -------------------------
-    // finish
+    // sync vanilla
     // -------------------------
 
-    private void finishBinding() {
-        listening = false;
-        syncVanillaKey();
-        refreshMessage();
-    }
+    private void syncVanillaKey(InputConstants.Key key) {
+        if (!syncVanilla || vanillaKeyMapping == null) {
+            return;
+        }
 
-    // -------------------------
-    // vanilla sync
-    // -------------------------
+        vanillaKeyMapping.setKey(key);
 
-    private void syncVanillaKey() {
-        if (!syncVanilla || vanillaKeyMapping == null) return;
-
-        int key = getter.getAsInt();
-
-        vanillaKeyMapping.setKey(
-                InputConstants.Type.KEYSYM.getOrCreate(key)
-        );
+        KeyMapping.resetMapping();
     }
 
     // -------------------------
     // UI
     // -------------------------
 
-    private void refreshMessage() {
-        int key = getter.getAsInt();
-
+    public void refreshMessage() {
         if (listening) {
-            setMessage(Component.translatable("vm.config.keybind.listening", label));
+            setMessage(Component.translatable(
+                    "vm.config.keybind.listening",
+                    label
+            ));
             return;
         }
 
-        String text = InputConstants.Type.KEYSYM.getOrCreate(key)
-                .getDisplayName()
-                .getString();
+        Component keyName;
 
-        setMessage(Component.translatable("vm.config.keybind.current", label, text));
+        if (displaySupplier != null) {
+            keyName = displaySupplier.get();
+        } else if (vanillaKeyMapping != null) {
+            keyName = vanillaKeyMapping.getTranslatedKeyMessage();
+        } else {
+            keyName = Component.translatable("key.keyboard.unknown");
+        }
+
+        setMessage(Component.translatable(
+                "vm.config.keybind.current",
+                label,
+                keyName
+        ));
     }
 
     @Override
-    public void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
+    public void updateWidgetNarration(
+            NarrationElementOutput narrationElementOutput
+    ) {
+    }
 }

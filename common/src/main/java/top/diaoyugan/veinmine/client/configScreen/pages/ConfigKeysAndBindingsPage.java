@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 public class ConfigKeysAndBindingsPage extends Screen {
 
-    private KeyBindingButtonWidget singelBindButton;
+    private KeyBindingButtonWidget singleBindButton;
     private CombinationKeyBindingButtonWidget bindButton;
     private final ConfigItems items;
 
@@ -41,21 +41,20 @@ public class ConfigKeysAndBindingsPage extends Screen {
         ));
         layout.next(10);
 
-        singelBindButton = (new KeyBindingButtonWidget(
+        singleBindButton = new KeyBindingButtonWidget(
                 layout.x(),
                 layout.y(),
                 contentWidth,
                 20,
                 Component.translatable("key.vm.switch"),
-                () -> items.keyBindingCode,
-                v -> {
-                    items.keyBindingCode = v;
+                key -> {
                 },
-                true,
-                KeyBinding.ACTIVATION_KEY
-        ));
-        singelBindButton.tooltip(Component.translatable("vm.config.keybinds.tooltip"));
-        widgets.add(singelBindButton);
+                KeyBinding.ACTIVATION_KEY::getTranslatedKeyMessage,
+                KeyBinding.ACTIVATION_KEY,
+                true
+        );
+        singleBindButton.tooltip(Component.translatable("vm.config.keybinds.tooltip"));
+        widgets.add(singleBindButton);
 
         layout.next(20);
 
@@ -119,8 +118,8 @@ public class ConfigKeysAndBindingsPage extends Screen {
 
         boolean handled = false;
 
-        if (singelBindButton != null) {
-            handled |= singelBindButton.keyPressed(event);
+        if (singleBindButton != null) {
+            handled |= singleBindButton.keyPressed(event);
         }
 
         if (bindButton != null) {

@@ -28,8 +28,6 @@ public class ConfigItems { // Default configuration
     public int alpha = 255;
     public boolean useHoldInsteadOfToggle = false;
 
-    public int keyBindingCode = InputConstants.KEY_GRAVE;
-
     public Set<Integer> configScreenKey = new HashSet<>(
             Set.of(InputConstants.KEY_V, InputConstants.KEY_M)
     );
