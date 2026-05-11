@@ -4,7 +4,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
-import top.diaoyugan.veinmine.client.KeyBinding;
+import top.diaoyugan.veinmine.client.inputs.KeyBinding;
 import top.diaoyugan.veinmine.client.configScreen.layout.VerticalLayout;
 import top.diaoyugan.veinmine.client.configScreen.widget.*;
 import top.diaoyugan.veinmine.config.ConfigItems;

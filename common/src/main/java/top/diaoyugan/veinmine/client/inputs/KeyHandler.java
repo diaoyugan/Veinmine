@@ -1,4 +1,4 @@
-package top.diaoyugan.veinmine.client;
+package top.diaoyugan.veinmine.client.inputs;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;

@@ -1,4 +1,4 @@
-package top.diaoyugan.veinmine.client;
+package top.diaoyugan.veinmine.client.inputs;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;

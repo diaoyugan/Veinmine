@@ -10,6 +10,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import top.diaoyugan.veinmine.Constants;
 import top.diaoyugan.veinmine.client.configScreen.ConfigScreen;
+import top.diaoyugan.veinmine.client.inputs.NeoKeyHandler;
 
 @EventBusSubscriber(modid = Constants.ID, value = Dist.CLIENT)
 public final class VeinmineClient {

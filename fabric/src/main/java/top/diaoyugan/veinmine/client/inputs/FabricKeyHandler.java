@@ -1,4 +1,4 @@
-package top.diaoyugan.veinmine.client;
+package top.diaoyugan.veinmine.client.inputs;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
@@ -13,7 +13,7 @@ import top.diaoyugan.veinmine.utils.Utils;
 
 public final class FabricKeyHandler {
     // 服务端 → 客户端
-    static void receiveKeybindingResponse(
+    public static void receiveKeybindingResponse(
             KeyResponsePacket response,
             ClientPlayNetworking.Context context
     ) {

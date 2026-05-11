@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.input.KeyEvent;
-import top.diaoyugan.veinmine.client.KeyBinding;
+import top.diaoyugan.veinmine.client.inputs.KeyBinding;
 
 public class FabricKeyBinding {
     public static void onInitialize(){

@@ -6,7 +6,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import top.diaoyugan.veinmine.Constants;
-import top.diaoyugan.veinmine.client.KeyBinding;
+import top.diaoyugan.veinmine.client.inputs.KeyBinding;
 
 @EventBusSubscriber(modid = Constants.ID,value = Dist.CLIENT)
 public final class NeoKeyBindings {
