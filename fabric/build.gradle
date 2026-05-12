@@ -15,6 +15,13 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+    implementation files(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-6-0.0.1-dev.jar'))
+}
+
+jar {
+    from(zipTree(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-6-0.0.1-dev.jar'))) {
+        exclude 'META-INF/MANIFEST.MF', 'LICENSE'
+    }
 }
 
 loom {

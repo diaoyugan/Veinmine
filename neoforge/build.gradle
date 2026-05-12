@@ -33,3 +33,13 @@ neoForge {
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+dependencies {
+    implementation files(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-6-0.0.1-dev.jar'))
+}
+
+jar {
+    from(zipTree(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-6-0.0.1-dev.jar'))) {
+        exclude 'META-INF/MANIFEST.MF', 'LICENSE'
+    }
+}
