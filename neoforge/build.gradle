@@ -35,11 +35,21 @@ neoForge {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    implementation files(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-6-0.0.1-dev.jar'))
+    implementation files(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-7-dev-0.0.2.jar'))
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    // In dev runs the dependency jar is on the classpath (so classes work) but its assets are not treated as a mod
+    // resource pack by Minecraft. Copy the dependency assets into our processed resources so translations/textures
+    // resolve while debugging.
+    from(zipTree(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-7-dev-0.0.2.jar'))) {
+        include 'assets/enchanted_ui/**'
+        exclude 'META-INF/**', 'LICENSE'
+    }
 }
 
 jar {
-    from(zipTree(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-6-0.0.1-dev.jar'))) {
+    from(zipTree(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-7-dev-0.0.2.jar'))) {
         exclude 'META-INF/MANIFEST.MF', 'LICENSE'
     }
 }

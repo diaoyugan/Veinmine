@@ -51,7 +51,7 @@ public class ConfigScreen extends UiTabbedScreen {
                 Component.translatable("vm.config.close"),
                 Component.translatable("vm.config.save_and_exit"),
                 this::saveDraft,
-                Component.literal("R"),
+                Component.literal("🔄"),
                 Tooltip.create(Component.translatable("vm.config.screen.reset.tooltip")),
                 this::resetConfig
         ));
