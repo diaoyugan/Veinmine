@@ -13,7 +13,8 @@ import top.diaoyugan.veinmine.client.configScreen.ConfigScreen;
 import top.diaoyugan.veinmine.client.inputs.NeoKeyHandler;
 
 @EventBusSubscriber(modid = Constants.ID, value = Dist.CLIENT)
-public final class VeinmineClient {
+public final class
+VeinmineClient {
 
     private VeinmineClient() {}
     @SubscribeEvent

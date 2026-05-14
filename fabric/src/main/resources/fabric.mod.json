@@ -46,7 +46,15 @@
       "links": {
         "Discord": "https://discord.gg/zMb8SRwUyN",
         "Modrinth": "https://modrinth.com/mod/veinmine"
+      },
+      "parent": {
+        "id": "enchanted_ui_bi",
+        "name": "Enchanted UI (Built-in)",
+        "description": "A Minecraft GUI API.",
+        "icon": "assets/enchanted_ui/icon.png",
+        "badges": [ "library" ]
       }
+    }
     }
   }
 }

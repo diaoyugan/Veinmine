@@ -15,19 +15,19 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     //implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-    implementation files(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-7-dev-0.0.2.jar'))
+    implementation files(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-7-0.0.3-dev.jar'))
 }
 
-tasks.named('processResources', ProcessResources).configure {
-    // Same as NeoForge: in dev runs the library jar's assets won't be discovered as a mod resource pack.
-    from(zipTree(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-7-dev-0.0.2.jar'))) {
-        include 'assets/enchanted_ui/**'
-        exclude 'META-INF/**', 'LICENSE'
-    }
-}
+//tasks.named('processResources', ProcessResources).configure {
+//    // Same as NeoForge: in dev runs the library jar's assets won't be discovered as a mod resource pack.
+//    from(zipTree(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-7-0.0.3-dev.jar'))) {
+//        include 'assets/enchanted_ui/**'
+//        exclude 'META-INF/**', 'LICENSE'
+//    }
+//}
 
 jar {
-    from(zipTree(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-7-dev-0.0.2.jar'))) {
+    from(zipTree(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-7-0.0.3-dev.jar'))) {
         exclude 'META-INF/MANIFEST.MF', 'LICENSE'
     }
 }
