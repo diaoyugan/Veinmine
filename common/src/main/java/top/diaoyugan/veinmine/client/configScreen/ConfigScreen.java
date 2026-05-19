@@ -1,5 +1,6 @@
 package top.diaoyugan.veinmine.client.configScreen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
@@ -7,10 +8,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import top.diaoyugan.enchanted_ui.api.client.gui.EnchantedUI;
-import top.diaoyugan.enchanted_ui.api.client.gui.UiBottomBar;
-import top.diaoyugan.enchanted_ui.api.client.gui.UiForm;
-import top.diaoyugan.enchanted_ui.api.client.gui.UiFormSpec;
-import top.diaoyugan.enchanted_ui.api.client.gui.UiTabbedScreen;
+import top.diaoyugan.enchanted_ui.api.client.gui.UIBottomBar;
+import top.diaoyugan.enchanted_ui.api.client.gui.UIForm;
+import top.diaoyugan.enchanted_ui.api.client.gui.UIFormSpec;
+import top.diaoyugan.enchanted_ui.api.client.gui.UIScreenStyle;
+import top.diaoyugan.enchanted_ui.api.client.gui.UITabbedScreen;
 import top.diaoyugan.veinmine.client.inputs.KeyBinding;
 import top.diaoyugan.veinmine.config.Config;
 import top.diaoyugan.veinmine.config.ConfigItems;
@@ -19,7 +21,7 @@ import top.diaoyugan.veinmine.utils.Utils;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ConfigScreen extends UiTabbedScreen {
+public class ConfigScreen extends UITabbedScreen {
 
     private final Screen parent;
     private final ConfigItems items = Utils.getConfig();
@@ -47,7 +49,13 @@ public class ConfigScreen extends UiTabbedScreen {
                 Style.EMPTY.withColor(ChatFormatting.RED),
                 EnchantedUI.formPage(200, advancedPage()));
 
-        bottomBar(UiBottomBar.saveAndCloseWithExtra(
+        style(UIScreenStyle.builder()
+                .bottomBarBlur(true)
+                .bottomBarBackgroundColor(0x55101010)
+                .bottomBarSeparatorColor(0x44FFFFFF)
+                .build());
+
+        bottomBar(UIBottomBar.saveAndCloseWithExtra(
                 Component.translatable("vm.config.close"),
                 Component.translatable("vm.config.save_and_exit"),
                 this::saveDraft,
@@ -57,7 +65,7 @@ public class ConfigScreen extends UiTabbedScreen {
         ));
     }
 
-    private UiFormSpec mainPage() {
+    private UIFormSpec mainPage() {
         return form -> {
             form.title(Component.translatable("vm.config.screen.main"));
             addMainToggles(form);
@@ -73,7 +81,7 @@ public class ConfigScreen extends UiTabbedScreen {
         };
     }
 
-    private void addMainToggles(UiForm form) {
+    private void addMainToggles(UIForm form) {
         form.toggleRow(
                 Component.translatable("vm.config.use_bfs"),
                 () -> draft.useBFS,
@@ -94,7 +102,7 @@ public class ConfigScreen extends UiTabbedScreen {
         ).tooltip(Component.translatable("vm.config.highlight_blocks_message.tooltip"));
     }
 
-    private void addMainSliders(UiForm form) {
+    private void addMainSliders(UIForm form) {
         form.intSlider(
                 Component.translatable("vm.config.bfs_limit"),
                 1,
@@ -114,7 +122,7 @@ public class ConfigScreen extends UiTabbedScreen {
         ).setCustomValueKey("vm.config.value.block");
     }
 
-    private UiFormSpec toolsAndProtectPage() {
+    private UIFormSpec toolsAndProtectPage() {
         return form -> {
             form.title(Component.translatable("vm.config.screen.toolsandprotect"));
             form.toggle(
@@ -149,7 +157,7 @@ public class ConfigScreen extends UiTabbedScreen {
         };
     }
 
-    private UiFormSpec highlightsPage() {
+    private UIFormSpec highlightsPage() {
         return form -> {
             form.title(Component.translatable("vm.config.screen.highlights"));
             form.toggle(
@@ -173,12 +181,13 @@ public class ConfigScreen extends UiTabbedScreen {
         };
     }
 
-    private UiFormSpec keysAndBindingsPage() {
+    private UIFormSpec keysAndBindingsPage() {
         return form -> {
             form.title(Component.translatable("vm.config.screen.keysAndBinding"));
             form.keyBinding(
                     Component.translatable("key.vm.switch"),
-                    value -> { },
+                    () -> InputConstants.getKey(KeyBinding.ACTIVATION_KEY.saveString()),
+                    KeyBinding.ACTIVATION_KEY::setKey,
                     KeyBinding.ACTIVATION_KEY::getTranslatedKeyMessage,
                     KeyBinding.ACTIVATION_KEY,
                     true
@@ -201,7 +210,7 @@ public class ConfigScreen extends UiTabbedScreen {
         };
     }
 
-    private UiFormSpec advancedPage() {
+    private UIFormSpec advancedPage() {
         return form -> {
             form.title(
                     Component.translatable("vm.config.screen.final_resort")
@@ -215,7 +224,7 @@ public class ConfigScreen extends UiTabbedScreen {
         };
     }
 
-    private void saveDraft() {
+    private boolean saveDraft() {
         items.useIntrusiveCode = draft.useIntrusiveCode;
         items.searchRadius = draft.searchRadius;
         items.BFSLimit = draft.BFSLimit;
@@ -243,6 +252,7 @@ public class ConfigScreen extends UiTabbedScreen {
         items.configScreenKey.addAll(draft.configScreenKey);
 
         Config.getInstance().save();
+        return true;
     }
 
     private void resetConfig() {
