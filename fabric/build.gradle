@@ -15,20 +15,20 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     //implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-    implementation files(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-8-0.1.2-dev.jar'))
+    implementation files(rootProject.file(eui_location))
 }
 
 tasks.named('processResources', ProcessResources).configure {
     // In dev runs the library jar is on the classpath, but Minecraft does not discover its assets as a mod
     // resource pack. Copy only EUI assets into our processed resources; the jar task excludes the same paths
     // from the shaded dependency to avoid duplicate entries in production builds.
-    from(zipTree(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-8-0.1.2-dev.jar'))) {
+    from(zipTree(rootProject.file(eui_location))) {
         include 'assets/enchanted_ui/**'
     }
 }
 
 jar {
-    from(zipTree(rootProject.file('libs/enchanted_ui-common-26.2-snapshot-8-0.1.2-dev.jar'))) {
+    from(zipTree(rootProject.file(eui_location))) {
         exclude 'META-INF/MANIFEST.MF', 'LICENSE', 'assets/enchanted_ui/**'
     }
 }
