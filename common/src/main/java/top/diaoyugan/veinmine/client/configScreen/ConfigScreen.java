@@ -2,6 +2,8 @@ package top.diaoyugan.veinmine.client.configScreen;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
@@ -186,11 +188,11 @@ public class ConfigScreen extends UITabbedScreen {
             form.title(Component.translatable("vm.config.screen.keysAndBinding"));
             form.keyBinding(
                     Component.translatable("key.vm.switch"),
-                    () -> InputConstants.getKey(KeyBinding.ACTIVATION_KEY.saveString()),
-                    KeyBinding.ACTIVATION_KEY::setKey,
-                    KeyBinding.ACTIVATION_KEY::getTranslatedKeyMessage,
+                    () -> draft.activationKey,
+                    value -> draft.activationKey = value,
+                    () -> draft.activationKey.getDisplayName(),
                     KeyBinding.ACTIVATION_KEY,
-                    true
+                    false
             ).tooltip(Component.translatable("vm.config.keybinds.tooltip"));
 
             form.combinationKeyBinding(
@@ -251,6 +253,10 @@ public class ConfigScreen extends UITabbedScreen {
         items.configScreenKey.clear();
         items.configScreenKey.addAll(draft.configScreenKey);
 
+        KeyBinding.ACTIVATION_KEY.setKey(draft.activationKey);
+        KeyMapping.resetMapping();
+        Minecraft.getInstance().options.save();
+
         Config.getInstance().save();
         return true;
     }
@@ -297,6 +303,7 @@ public class ConfigScreen extends UITabbedScreen {
         private int blue;
         private int alpha;
         private boolean useHoldInsteadOfToggle;
+        private InputConstants.Key activationKey;
         private final Set<Integer> configScreenKey = new HashSet<>();
         private String ignoredBlocksText;
         private String protectedToolsText;
@@ -319,6 +326,7 @@ public class ConfigScreen extends UITabbedScreen {
             draft.blue = items.blue;
             draft.alpha = items.alpha;
             draft.useHoldInsteadOfToggle = items.useHoldInsteadOfToggle;
+            draft.activationKey = InputConstants.getKey(KeyBinding.ACTIVATION_KEY.saveString());
             draft.configScreenKey.addAll(items.configScreenKey);
             draft.ignoredBlocksText = joinLines(items.ignoredBlocks);
             draft.protectedToolsText = joinLines(items.protectedTools);
