@@ -169,7 +169,7 @@ public class ConfigScreen extends UITabbedScreen {
             ).tooltip(Component.translatable("vm.config.enableHighlights.tooltip"));
 
             form.rgbaSlidersWithPreview(
-                    Component.translatable("vm.config.renderRed"),
+                    Component.translatable("vm.config.color_preview"),
                     () -> draft.red,
                     value -> draft.red = value,
                     () -> draft.green,
