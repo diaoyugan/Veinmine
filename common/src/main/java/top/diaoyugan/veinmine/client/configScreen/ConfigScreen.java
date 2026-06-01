@@ -84,14 +84,23 @@ public class ConfigScreen extends UITabbedScreen {
     }
 
     private void addMainToggles(UIForm form) {
-        form.toggleRow(
+        var row = form.toggleRow(
                 Component.translatable("vm.config.use_bfs"),
                 () -> draft.useBFS,
                 value -> draft.useBFS = value,
+
                 Component.translatable("vm.config.use_radius_search"),
                 () -> draft.useRadiusSearch,
                 value -> draft.useRadiusSearch = value
-        ).getFirst().tooltip(Component.translatable("vm.config.use_bfs.tooltip"));
+        );
+        row.getFirst().tooltip(
+                Component.translatable("vm.config.use_bfs.tooltip")
+        );
+
+        row.getLast().tooltip(
+                Component.translatable("vm.config.use_radius_search.tooltip")
+        );
+
         form.toggle(
                 Component.translatable("vm.config.use_radius_search_when_reach_bfs_limit"),
                 () -> draft.useRadiusSearchWhenReachBFSLimit,
