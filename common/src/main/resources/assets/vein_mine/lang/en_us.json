@@ -24,7 +24,7 @@
   "vm.config.bfs_limit.tooltip": "Max blocks in chain mode",
 
   "vm.config.ignored_blocks": "Chain Ignore List",
-  "vm.config.ignored_blocks.tooltip": "Blocks ignored in chain mode\nFormat: namespace:path\nOne per line",
+  "vm.config.ignored_blocks.tooltip": "Blocks ignored in chain mode\nFormat: namespace:path",
 
   "vm.config.use_bfs": "Chain Mode",
   "vm.config.use_bfs.tooltip": "Enable or disable chain mode\nIf disabled, range mode will be used for all blocks",
@@ -43,7 +43,7 @@
   "vm.config.protect_tools.tooltip": "Stop vein mining before tool breaks",
 
   "vm.config.protected_tools": "Protected Tools",
-  "vm.config.protected_tools.tooltip": "Tools that trigger protection\nFormat: namespace:path\nOne per line",
+  "vm.config.protected_tools.tooltip": "Tools that trigger protection\nFormat: namespace:path",
 
   "vm.config.protect_allValuable_tools": "Protect Valuable Tools",
   "vm.config.protect_allValuable_tools.tooltip": "Protect gold, diamond, and netherite tools by default",
@@ -99,5 +99,9 @@
   "vm.config.keybind.listening": "%s: Press keys...",
   "vm.config.keybinds.tooltip": "Set the activation key",
   "vm.config.keybinds.combination.tooltip": "Click and press keys to set a new binding",
-  "vm.config.config_screen_keys": "Open Config Screen"
+  "vm.config.config_screen_keys": "Open Config Screen",
+
+  "vm.config.screen.add_entry": "Add entry",
+  "vm.config.screen.add": "Add",
+  "vm.config.screen.least_characters": "This entry must be at least %d characters."
 }

@@ -20,7 +20,9 @@ import top.diaoyugan.veinmine.config.Config;
 import top.diaoyugan.veinmine.config.ConfigItems;
 import top.diaoyugan.veinmine.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ConfigScreen extends UITabbedScreen {
@@ -28,6 +30,7 @@ public class ConfigScreen extends UITabbedScreen {
     private final Screen parent;
     private final ConfigItems items = Utils.getConfig();
     private final DraftConfig draft;
+    private final int entryMinChar = 3;
 
     public ConfigScreen(Screen parent) {
         super(parent, Component.translatable("vm.config.screen.title"));
@@ -73,12 +76,29 @@ public class ConfigScreen extends UITabbedScreen {
             addMainToggles(form);
             addMainSliders(form);
             form.space(4);
+//            form.title(Component.translatable("vm.config.ignored_blocks"));
+//            form.textArea(
+//                    Component.translatable("vm.config.ignored_blocks"),
+//                    30,
+//                    () -> draft.ignoredBlocksText,
+//                    value -> draft.ignoredBlocksText = value
+//            ).setTooltip(Tooltip.create(Component.translatable("vm.config.ignored_blocks.tooltip")));
             form.title(Component.translatable("vm.config.ignored_blocks"));
-            form.textArea(
+            form.editableDropdownList(
                     Component.translatable("vm.config.ignored_blocks"),
-                    30,
-                    () -> draft.ignoredBlocksText,
-                    value -> draft.ignoredBlocksText = value
+                    200,
+                    () -> draft.ignoredBlocks,
+                    entries -> {
+                        draft.ignoredBlocks.clear();
+                        draft.ignoredBlocks.addAll(entries);
+                    },
+                    Component.translatable("vm.config.screen.add_entry"),
+                    Component.translatable("vm.config.screen.add"),
+                    3,
+                    value -> value.length() < entryMinChar ?
+                            Component.translatable("vm.config.screen.least_characters", entryMinChar)
+                            : null,
+                    false
             ).setTooltip(Tooltip.create(Component.translatable("vm.config.ignored_blocks.tooltip")));
         };
     }
@@ -159,11 +179,21 @@ public class ConfigScreen extends UITabbedScreen {
 
             form.space(4);
             form.title(Component.translatable("vm.config.protected_tools"));
-            form.textArea(
+            form.editableDropdownList(
                     Component.translatable("vm.config.protected_tools"),
-                    40,
-                    () -> draft.protectedToolsText,
-                    value -> draft.protectedToolsText = value
+                    200,
+                    () -> draft.protectedTools,
+                    entries -> {
+                        draft.protectedTools.clear();
+                        draft.protectedTools.addAll(entries);
+                    },
+                    Component.translatable("vm.config.screen.add_entry"),
+                    Component.translatable("vm.config.screen.add"),
+                    3,
+                    value -> value.length() < entryMinChar ?
+                            Component.translatable("vm.config.screen.least_characters", entryMinChar)
+                            : null,
+                    false
             ).setTooltip(Tooltip.create(Component.translatable("vm.config.protected_tools.tooltip")));
         };
     }
@@ -254,10 +284,10 @@ public class ConfigScreen extends UITabbedScreen {
         items.useHoldInsteadOfToggle = draft.useHoldInsteadOfToggle;
 
         items.ignoredBlocks.clear();
-        items.ignoredBlocks.addAll(parseSetLines(draft.ignoredBlocksText));
+        items.ignoredBlocks.addAll(draft.ignoredBlocks);
 
         items.protectedTools.clear();
-        items.protectedTools.addAll(parseSetLines(draft.protectedToolsText));
+        items.protectedTools.addAll(draft.protectedTools);
 
         items.configScreenKey.clear();
         items.configScreenKey.addAll(draft.configScreenKey);
@@ -280,21 +310,6 @@ public class ConfigScreen extends UITabbedScreen {
         minecraft.setScreenAndShow(parent);
     }
 
-    private static Set<String> parseSetLines(String text) {
-        Set<String> parsed = new HashSet<>();
-        for (String line : text.split("\\R")) {
-            String trimmed = line.trim();
-            if (!trimmed.isEmpty()) {
-                parsed.add(trimmed);
-            }
-        }
-        return parsed;
-    }
-
-    private static String joinLines(Set<String> lines) {
-        return String.join("\n", lines);
-    }
-
     private static final class DraftConfig {
         private boolean useIntrusiveCode;
         private int searchRadius;
@@ -314,8 +329,8 @@ public class ConfigScreen extends UITabbedScreen {
         private boolean useHoldInsteadOfToggle;
         private InputConstants.Key activationKey;
         private final Set<Integer> configScreenKey = new HashSet<>();
-        private String ignoredBlocksText;
-        private String protectedToolsText;
+        private List<String> ignoredBlocks;
+        private List<String> protectedTools;
 
         private static DraftConfig from(ConfigItems items) {
             DraftConfig draft = new DraftConfig();
@@ -337,8 +352,8 @@ public class ConfigScreen extends UITabbedScreen {
             draft.useHoldInsteadOfToggle = items.useHoldInsteadOfToggle;
             draft.activationKey = InputConstants.getKey(KeyBinding.ACTIVATION_KEY.saveString());
             draft.configScreenKey.addAll(items.configScreenKey);
-            draft.ignoredBlocksText = joinLines(items.ignoredBlocks);
-            draft.protectedToolsText = joinLines(items.protectedTools);
+            draft.ignoredBlocks = new ArrayList<>(items.ignoredBlocks);
+            draft.protectedTools = new ArrayList<>(items.protectedTools);
             return draft;
         }
     }
@@ -346,12 +361,12 @@ public class ConfigScreen extends UITabbedScreen {
     public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float delta) {
         super.extractRenderState(g, mouseX, mouseY, delta);
 
-        String text = "Enchanted UI Dev (built-in)";
+        String text = "'Enchanted UI' Framework Dev (built-in)";
 
         g.centeredText(
                 this.font,
                 Component.literal(text),
-                width - 70,
+                width - 100,
                 height - 9,
                 0xFF777777
         );
