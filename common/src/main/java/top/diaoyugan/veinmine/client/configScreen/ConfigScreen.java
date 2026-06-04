@@ -361,14 +361,22 @@ public class ConfigScreen extends UITabbedScreen {
     public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float delta) {
         super.extractRenderState(g, mouseX, mouseY, delta);
 
-        String text = "'Enchanted UI' Framework Dev (built-in)";
+        String euiText = "'Enchanted UI' Framework Dev (built-in)";
 
         g.centeredText(
                 this.font,
-                Component.literal(text),
+                Component.literal(euiText),
                 width - 100,
                 height - 9,
                 0xFF777777
+        );
+
+        g.centeredText(
+                this.font,
+                Component.translatable("vm.config.screen.title"),
+                40,
+                15,
+                0xFFFFFFFF
         );
     }
 }
