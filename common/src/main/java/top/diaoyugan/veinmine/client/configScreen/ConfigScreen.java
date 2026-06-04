@@ -258,7 +258,7 @@ public class ConfigScreen extends UITabbedScreen {
                             .setStyle(Style.EMPTY.withColor(ChatFormatting.RED))
             );
             form.toggle(
-                    Component.translatable("vm.config.useIntrusiveCode"),
+                    Component.translatable("vm.config.useIntrusiveCode").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)),
                     () -> draft.useIntrusiveCode,
                     value -> draft.useIntrusiveCode = value
             ).tooltip(Component.translatable("vm.config.useIntrusiveCode.tooltip"));
