@@ -55,7 +55,7 @@ public class BlockBreak {
         if (player instanceof ServerPlayer serverPlayer) {
             // 提示玩家耐久不足
             Component msg = Component.translatable("vm.warn.breakthroughs").withStyle(s -> s.applyFormat(ChatFormatting.RED));
-            Messages.sendMessage(serverPlayer, msg, true);
+            Messages.sendMessage(serverPlayer, msg, false);
         }
         return false;
     }
