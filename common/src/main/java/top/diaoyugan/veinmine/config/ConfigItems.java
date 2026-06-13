@@ -16,6 +16,9 @@ public class ConfigItems { // Default configuration
     public boolean useBFS = true;
     public boolean useRadiusSearch = true;
     public boolean useRadiusSearchWhenReachBFSLimit = true;
+    public boolean distinguishCropMaturity = false;
+    public boolean distinguishDyedBlockColors = true;
+    public boolean distinguishDeepslateOres = false;
     public boolean highlightBlocksMessage = true;
     public boolean protectTools = true;
     public Set<String> protectedTools = new HashSet<>();

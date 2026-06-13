@@ -131,6 +131,27 @@ public class ConfigScreen extends UITabbedScreen {
                 () -> draft.highlightBlocksMessage,
                 value -> draft.highlightBlocksMessage = value
         ).tooltip(Component.translatable("vm.config.highlight_blocks_message.tooltip"));
+
+        var matchingRow = form.toggleRow(
+                Component.translatable("vm.config.distinguish_crop_maturity"),
+                () -> draft.distinguishCropMaturity,
+                value -> draft.distinguishCropMaturity = value,
+
+                Component.translatable("vm.config.distinguish_dyed_block_colors"),
+                () -> draft.distinguishDyedBlockColors,
+                value -> draft.distinguishDyedBlockColors = value
+        );
+        matchingRow.getFirst().tooltip(
+                Component.translatable("vm.config.distinguish_crop_maturity.tooltip")
+        );
+        matchingRow.getLast().tooltip(
+                Component.translatable("vm.config.distinguish_dyed_block_colors.tooltip")
+        );
+        form.toggle(
+                Component.translatable("vm.config.distinguish_deepslate_ores"),
+                () -> draft.distinguishDeepslateOres,
+                value -> draft.distinguishDeepslateOres = value
+        ).tooltip(Component.translatable("vm.config.distinguish_deepslate_ores.tooltip"));
     }
 
     private void addMainSliders(UIForm form) {
@@ -272,6 +293,9 @@ public class ConfigScreen extends UITabbedScreen {
         items.useBFS = draft.useBFS;
         items.useRadiusSearch = draft.useRadiusSearch;
         items.useRadiusSearchWhenReachBFSLimit = draft.useRadiusSearchWhenReachBFSLimit;
+        items.distinguishCropMaturity = draft.distinguishCropMaturity;
+        items.distinguishDyedBlockColors = draft.distinguishDyedBlockColors;
+        items.distinguishDeepslateOres = draft.distinguishDeepslateOres;
         items.highlightBlocksMessage = draft.highlightBlocksMessage;
         items.protectTools = draft.protectTools;
         items.durabilityThreshold = draft.durabilityThreshold;
@@ -317,6 +341,9 @@ public class ConfigScreen extends UITabbedScreen {
         private boolean useBFS;
         private boolean useRadiusSearch;
         private boolean useRadiusSearchWhenReachBFSLimit;
+        private boolean distinguishCropMaturity;
+        private boolean distinguishDyedBlockColors;
+        private boolean distinguishDeepslateOres;
         private boolean highlightBlocksMessage;
         private boolean protectTools;
         private int durabilityThreshold;
@@ -340,6 +367,9 @@ public class ConfigScreen extends UITabbedScreen {
             draft.useBFS = items.useBFS;
             draft.useRadiusSearch = items.useRadiusSearch;
             draft.useRadiusSearchWhenReachBFSLimit = items.useRadiusSearchWhenReachBFSLimit;
+            draft.distinguishCropMaturity = items.distinguishCropMaturity;
+            draft.distinguishDyedBlockColors = items.distinguishDyedBlockColors;
+            draft.distinguishDeepslateOres = items.distinguishDeepslateOres;
             draft.highlightBlocksMessage = items.highlightBlocksMessage;
             draft.protectTools = items.protectTools;
             draft.durabilityThreshold = items.durabilityThreshold;

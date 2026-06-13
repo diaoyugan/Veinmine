@@ -2,7 +2,6 @@ package top.diaoyugan.veinmine.events;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -22,81 +20,69 @@ import top.diaoyugan.veinmine.utils.SmartVein;
 import top.diaoyugan.veinmine.utils.Utils;
 
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-import static top.diaoyugan.veinmine.utils.Utils.*;
+import static top.diaoyugan.veinmine.utils.Utils.getVeinMineSwitchState;
 
 public class BlockBreak {
+    private static final Set<UUID> VEIN_MINING_PLAYERS = ConcurrentHashMap.newKeySet();
 
     public static void onBlockBreak(Level world, Player player, BlockPos pos, BlockState state, BlockEntity entity) {
-        if (!getVeinMineSwitchState(player)) return; // 玩家未开启连锁采集，直接返回
+        if (!(world instanceof ServerLevel serverWorld) || !(player instanceof ServerPlayer serverPlayer)) return;
+        if (!getVeinMineSwitchState(player)) return;
+        if (!VEIN_MINING_PLAYERS.add(player.getUUID())) return;
 
-        List<BlockPos> blocks = SmartVein.findBlocks(world, pos, BuiltInRegistries.BLOCK.getKey(state.getBlock()));
-        if (blocks == null || blocks.isEmpty()) return; // 没有找到连锁方块
+        try {
+            List<BlockPos> blocks = SmartVein.findBlocks(world, pos, state);
+            if (blocks == null || blocks.isEmpty()) return;
+            if (!checkDurabilityAndWarn(player, pos, blocks)) return;
 
-        if (!checkDurabilityAndWarn(player, state, blocks)) return; // 工具耐久不足，提示玩家并返回
-
-        int destroyed = breakBlocks(world, player, pos, state, blocks);
-
-        if (world instanceof ServerLevel serverWorld) {
-            AABB area = computeAABB(blocks);
-            moveDropsToCenter(serverWorld, pos, area);
+            breakBlocks(serverPlayer, pos, state, blocks);
+            moveDropsToCenter(serverWorld, pos, computeAABB(blocks));
+        } finally {
+            VEIN_MINING_PLAYERS.remove(player.getUUID());
         }
-
-        Utils.applyToolDurabilityDamage(player, destroyed); // 扣除耐久
     }
 
-    private static boolean checkDurabilityAndWarn(Player player, BlockState state, List<BlockPos> blocks) {
+    private static boolean checkDurabilityAndWarn(Player player, BlockPos centerPos, List<BlockPos> blocks) {
         ConfigItems config = Utils.getConfig();
         if (!config.protectTools || player.hasInfiniteMaterials()) return true;
 
-        int totalCost = Utils.calculateTotalDurabilityCost(blocks, player, state);
+        int totalCost = Utils.calculateTotalDurabilityCost(blocks, centerPos, player);
         if (Utils.hasEnoughDurability(player, totalCost)) return true;
 
         if (player instanceof ServerPlayer serverPlayer) {
-            // 提示玩家耐久不足
-            Component msg = Component.translatable("vm.warn.breakthroughs").withStyle(s -> s.applyFormat(ChatFormatting.RED));
+            Component msg = Component.translatable("vm.warn.breakthroughs")
+                    .withStyle(style -> style.applyFormat(ChatFormatting.RED));
             Messages.sendMessage(serverPlayer, msg, false);
         }
         return false;
     }
 
-    private static int breakBlocks(Level world, Player player, BlockPos centerPos, BlockState originalState, List<BlockPos> blocks) {
-        int count = 0;
+    private static void breakBlocks(
+            ServerPlayer player,
+            BlockPos centerPos,
+            BlockState originalState,
+            List<BlockPos> blocks
+    ) {
         for (BlockPos pos : blocks) {
-            if (!pos.equals(centerPos)) {
-                count += breakSingleBlock(world, player, centerPos, pos, originalState);
-            }
+            if (pos.equals(centerPos)) continue;
+
+            BlockState targetState = player.level().getBlockState(pos);
+            if (!SmartVein.matchesTarget(originalState, targetState)) continue;
+
+            player.gameMode.destroyBlock(pos);
         }
-        return count;
-    }
-
-    private static int breakSingleBlock(Level world, Player player, BlockPos centerPos, BlockPos targetPos, BlockState originalState) {
-        BlockState targetState = world.getBlockState(targetPos);
-
-        if (targetState.getBlock() != originalState.getBlock()) return 0;
-
-        if (shouldDropItems(player, targetState, world, targetPos)) {
-            Block.dropResources(targetState, world, targetPos, world.getBlockEntity(targetPos), player, player.getMainHandItem());
-        }
-
-        world.destroyBlock(targetPos, false);
-
-        return 1;
-    }
-
-    private static boolean shouldDropItems(Player player, BlockState state, Level world, BlockPos pos) {
-        if (player.hasInfiniteMaterials()) return false; // 创造模式不掉落
-        if (!Utils.isToolSuitable(state, player)) return false; // 工具不适合不掉落
-        return !Utils.shouldNotDropItem(state, world, pos, player); // 判断方块是否会掉落
     }
 
     private static void moveDropsToCenter(ServerLevel world, BlockPos centerPos, AABB area) {
         Vec3 center = Vec3.atCenterOf(centerPos);
-
         List<Entity> drops = world.getEntitiesOfClass(
                 Entity.class,
                 area.inflate(1),
-                e -> e instanceof ItemEntity || e instanceof ExperienceOrb
+                entity -> entity instanceof ItemEntity || entity instanceof ExperienceOrb
         );
 
         for (Entity drop : drops) {
@@ -108,28 +94,19 @@ public class BlockBreak {
         int minX = Integer.MAX_VALUE;
         int minY = Integer.MAX_VALUE;
         int minZ = Integer.MAX_VALUE;
-
         int maxX = Integer.MIN_VALUE;
         int maxY = Integer.MIN_VALUE;
         int maxZ = Integer.MIN_VALUE;
 
         for (BlockPos pos : blocks) {
-            int x = pos.getX();
-            int y = pos.getY();
-            int z = pos.getZ();
-
-            if (x < minX) minX = x;
-            if (y < minY) minY = y;
-            if (z < minZ) minZ = z;
-
-            if (x > maxX) maxX = x;
-            if (y > maxY) maxY = y;
-            if (z > maxZ) maxZ = z;
+            minX = Math.min(minX, pos.getX());
+            minY = Math.min(minY, pos.getY());
+            minZ = Math.min(minZ, pos.getZ());
+            maxX = Math.max(maxX, pos.getX());
+            maxY = Math.max(maxY, pos.getY());
+            maxZ = Math.max(maxZ, pos.getZ());
         }
 
-        return new AABB(
-                minX, minY, minZ,
-                maxX + 1, maxY + 1, maxZ + 1
-        );
+        return new AABB(minX, minY, minZ, maxX + 1, maxY + 1, maxZ + 1);
     }
 }

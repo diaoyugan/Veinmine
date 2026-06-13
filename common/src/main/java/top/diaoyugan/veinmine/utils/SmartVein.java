@@ -3,77 +3,59 @@ package top.diaoyugan.veinmine.utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import top.diaoyugan.veinmine.utils.logging.Logger;
 import top.diaoyugan.veinmine.utils.logging.LoggerLevels;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
-
-/**
- * 智能连锁挖掘工具类。
- * <p>
- * 提供根据玩家起始位置查找相同方块的功能，支持立方体搜索和基于 BFS 的智能连锁搜索。
- */
 public class SmartVein {
     private static final BlockPos[] OFFSETS = createOffsets();
+    private static final List<String> DYE_PREFIXES = DyeColor.VALUES.stream()
+            .map(color -> color.getName() + "_")
+            .sorted(Comparator.comparingInt(String::length).reversed())
+            .toList();
+    private static final Map<Block, Optional<Identifier>> DYED_FAMILY_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Block, Optional<Identifier>> ORE_FAMILY_CACHE = new ConcurrentHashMap<>();
 
     static {
         try {
             Utils.getConfig().ignoredBlocks.add("minecraft:air");
-        } catch (Exception e) { //没这里的话你也不知道为什么有时候会炸
-            if (!(e instanceof UnsupportedOperationException)) {
-                Logger.throwLog(LoggerLevels.ERROR, String.valueOf(e), e.fillInStackTrace());
+        } catch (Exception exception) {
+            if (!(exception instanceof UnsupportedOperationException)) {
+                Logger.throwLog(LoggerLevels.ERROR, String.valueOf(exception), exception.fillInStackTrace());
             }
         }
     }
 
-    /**
-     * 根据起始方块查找相同方块。
-     *
-     * @param world    世界对象
-     * @param startPos 起始方块位置
-     * @return 找到的方块位置列表
-     */
     public static List<BlockPos> findBlocks(Level world, BlockPos startPos) {
-        BlockState startState = world.getBlockState(startPos);
-        Identifier blockID = BuiltInRegistries.BLOCK.getKey(startState.getBlock());
-        String startBlockID = blockID.toString();
-
-        if (Utils.getConfig().ignoredBlocks.contains(startBlockID) || !Utils.getConfig().useBFS) {
-            return findBlocksInCube(world, startPos, startState);
-        } else {
-            return findConnectedBlocks(world, startPos, startState);
-        }
+        return findBlocks(world, startPos, world.getBlockState(startPos));
     }
 
-    /**
-     * 根据起始方块 ID 查找相同方块（重载方法）。
-     *
-     * @param world        世界对象
-     * @param startPos     起始方块位置
-     * @param startBlockID 起始方块 ID
-     * @return 找到的方块位置列表
-     */
-    public static List<BlockPos> findBlocks(Level world, BlockPos startPos, Identifier startBlockID) {
-        if (Utils.getConfig().ignoredBlocks.contains(String.valueOf(startBlockID)) || !Utils.getConfig().useBFS) {
-            return findBlocksInCube(world, startPos, startBlockID);
-        } else {
-            return findConnectedBlocks(world, startPos, startBlockID);
+    public static List<BlockPos> findBlocks(Level world, BlockPos startPos, BlockState targetState) {
+        Identifier blockId = BuiltInRegistries.BLOCK.getKey(targetState.getBlock());
+        if (Utils.getConfig().ignoredBlocks.contains(blockId.toString()) || !Utils.getConfig().useBFS) {
+            return findBlocksInCube(world, startPos, targetState);
         }
+        return findConnectedBlocks(world, startPos, targetState);
     }
 
-    /**
-     * 立方体范围查找相同方块。
-     *
-     * @param world       世界对象
-     * @param pos         中心位置
-     * @param targetState 目标方块State
-     * @return 找到的方块位置列表
-     */
-    private static List<BlockPos> findBlocksInCube(Level world, BlockPos pos, BlockState targetState) {
+    private static List<BlockPos> findBlocksInCube(Level world, BlockPos centerPos, BlockState targetState) {
         if (!Utils.getConfig().useRadiusSearch) return null;
 
         List<BlockPos> foundBlocks = new ArrayList<>();
@@ -82,54 +64,16 @@ public class SmartVein {
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
                 for (int z = -radius; z <= radius; z++) {
-                    BlockPos targetPos = pos.offset(x, y, z);
-                    if (world.getBlockState(targetPos).getBlock() == targetState.getBlock()) {
+                    BlockPos targetPos = centerPos.offset(x, y, z);
+                    if (matchesTarget(targetState, world.getBlockState(targetPos))) {
                         foundBlocks.add(targetPos);
                     }
                 }
             }
         }
-
         return foundBlocks;
     }
 
-    /**
-     * 立方体范围查找相同方块（使用方块 ID）。
-     *
-     * @param world        世界对象
-     * @param pos          中心位置
-     * @param startBlockID 目标方块 ID
-     * @return 找到的方块位置列表
-     */
-    private static List<BlockPos> findBlocksInCube(Level world, BlockPos pos, Identifier startBlockID) {
-        if (!Utils.getConfig().useRadiusSearch) return null;
-
-        List<BlockPos> foundBlocks = new ArrayList<>();
-        Block block = BuiltInRegistries.BLOCK.getValue(startBlockID);
-        int radius = Utils.getConfig().searchRadius;
-
-        for (int x = -radius; x <= radius; x++) {
-            for (int y = -radius; y <= radius; y++) {
-                for (int z = -radius; z <= radius; z++) {
-                    BlockPos targetPos = pos.offset(x, y, z);
-                    if (world.getBlockState(targetPos).getBlock() == block) {
-                        foundBlocks.add(targetPos);
-                    }
-                }
-            }
-        }
-
-        return foundBlocks;
-    }
-
-    /**
-     * 使用 BFS 算法进行智能连锁查找。
-     *
-     * @param world       世界对象
-     * @param startPos    起始方块位置
-     * @param targetState 目标方块State
-     * @return 找到的方块位置列表
-     */
     private static List<BlockPos> findConnectedBlocks(Level world, BlockPos startPos, BlockState targetState) {
         List<BlockPos> foundBlocks = new ArrayList<>();
         Set<BlockPos> visited = new HashSet<>();
@@ -137,85 +81,120 @@ public class SmartVein {
 
         queue.add(startPos);
         visited.add(startPos);
-        int connectedCount = 0;
 
         while (!queue.isEmpty()) {
             BlockPos current = queue.poll();
             foundBlocks.add(current);
-            connectedCount++;
 
-            if (connectedCount > Utils.getConfig().BFSLimit) {
+            if (foundBlocks.size() > Utils.getConfig().BFSLimit) {
                 if (Utils.getConfig().useRadiusSearchWhenReachBFSLimit) {
                     return findBlocksInCube(world, startPos, targetState);
-                } else {
-                    return null;
                 }
+                return null;
             }
 
             for (BlockPos offset : OFFSETS) {
                 BlockPos neighborPos = current.offset(offset);
-                if (!visited.contains(neighborPos) && isSameBlock(world, targetState, neighborPos)) {
+                if (visited.add(neighborPos)
+                        && matchesTarget(targetState, world.getBlockState(neighborPos))) {
                     queue.add(neighborPos);
-                    visited.add(neighborPos);
                 }
             }
         }
-
         return foundBlocks;
     }
 
-    /**
-     * 使用 BFS 算法进行智能连锁查找（通过方块 ID）。
-     *
-     * @param world        世界对象
-     * @param startPos     起始方块位置
-     * @param startBlockID 目标方块 ID
-     * @return 找到的方块位置列表
-     */
-    private static List<BlockPos> findConnectedBlocks(Level world, BlockPos startPos, Identifier startBlockID) {
-        List<BlockPos> foundBlocks = new ArrayList<>();
-        Set<BlockPos> visited = new HashSet<>();
-        Queue<BlockPos> queue = new ArrayDeque<>();
+    public static boolean matchesTarget(BlockState targetState, BlockState candidateState) {
+        if (!matchesBlockType(targetState.getBlock(), candidateState.getBlock())) return false;
 
-        Block block = BuiltInRegistries.BLOCK.getValue(startBlockID);
-        BlockState startState = block.defaultBlockState();
+        if (Utils.getConfig().distinguishCropMaturity
+                && targetState.is(BlockTags.CROPS)
+                && candidateState.is(BlockTags.CROPS)) {
+            return isMatureCrop(targetState) == isMatureCrop(candidateState);
+        }
+        return true;
+    }
 
-        queue.add(startPos);
-        visited.add(startPos);
-        int connectedCount = 0;
-
-        while (!queue.isEmpty()) {
-            BlockPos current = queue.poll();
-            foundBlocks.add(current);
-            connectedCount++;
-
-            if (connectedCount > Utils.getConfig().BFSLimit) {
-                if (Utils.getConfig().useRadiusSearchWhenReachBFSLimit) {
-                    return findBlocksInCube(world, startPos, startBlockID);
-                } else {
-                    return null;
-                }
-            }
-
-            for (BlockPos offset : OFFSETS) {
-                BlockPos neighborPos = current.offset(offset);
-                if (!visited.contains(neighborPos) && isSameBlock(world, startState, neighborPos)) {
-                    queue.add(neighborPos);
-                    visited.add(neighborPos);
-                }
+    private static boolean matchesBlockType(Block targetBlock, Block candidateBlock) {
+        if (targetBlock == candidateBlock) return true;
+        if (!Utils.getConfig().distinguishDeepslateOres) {
+            Optional<Identifier> targetOreFamily = oreFamily(targetBlock);
+            if (targetOreFamily.isPresent() && targetOreFamily.equals(oreFamily(candidateBlock))) {
+                return true;
             }
         }
+        if (Utils.getConfig().distinguishDyedBlockColors) return false;
 
-        return foundBlocks;
+        Optional<Identifier> targetFamily = dyedFamily(targetBlock);
+        return targetFamily.isPresent() && targetFamily.equals(dyedFamily(candidateBlock));
     }
 
-    /**
-     * 获取相对 26 个方向的偏移量。
-     * 暂时废弃 新算法应该能代替这个(OFFSETS)
-     * @return 偏移量列表
-     */
-    @Deprecated
-    private static List<BlockPos> getAllNeighborOffsets() {
+    private static boolean isMatureCrop(BlockState state) {
+        for (Property<?> property : state.getProperties()) {
+            if (property instanceof IntegerProperty ageProperty && property.getName().equals("age")) {
+                List<Integer> ages = ageProperty.getPossibleValues();
+                return state.getValue(ageProperty).equals(ages.getLast());
+            }
+        }
+        return false;
+    }
+
+    private static Optional<Identifier> dyedFamily(Block block) {
+        return DYED_FAMILY_CACHE.computeIfAbsent(block, SmartVein::findDyedFamily);
+    }
+
+    private static Optional<Identifier> oreFamily(Block block) {
+        return ORE_FAMILY_CACHE.computeIfAbsent(block, SmartVein::findOreFamily);
+    }
+
+    private static Optional<Identifier> findOreFamily(Block block) {
+        Identifier blockId = BuiltInRegistries.BLOCK.getKey(block);
+        String path = blockId.getPath();
+        String normalOrePath;
+        String deepslateOrePath;
+
+        if (path.startsWith("deepslate_") && path.endsWith("_ore")) {
+            normalOrePath = path.substring("deepslate_".length());
+            deepslateOrePath = path;
+        } else if (path.endsWith("_ore")) {
+            normalOrePath = path;
+            deepslateOrePath = "deepslate_" + path;
+        } else {
+            return Optional.empty();
+        }
+
+        Identifier normalOreId = Identifier.fromNamespaceAndPath(blockId.getNamespace(), normalOrePath);
+        Identifier deepslateOreId = Identifier.fromNamespaceAndPath(blockId.getNamespace(), deepslateOrePath);
+        if (BuiltInRegistries.BLOCK.containsKey(normalOreId)
+                && BuiltInRegistries.BLOCK.containsKey(deepslateOreId)) {
+            return Optional.of(normalOreId);
+        }
+        return Optional.empty();
+    }
+
+    private static Optional<Identifier> findDyedFamily(Block block) {
+        Identifier blockId = BuiltInRegistries.BLOCK.getKey(block);
+        String path = blockId.getPath();
+
+        for (String prefix : DYE_PREFIXES) {
+            if (!path.startsWith(prefix)) continue;
+
+            String familyPath = path.substring(prefix.length());
+            boolean hasAllColors = DyeColor.VALUES.stream()
+                    .map(color -> Identifier.fromNamespaceAndPath(
+                            blockId.getNamespace(),
+                            color.getName() + "_" + familyPath
+                    ))
+                    .allMatch(BuiltInRegistries.BLOCK::containsKey);
+
+            if (hasAllColors) {
+                return Optional.of(Identifier.fromNamespaceAndPath(blockId.getNamespace(), familyPath));
+            }
+        }
+        return Optional.empty();
+    }
+
+    private static BlockPos[] createOffsets() {
         List<BlockPos> offsets = new ArrayList<>();
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
@@ -226,32 +205,6 @@ public class SmartVein {
                 }
             }
         }
-        return offsets;
-    }
-
-    /**
-     * 判断指定位置的方块是否和目标方块相同。
-     *
-     * @param world      世界对象
-     * @param targetState 目标方块状态
-     * @param pos        方块位置
-     * @return true 表示相同，false 表示不同
-     */
-    private static boolean isSameBlock(Level world, BlockState targetState, BlockPos pos) {
-        return world.getBlockState(pos).getBlock() == targetState.getBlock();
-    }
-
-    private static BlockPos[] createOffsets() {
-        List<BlockPos> list = new ArrayList<>();
-        for (int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
-                for (int z = -1; z <= 1; z++) {
-                    if (x != 0 || y != 0 || z != 0) {
-                        list.add(new BlockPos(x, y, z));
-                    }
-                }
-            }
-        }
-        return list.toArray(new BlockPos[0]);
+        return offsets.toArray(new BlockPos[0]);
     }
 }

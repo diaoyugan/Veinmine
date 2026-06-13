@@ -11,6 +11,9 @@ This document explains the configuration options in the mod settings screen and 
 | `useBFS`                           | Boolean  | Server | `true`  | Enable chain (BFS) search mode. If disabled, all searches use radius search.                                                                 |
 | `useRadiusSearch`                  | Boolean  | Server | `true`  | Enable radius search. If disabled, radius search will never be used.                                                                         |
 | `useRadiusSearchWhenReachBFSLimit` | Boolean  | Server | `true`  | Switch to radius search automatically when the BFS limit is exceeded. If disabled, exceeding the limit will stop chain mining.               |
+| `distinguishCropMaturity`          | Boolean  | Server | `false` | Treat mature and immature blocks in the `minecraft:crops` tag as different targets. This separates maturity, not every individual age.       |
+| `distinguishDyedBlockColors`       | Boolean  | Server | `true`  | Treat colors in a complete 16-color dyed block family as different targets. If disabled, colors in the same family match each other.          |
+| `distinguishDeepslateOres`         | Boolean  | Server | `false` | Treat normal and deepslate variants of the same registered `*_ore` as different targets. Disabled allows veins to cross the layer boundary.   |
 | `highlightBlocksMessage`           | Boolean  | Client | `true`  | Show the client a message of how many blocks will be broken (e.g., Target blocks: 9).                                                        |
 
 ---

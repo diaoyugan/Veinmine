@@ -68,6 +68,12 @@
   "vm.config.keybinds.tooltip": "可在此處設定按鍵綁定",
   "vm.config.config_screen_keys": "開啟設定選單",
   "vm.config.screen.add_entry": "新增項目",
+  "vm.config.distinguish_crop_maturity": "區分作物成熟狀態",
+  "vm.config.distinguish_crop_maturity.tooltip": "開啟後，成熟與未成熟的農作物會被視為不同目標",
+  "vm.config.distinguish_dyed_block_colors": "區分染色方塊顏色",
+  "vm.config.distinguish_dyed_block_colors.tooltip": "開啟後，不同顏色的同系列染色方塊會被視為不同目標",
+  "vm.config.distinguish_deepslate_ores": "區分深層礦石",
+  "vm.config.distinguish_deepslate_ores.tooltip": "關閉後，同種普通礦石與深層礦石會被視為同一條礦脈",
   "vm.config.screen.add": "新增",
   "vm.config.screen.least_characters": "此項目至少需要 %d 個字元"
 }

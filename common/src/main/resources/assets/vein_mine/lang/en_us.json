@@ -35,6 +35,13 @@
   "vm.config.use_radius_search_when_reach_bfs_limit": "Switch to Range on Limit",
   "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "Switch to range mode when 'Chain Limit' is reached",
 
+  "vm.config.distinguish_crop_maturity": "Separate Crop Maturity",
+  "vm.config.distinguish_crop_maturity.tooltip": "Only match crops with the same mature or immature state",
+  "vm.config.distinguish_dyed_block_colors": "Separate Dyed Colors",
+  "vm.config.distinguish_dyed_block_colors.tooltip": "Only match dyed blocks of the same color",
+  "vm.config.distinguish_deepslate_ores": "Separate Deepslate Ores",
+  "vm.config.distinguish_deepslate_ores.tooltip": "When disabled, normal and deepslate variants of the same ore form one vein",
+
   "vm.warn.breakthroughs": "Tool almost broken. Vein mining stopped.",
 
   "vm.config.screen.toolsandprotect": "Tools & Protection",
