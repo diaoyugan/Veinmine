@@ -51,4 +51,5 @@ This document explains the configuration options in the mod settings screen and 
 | Key                | Type    | Scope  | Default | Description                                                                                                                                                                                                                                |
 |--------------------|---------|--------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `useIntrusiveCode` | Boolean | Client | `true`  | Enable custom RenderLayer and RenderPipeline for wall-penetrating highlights. May conflict with certain mods, shaders, or renderers. If crashes or invisible highlights occur, disable this option. Changes require restarting the client. |
+| `bridgeOneBlockGap` | Boolean | Server | `false` | Allow BFS chain search to skip one non-target block in a direction and continue from a matching target two blocks away. The skipped block is not broken. |
 

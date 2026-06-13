@@ -15,6 +15,7 @@ import top.diaoyugan.enchanted_ui.api.client.gui.UIForm;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIFormSpec;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIScreenStyle;
 import top.diaoyugan.enchanted_ui.api.client.gui.UITabbedScreen;
+import top.diaoyugan.enchanted_ui.api.client.gui.UIWidget;
 import top.diaoyugan.veinmine.client.inputs.KeyBinding;
 import top.diaoyugan.veinmine.config.Config;
 import top.diaoyugan.veinmine.config.ConfigItems;
@@ -36,20 +37,24 @@ public class ConfigScreen extends UITabbedScreen {
         super(parent, Component.translatable("vm.config.screen.title"));
         this.parent = parent;
         this.draft = DraftConfig.from(items);
+        sidebarTitle(Component.translatable("vm.config.screen.title"));
 
         tab(10, 30, 20,
                 Component.translatable("vm.config.screen.main"),
                 EnchantedUI.formPage(200, mainPage()));
         tab(10, 54, 20,
+                Component.translatable("vm.config.screen.search_logic"),
+                EnchantedUI.formPage(200, searchLogicPage()));
+        tab(10, 78, 20,
                 Component.translatable("vm.config.screen.toolsandprotect"),
                 EnchantedUI.formPage(200, toolsAndProtectPage()));
-        tab(10, 78, 20,
+        tab(10, 102, 20,
                 Component.translatable("vm.config.screen.highlights"),
                 EnchantedUI.formPage(200, highlightsPage()));
-        tab(10, 102, 20,
+        tab(10, 126, 20,
                 Component.translatable("vm.config.screen.keysAndBinding"),
                 EnchantedUI.formPage(200, keysAndBindingsPage()));
-        tab(10, 126, 20,
+        tab(10, 150, 20,
                 Component.translatable("vm.config.screen.final_resort"),
                 Style.EMPTY.withColor(ChatFormatting.RED),
                 EnchantedUI.formPage(200, advancedPage()));
@@ -84,7 +89,7 @@ public class ConfigScreen extends UITabbedScreen {
 //                    value -> draft.ignoredBlocksText = value
 //            ).setTooltip(Tooltip.create(Component.translatable("vm.config.ignored_blocks.tooltip")));
             form.title(Component.translatable("vm.config.ignored_blocks"));
-            form.editableDropdownList(
+            serverOption(form.editableDropdownList(
                     Component.translatable("vm.config.ignored_blocks"),
                     200,
                     () -> draft.ignoredBlocks,
@@ -99,7 +104,7 @@ public class ConfigScreen extends UITabbedScreen {
                             Component.translatable("vm.config.screen.least_characters", entryMinChar)
                             : null,
                     false
-            ).setTooltip(Tooltip.create(Component.translatable("vm.config.ignored_blocks.tooltip")));
+            ).tooltip(Component.translatable("vm.config.ignored_blocks.tooltip")));
         };
     }
 
@@ -108,99 +113,103 @@ public class ConfigScreen extends UITabbedScreen {
                 Component.translatable("vm.config.use_bfs"),
                 () -> draft.useBFS,
                 value -> draft.useBFS = value,
+                Component.translatable("vm.config.use_bfs.tooltip"),
 
                 Component.translatable("vm.config.use_radius_search"),
                 () -> draft.useRadiusSearch,
-                value -> draft.useRadiusSearch = value
-        );
-        row.getFirst().tooltip(
-                Component.translatable("vm.config.use_bfs.tooltip")
-        );
-
-        row.getLast().tooltip(
+                value -> draft.useRadiusSearch = value,
                 Component.translatable("vm.config.use_radius_search.tooltip")
         );
+        serverOption(row.getFirst());
+        serverOption(row.getLast());
 
-        form.toggle(
+        serverOption(form.toggle(
                 Component.translatable("vm.config.use_radius_search_when_reach_bfs_limit"),
                 () -> draft.useRadiusSearchWhenReachBFSLimit,
                 value -> draft.useRadiusSearchWhenReachBFSLimit = value
-        ).tooltip(Component.translatable("vm.config.use_radius_search_when_reach_bfs_limit.tooltip"));
+        ).tooltip(Component.translatable("vm.config.use_radius_search_when_reach_bfs_limit.tooltip")));
         form.toggle(
                 Component.translatable("vm.config.highlight_blocks_message"),
                 () -> draft.highlightBlocksMessage,
                 value -> draft.highlightBlocksMessage = value
         ).tooltip(Component.translatable("vm.config.highlight_blocks_message.tooltip"));
+    }
 
-        var matchingRow = form.toggleRow(
+    private UIFormSpec searchLogicPage() {
+        return form -> {
+            form.title(Component.translatable("vm.config.screen.search_logic"));
+            addMatchingToggles(form);
+        };
+    }
+
+    private void addMatchingToggles(UIForm form) {
+        serverOption(form.toggle(
                 Component.translatable("vm.config.distinguish_crop_maturity"),
                 () -> draft.distinguishCropMaturity,
-                value -> draft.distinguishCropMaturity = value,
-
+                value -> draft.distinguishCropMaturity = value
+        ).tooltip(Component.translatable("vm.config.distinguish_crop_maturity.tooltip")));
+        serverOption(form.toggle(
                 Component.translatable("vm.config.distinguish_dyed_block_colors"),
                 () -> draft.distinguishDyedBlockColors,
                 value -> draft.distinguishDyedBlockColors = value
-        );
-        matchingRow.getFirst().tooltip(
-                Component.translatable("vm.config.distinguish_crop_maturity.tooltip")
-        );
-        matchingRow.getLast().tooltip(
-                Component.translatable("vm.config.distinguish_dyed_block_colors.tooltip")
-        );
-        form.toggle(
+        ).tooltip(Component.translatable("vm.config.distinguish_dyed_block_colors.tooltip")));
+        serverOption(form.toggle(
                 Component.translatable("vm.config.distinguish_deepslate_ores"),
                 () -> draft.distinguishDeepslateOres,
                 value -> draft.distinguishDeepslateOres = value
-        ).tooltip(Component.translatable("vm.config.distinguish_deepslate_ores.tooltip"));
+        ).tooltip(Component.translatable("vm.config.distinguish_deepslate_ores.tooltip")));
     }
 
     private void addMainSliders(UIForm form) {
-        form.intSlider(
+        serverOption(form.intSlider(
                 Component.translatable("vm.config.bfs_limit"),
                 1,
                 256,
                 () -> draft.BFSLimit,
                 value -> draft.BFSLimit = value,
                 false
-        ).setCustomValueKey("vm.config.value.block");
+        ).setCustomValueKey("vm.config.value.block")
+                .tooltip(Component.translatable("vm.config.bfs_limit.tooltip")));
 
-        form.intSlider(
+        serverOption(form.intSlider(
                 Component.translatable("vm.config.search_radius"),
                 1,
                 10,
                 () -> draft.searchRadius,
                 value -> draft.searchRadius = value,
                 false
-        ).setCustomValueKey("vm.config.value.block");
+        ).setCustomValueKey("vm.config.value.block")
+                .tooltip(Component.translatable("vm.config.search_radius.tooltip")));
     }
 
     private UIFormSpec toolsAndProtectPage() {
         return form -> {
             form.title(Component.translatable("vm.config.screen.toolsandprotect"));
-            form.toggle(
+            serverOption(form.toggle(
                     Component.translatable("vm.config.protect_tools"),
                     () -> draft.protectTools,
                     value -> draft.protectTools = value
-            ).tooltip(Component.translatable("vm.config.protect_tools.tooltip"));
+            ).tooltip(Component.translatable("vm.config.protect_tools.tooltip")));
 
-            form.toggle(
+            serverOption(form.toggle(
                     Component.translatable("vm.config.protect_allValuable_tools"),
                     () -> draft.protectAllDefaultValuableTools,
                     value -> draft.protectAllDefaultValuableTools = value
-            ).tooltip(Component.translatable("vm.config.protect_allValuable_tools.tooltip"));
+            ).tooltip(Component.translatable("vm.config.protect_allValuable_tools.tooltip")));
 
-            form.intSlider(
+            serverOption(form.intSlider(
                     Component.translatable("vm.config.durability_threshold"),
                     1,
                     256,
                     () -> draft.durabilityThreshold,
                     value -> draft.durabilityThreshold = value,
                     false
-            ).setCustomValueKey("vm.config.value.durability");
+            ).setCustomValueKey("vm.config.value.durability")
+                    .tooltip(Component.translatable("vm.config.durability_threshold.tooltip")));
 
             form.space(4);
             form.title(Component.translatable("vm.config.protected_tools"));
-            form.editableDropdownList(
+            serverOption(form.editableDropdownList(
                     Component.translatable("vm.config.protected_tools"),
                     200,
                     () -> draft.protectedTools,
@@ -215,7 +224,7 @@ public class ConfigScreen extends UITabbedScreen {
                             Component.translatable("vm.config.screen.least_characters", entryMinChar)
                             : null,
                     false
-            ).setTooltip(Tooltip.create(Component.translatable("vm.config.protected_tools.tooltip")));
+            ).tooltip(Component.translatable("vm.config.protected_tools.tooltip")));
         };
     }
 
@@ -283,7 +292,22 @@ public class ConfigScreen extends UITabbedScreen {
                     () -> draft.useIntrusiveCode,
                     value -> draft.useIntrusiveCode = value
             ).tooltip(Component.translatable("vm.config.useIntrusiveCode.tooltip"));
+            serverOption(form.toggle(
+                    Component.translatable("vm.config.bridge_one_block_gap"),
+                    () -> draft.bridgeOneBlockGap,
+                    value -> draft.bridgeOneBlockGap = value
+            ).tooltip(Component.translatable("vm.config.bridge_one_block_gap.tooltip")));
         };
+    }
+
+    private void serverOption(UIWidget widget) {
+        widget.disabledTooltip(Component.translatable("vm.config.server_managed.tooltip"))
+                .activeIf(() -> !isConnectedToRemoteServer());
+    }
+
+    private boolean isConnectedToRemoteServer() {
+        Minecraft client = Minecraft.getInstance();
+        return client.getConnection() != null && client.isMultiplayerServer();
     }
 
     private boolean saveDraft() {
@@ -296,6 +320,7 @@ public class ConfigScreen extends UITabbedScreen {
         items.distinguishCropMaturity = draft.distinguishCropMaturity;
         items.distinguishDyedBlockColors = draft.distinguishDyedBlockColors;
         items.distinguishDeepslateOres = draft.distinguishDeepslateOres;
+        items.bridgeOneBlockGap = draft.bridgeOneBlockGap;
         items.highlightBlocksMessage = draft.highlightBlocksMessage;
         items.protectTools = draft.protectTools;
         items.durabilityThreshold = draft.durabilityThreshold;
@@ -344,6 +369,7 @@ public class ConfigScreen extends UITabbedScreen {
         private boolean distinguishCropMaturity;
         private boolean distinguishDyedBlockColors;
         private boolean distinguishDeepslateOres;
+        private boolean bridgeOneBlockGap;
         private boolean highlightBlocksMessage;
         private boolean protectTools;
         private int durabilityThreshold;
@@ -370,6 +396,7 @@ public class ConfigScreen extends UITabbedScreen {
             draft.distinguishCropMaturity = items.distinguishCropMaturity;
             draft.distinguishDyedBlockColors = items.distinguishDyedBlockColors;
             draft.distinguishDeepslateOres = items.distinguishDeepslateOres;
+            draft.bridgeOneBlockGap = items.bridgeOneBlockGap;
             draft.highlightBlocksMessage = items.highlightBlocksMessage;
             draft.protectTools = items.protectTools;
             draft.durabilityThreshold = items.durabilityThreshold;
@@ -401,12 +428,5 @@ public class ConfigScreen extends UITabbedScreen {
                 0xFF777777
         );
 
-        g.centeredText(
-                this.font,
-                Component.translatable("vm.config.screen.title"),
-                40,
-                15,
-                0xFFFFFFFF
-        );
     }
 }

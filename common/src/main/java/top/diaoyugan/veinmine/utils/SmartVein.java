@@ -95,9 +95,19 @@ public class SmartVein {
 
             for (BlockPos offset : OFFSETS) {
                 BlockPos neighborPos = current.offset(offset);
-                if (visited.add(neighborPos)
-                        && matchesTarget(targetState, world.getBlockState(neighborPos))) {
+                if (!visited.add(neighborPos)) continue;
+
+                if (matchesTarget(targetState, world.getBlockState(neighborPos))) {
                     queue.add(neighborPos);
+                    continue;
+                }
+
+                if (Utils.getConfig().bridgeOneBlockGap) {
+                    BlockPos bridgedPos = neighborPos.offset(offset);
+                    if (visited.add(bridgedPos)
+                            && matchesTarget(targetState, world.getBlockState(bridgedPos))) {
+                        queue.add(bridgedPos);
+                    }
                 }
             }
         }

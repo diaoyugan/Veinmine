@@ -19,6 +19,7 @@ public class ConfigItems { // Default configuration
     public boolean distinguishCropMaturity = false;
     public boolean distinguishDyedBlockColors = true;
     public boolean distinguishDeepslateOres = false;
+    public boolean bridgeOneBlockGap = false;
     public boolean highlightBlocksMessage = true;
     public boolean protectTools = true;
     public Set<String> protectedTools = new HashSet<>();

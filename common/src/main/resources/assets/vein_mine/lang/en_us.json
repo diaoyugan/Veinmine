@@ -1,10 +1,10 @@
 {
   "modmenu.nameTranslation.vein_mine": "Vein Mine",
-  "modmenu.descriptionTranslation.vein_mine": "Mine multiple blocks at once",
-  "modmenu.summaryTranslation.vein_mine": "Mine multiple blocks at once",
+  "modmenu.descriptionTranslation.vein_mine": "Mine connected blocks more efficiently",
+  "modmenu.summaryTranslation.vein_mine": "Mine connected blocks more efficiently",
 
   "key.category.vein_mine.bindings": "Vein Mine",
-  "key.vm.switch": "Activation Key",
+  "key.vm.switch": "Vein Mining Key",
 
   "vm.switch_state": "Vein Mining",
 
@@ -13,7 +13,9 @@
 
   "vm.config.screen.title": "Vein Mine Config",
   "vm.config.screen.main": "General",
+  "vm.config.screen.search_logic": "Search Logic",
   "vm.config.screen.highlights": "Highlights",
+  "vm.config.server_managed.tooltip": "This option is managed by the server",
 
   "vm.config.translation_note": "§7The translation may not be 100% accurate. \nIf you have any suggestions, please give us feedback.\nWant to help translate this mod? Contribute on GitHub or contact us!",
 
@@ -21,28 +23,30 @@
   "vm.config.search_radius.tooltip": "Range mode search radius\n1 means 8 blocks in all directions\nplus 9 blocks in each layer and the center block",
 
   "vm.config.bfs_limit": "Chain Limit",
-  "vm.config.bfs_limit.tooltip": "Max blocks in chain mode",
+  "vm.config.bfs_limit.tooltip": "Max blocks in chain search",
 
   "vm.config.ignored_blocks": "Chain Ignore List",
-  "vm.config.ignored_blocks.tooltip": "Blocks ignored in chain mode\nFormat: namespace:path",
+  "vm.config.ignored_blocks.tooltip": "Blocks ignored in chain search\nFormat: namespace:path",
 
-  "vm.config.use_bfs": "Chain Mode",
-  "vm.config.use_bfs.tooltip": "Enable or disable chain mode\nIf disabled, range mode will be used for all blocks",
+  "vm.config.use_bfs": "Chain Search",
+  "vm.config.use_bfs.tooltip": "Enable or disable chain search\nIf disabled, range search will be used for all blocks",
 
-  "vm.config.use_radius_search": "Range Mode",
-  "vm.config.use_radius_search.tooltip": "Enable or disable range mode\nIf disabled, range mode will not be used",
+  "vm.config.use_radius_search": "Range Search",
+  "vm.config.use_radius_search.tooltip": "Enable or disable range search\nIf disabled, range search will not be used",
 
   "vm.config.use_radius_search_when_reach_bfs_limit": "Switch to Range on Limit",
-  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "Switch to range mode when 'Chain Limit' is reached",
+  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "Switch to range search when 'Chain Limit' is reached",
 
-  "vm.config.distinguish_crop_maturity": "Separate Crop Maturity",
+  "vm.config.distinguish_crop_maturity": "Distinguish Crop Maturity",
   "vm.config.distinguish_crop_maturity.tooltip": "Only match crops with the same mature or immature state",
-  "vm.config.distinguish_dyed_block_colors": "Separate Dyed Colors",
+  "vm.config.distinguish_dyed_block_colors": "Distinguish Dyed Colors",
   "vm.config.distinguish_dyed_block_colors.tooltip": "Only match dyed blocks of the same color",
-  "vm.config.distinguish_deepslate_ores": "Separate Deepslate Ores",
-  "vm.config.distinguish_deepslate_ores.tooltip": "When disabled, normal and deepslate variants of the same ore form one vein",
+  "vm.config.distinguish_deepslate_ores": "Distinguish Deepslate Ores",
+  "vm.config.distinguish_deepslate_ores.tooltip": "Only match ores of the same variant (normal or deepslate)",
+  "vm.config.bridge_one_block_gap": "Bridge One-Block Gaps",
+  "vm.config.bridge_one_block_gap.tooltip": "Allow vein mining to bridge one-block gaps between matching blocks",
 
-  "vm.warn.breakthroughs": "Tool almost broken. Vein mining stopped.",
+  "vm.warn.breakthroughs": "Tool is about to break. Vein mining stopped.",
 
   "vm.config.screen.toolsandprotect": "Tools & Protection",
 
@@ -55,13 +59,13 @@
   "vm.config.protect_allValuable_tools": "Protect Valuable Tools",
   "vm.config.protect_allValuable_tools.tooltip": "Protect gold, diamond, and netherite tools by default",
 
-  "vm.config.durability_threshold": "Min Durability",
+  "vm.config.durability_threshold": "Durability Threshold",
   "vm.config.durability_threshold.tooltip": "Trigger protection below this durability",
 
   "vm.config.value.block": "%d Blocks",
   "vm.config.value.durability": "%d Dur.",
 
-  "vm.config.color_preview": "Color Preview",
+  "vm.config.color_preview": "Highlight Color",
 
   "vm.config.renderRed": "Red",
   "vm.config.renderGreen": "Green",
@@ -84,7 +88,7 @@
   "vm.config.useIntrusiveCode": "Enable Intrusive Code",
   "vm.config.useIntrusiveCode.tooltip": "Enabling this option will activate dedicated RenderType and RenderPipeline to render highlight outlines.\nIf it causes crashes or invisible highlights, please disable this option.\nChanging this setting requires restarting the game to take effect.\n\nWhen disabled, highlights will not be visible through blocks.",
 
-  "vm.config.enableHighlights": "Highlight Preview",
+  "vm.config.enableHighlights": "Enable Highlights",
   "vm.config.enableHighlights.tooltip": "Enable highlight rendering",
 
   "vm.config.save_and_exit": "Save & Close",
@@ -92,9 +96,8 @@
 
   "vm.config.open_keybindings": "Game Key Binds…",
   "vm.config.open_keybindings.tooltip": "Edit keys in the game settings",
-  "vm.config.saveTip": "All changes apply and save immediately except text fields",
 
-  "vm.config.screen.reset.tooltip": "Reset all configs to default and exit config screen",
+  "vm.config.screen.reset.tooltip": "Reset all configs to default",
 
   "vm.command.reload": "VeinMine config reloaded",
   "vm.command.reload_failed":"An error occurred when reloading config. See Console for details",
@@ -108,7 +111,7 @@
   "vm.config.keybinds.combination.tooltip": "Click and press keys to set a new binding",
   "vm.config.config_screen_keys": "Open Config Screen",
 
-  "vm.config.screen.add_entry": "Add entry",
+  "vm.config.screen.add_entry": "Add Entry",
   "vm.config.screen.add": "Add",
   "vm.config.screen.least_characters": "This entry must be at least %d characters."
 }
