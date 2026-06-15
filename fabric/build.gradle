@@ -20,10 +20,10 @@ dependencies {
 
 tasks.named('processResources', ProcessResources).configure {
     // In dev runs the library jar is on the classpath, but Minecraft does not discover its assets as a mod
-    // resource pack. Copy only EUI assets into our processed resources; the jar task excludes the same paths
-    // from the shaded dependency to avoid duplicate entries in production builds.
+    // resource pack. Copy only the EUI assets used by this mod; its icon is not displayed from the shaded jar.
     from(zipTree(rootProject.file(eui_location))) {
         include 'assets/enchanted_ui/**'
+        exclude 'assets/enchanted_ui/icon.png'
     }
 }
 
