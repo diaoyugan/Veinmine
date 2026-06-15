@@ -48,8 +48,7 @@ public class SmartVein {
     }
 
     public static List<BlockPos> findBlocks(Level world, BlockPos startPos, BlockState targetState) {
-        Identifier blockId = BuiltInRegistries.BLOCK.getKey(targetState.getBlock());
-        if (Utils.getConfig().ignoredBlocks.contains(blockId.toString()) || !Utils.getConfig().useBFS) {
+        if (isIgnoredTargetType(targetState.getBlock()) || !Utils.getConfig().useBFS) {
             return findBlocksInCube(world, startPos, targetState);
         }
         return findConnectedBlocks(world, startPos, targetState);
@@ -137,6 +136,41 @@ public class SmartVein {
 
         Optional<Identifier> targetFamily = dyedFamily(targetBlock);
         return targetFamily.isPresent() && targetFamily.equals(dyedFamily(candidateBlock));
+    }
+
+    private static boolean isIgnoredTargetType(Block targetBlock) {
+        Set<String> ignoredBlocks = Utils.getConfig().ignoredBlocks;
+        Identifier targetId = BuiltInRegistries.BLOCK.getKey(targetBlock);
+        if (ignoredBlocks.contains(targetId.toString())) return true;
+
+        if (!Utils.getConfig().distinguishDeepslateOres) {
+            Optional<Identifier> oreFamily = oreFamily(targetBlock);
+            if (oreFamily.isPresent()) {
+                Identifier normalOreId = oreFamily.get();
+                Identifier deepslateOreId = Identifier.fromNamespaceAndPath(
+                        normalOreId.getNamespace(),
+                        "deepslate_" + normalOreId.getPath()
+                );
+                if (ignoredBlocks.contains(normalOreId.toString())
+                        || ignoredBlocks.contains(deepslateOreId.toString())) {
+                    return true;
+                }
+            }
+        }
+
+        if (!Utils.getConfig().distinguishDyedBlockColors) {
+            Optional<Identifier> dyedFamily = dyedFamily(targetBlock);
+            if (dyedFamily.isPresent()) {
+                Identifier familyId = dyedFamily.get();
+                return DyeColor.VALUES.stream()
+                        .map(color -> Identifier.fromNamespaceAndPath(
+                                familyId.getNamespace(),
+                                color.getName() + "_" + familyId.getPath()
+                        ).toString())
+                        .anyMatch(ignoredBlocks::contains);
+            }
+        }
+        return false;
     }
 
     private static boolean isMatureCrop(BlockState state) {

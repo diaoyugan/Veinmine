@@ -74,10 +74,11 @@ public class Config {
                 save();
             }
         } catch (JsonSyntaxException e) {
-            Logger.throwLog(LoggerLevels.ERROR, "The configuration file is malformed, reset to the default configuration");
+            Logger.throwLog(LoggerLevels.ERROR, "The configuration file is malformed, reset to the default configuration",
+                    e.getMessage());
             reset();
         } catch (IOException e) {
-            Logger.throwLog(LoggerLevels.ERROR, "Failed to read the configuration file, using the default configuration");
+            Logger.throwLog(LoggerLevels.ERROR, "Failed to read the configuration file, using the default configuration",e);
             configItems = new ConfigItems();
         }
     }
