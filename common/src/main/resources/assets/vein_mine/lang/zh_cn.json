@@ -78,5 +78,6 @@
   "vm.config.config_screen_keys": "打开配置界面",
   "vm.config.screen.add_entry": "添加选项",
   "vm.config.screen.add": "添加",
-  "vm.config.screen.least_characters": "此项至少需要 %d 个字符"
+  "vm.config.screen.least_characters": "此项至少需要 %d 个字符",
+  "vm.config.screem.reset_message": "所有选项已被重置为默认值"
 }

@@ -113,5 +113,7 @@
 
   "vm.config.screen.add_entry": "Add Entry",
   "vm.config.screen.add": "Add",
-  "vm.config.screen.least_characters": "This entry must be at least %d characters."
+  "vm.config.screen.least_characters": "This entry must be at least %d characters.",
+
+  "vm.config.screem.reset_message": "All settings have been reset to their default values."
 }

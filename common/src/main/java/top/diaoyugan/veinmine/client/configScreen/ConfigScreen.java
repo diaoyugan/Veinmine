@@ -351,7 +351,9 @@ public class ConfigScreen extends UITabbedScreen {
 
     private void resetConfig() {
         Config.getInstance().reset();
-        minecraft.setScreenAndShow(new ConfigScreen(parent));
+        ConfigScreen resetScreen = new ConfigScreen(parent);
+        resetScreen.showToast(Component.translatable("vm.config.screem.reset_message"));
+        minecraft.setScreenAndShow(resetScreen);
     }
 
     @Override
