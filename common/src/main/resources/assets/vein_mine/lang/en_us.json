@@ -113,7 +113,14 @@
 
   "vm.config.screen.add_entry": "Add Entry",
   "vm.config.screen.add": "Add",
+  "vm.config.screen.duplicate_entry": "This entry already exists.",
+  "vm.config.screen.empty_list": "No entries configured.",
   "vm.config.screen.least_characters": "This entry must be at least %d characters.",
+
+  "vm.config.unsaved.title": "Discard unsaved changes?",
+  "vm.config.unsaved.message": "Your configuration changes have not been saved.",
+  "vm.config.unsaved.discard": "Discard",
+  "vm.config.unsaved.cancel": "Keep Editing",
 
   "vm.config.screem.reset_message": "All settings have been reset to their default values."
 }

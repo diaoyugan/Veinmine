@@ -80,6 +80,12 @@
   "vm.config.bridge_one_block_gap": "跨一個方塊繼續搜尋",
   "vm.config.bridge_one_block_gap.tooltip": "允許連鎖搜尋跳過一個非目標方塊，並繼續搜尋同方向上相隔一格的目標方塊",
   "vm.config.screen.add": "新增",
+  "vm.config.screen.duplicate_entry": "此項目已存在",
+  "vm.config.screen.empty_list": "尚未設定任何項目",
   "vm.config.screen.least_characters": "此項目至少需要 %d 個字元",
+  "vm.config.unsaved.title": "放棄尚未儲存的變更？",
+  "vm.config.unsaved.message": "目前的設定變更尚未儲存",
+  "vm.config.unsaved.discard": "放棄變更",
+  "vm.config.unsaved.cancel": "繼續編輯",
   "vm.config.screem.reset_message": "所有設定已重設為預設值"
 }

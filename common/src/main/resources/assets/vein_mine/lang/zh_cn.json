@@ -78,6 +78,12 @@
   "vm.config.config_screen_keys": "打开配置界面",
   "vm.config.screen.add_entry": "添加选项",
   "vm.config.screen.add": "添加",
+  "vm.config.screen.duplicate_entry": "此项已存在",
+  "vm.config.screen.empty_list": "尚未配置任何项目",
   "vm.config.screen.least_characters": "此项至少需要 %d 个字符",
+  "vm.config.unsaved.title": "放弃未保存的更改？",
+  "vm.config.unsaved.message": "当前配置更改尚未保存",
+  "vm.config.unsaved.discard": "放弃更改",
+  "vm.config.unsaved.cancel": "继续编辑",
   "vm.config.screem.reset_message": "所有选项已被重置为默认值"
 }

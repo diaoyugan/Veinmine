@@ -13,8 +13,10 @@ import top.diaoyugan.enchanted_ui.api.client.gui.EnchantedUI;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIBottomBar;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIForm;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIFormSpec;
+import top.diaoyugan.enchanted_ui.api.client.gui.UILocalization;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIScreenStyle;
 import top.diaoyugan.enchanted_ui.api.client.gui.UITabbedScreen;
+import top.diaoyugan.enchanted_ui.api.client.gui.UIUnsavedChangesPrompt;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIWidget;
 import top.diaoyugan.veinmine.client.inputs.KeyBinding;
 import top.diaoyugan.veinmine.config.Config;
@@ -28,6 +30,20 @@ import java.util.Set;
 
 public class ConfigScreen extends UITabbedScreen {
 
+    private static final UILocalization.ColorLabels COLOR_LABELS = new UILocalization.ColorLabels(
+            Component.translatable("vm.config.renderRed"),
+            Component.translatable("vm.config.renderGreen"),
+            Component.translatable("vm.config.renderBlue"),
+            Component.translatable("vm.config.renderAlpha"),
+            Component.translatable("vm.config.color_preview")
+    );
+    private static final UILocalization.KeyBindingMessages KEY_BINDING_MESSAGES =
+            new UILocalization.KeyBindingMessages(
+                    "vm.config.keybind.current",
+                    "vm.config.keybind.none",
+                    "vm.config.keybind.listening"
+            );
+
     private final Screen parent;
     private final ConfigItems items = Utils.getConfig();
     private final DraftConfig draft;
@@ -38,6 +54,12 @@ public class ConfigScreen extends UITabbedScreen {
         this.parent = parent;
         this.draft = DraftConfig.from(items);
         sidebarTitle(Component.translatable("vm.config.screen.title"));
+        unsavedChangesPrompt(UIUnsavedChangesPrompt.of(
+                Component.translatable("vm.config.unsaved.title"),
+                List.of(Component.translatable("vm.config.unsaved.message")),
+                Component.translatable("vm.config.unsaved.discard"),
+                Component.translatable("vm.config.unsaved.cancel")
+        ));
 
         tab(10, 30, 20,
                 Component.translatable("vm.config.screen.main"),
@@ -103,7 +125,9 @@ public class ConfigScreen extends UITabbedScreen {
                     value -> value.length() < entryMinChar ?
                             Component.translatable("vm.config.screen.least_characters", entryMinChar)
                             : null,
-                    false
+                    false,
+                    Component.translatable("vm.config.screen.duplicate_entry"),
+                    Component.translatable("vm.config.screen.empty_list")
             ).tooltip(Component.translatable("vm.config.ignored_blocks.tooltip")));
         };
     }
@@ -223,7 +247,9 @@ public class ConfigScreen extends UITabbedScreen {
                     value -> value.length() < entryMinChar ?
                             Component.translatable("vm.config.screen.least_characters", entryMinChar)
                             : null,
-                    false
+                    false,
+                    Component.translatable("vm.config.screen.duplicate_entry"),
+                    Component.translatable("vm.config.screen.empty_list")
             ).tooltip(Component.translatable("vm.config.protected_tools.tooltip")));
         };
     }
@@ -239,6 +265,7 @@ public class ConfigScreen extends UITabbedScreen {
 
             form.rgbaSlidersWithPreview(
                     Component.translatable("vm.config.color_preview"),
+                    COLOR_LABELS,
                     () -> draft.red,
                     value -> draft.red = value,
                     () -> draft.green,
@@ -261,7 +288,8 @@ public class ConfigScreen extends UITabbedScreen {
                     value -> draft.activationKey = value,
                     () -> draft.activationKey.getDisplayName(),
                     KeyBinding.ACTIVATION_KEY,
-                    false
+                    false,
+                    KEY_BINDING_MESSAGES
             ).tooltip(Component.translatable("vm.config.keybinds.tooltip"));
 
             form.combinationKeyBinding(
@@ -270,7 +298,8 @@ public class ConfigScreen extends UITabbedScreen {
                     value -> {
                         draft.configScreenKey.clear();
                         draft.configScreenKey.addAll(value);
-                    }
+                    },
+                    KEY_BINDING_MESSAGES
             ).tooltip(Component.translatable("vm.config.keybinds.combination.tooltip"));
 
             form.toggle(

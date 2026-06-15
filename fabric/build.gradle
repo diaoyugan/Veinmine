@@ -1,6 +1,7 @@
 plugins {
     id 'multiloader-loader'
     id 'net.fabricmc.fabric-loom'
+    id 'com.gradleup.shadow'
 }
 
 repositories {
@@ -10,26 +11,53 @@ repositories {
     }
 }
 
+configurations {
+    enchantedUiEmbed
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-    implementation files(rootProject.file(eui_location))
+    compileOnly files(rootProject.file(eui_location))
+    runtimeOnly files(rootProject.file(eui_location))
+    enchantedUiEmbed files(rootProject.file(eui_location))
 }
 
-tasks.named('processResources', ProcessResources).configure {
-    // In dev runs the library jar is on the classpath, but Minecraft does not discover its assets as a mod
-    // resource pack. Copy only the EUI assets used by this mod; its icon is not displayed from the shaded jar.
-    from(zipTree(rootProject.file(eui_location))) {
-        include 'assets/enchanted_ui/**'
-        exclude 'assets/enchanted_ui/icon.png'
-    }
+tasks.named('shadowJar').configure {
+    configurations = [project.configurations.enchantedUiEmbed]
+    archiveClassifier = ''
+    relocate(
+            'top.diaoyugan.enchanted_ui',
+            'top.diaoyugan.veinmine.internal.enchantedui'
+    )
 }
 
-jar {
-    from(zipTree(rootProject.file(eui_location))) {
-        exclude 'META-INF/MANIFEST.MF', 'LICENSE', 'assets/enchanted_ui/**'
+tasks.named('jar').configure {
+    archiveClassifier = 'plain'
+}
+
+tasks.named('assemble').configure {
+    dependsOn tasks.named('shadowJar')
+}
+
+tasks.register('verifyEmbeddedEui') {
+    dependsOn tasks.named('shadowJar')
+    doLast {
+        def entries = []
+        zipTree(tasks.named('shadowJar').get().archiveFile.get().asFile).visit {
+            if (!it.directory) entries.add(it.relativePath.pathString)
+        }
+        if (!entries.any { it.startsWith('top/diaoyugan/veinmine/internal/enchantedui/') }) {
+            throw new GradleException('Relocated EnchantedUI classes are missing from the Fabric jar')
+        }
+        if (entries.any { it.startsWith('top/diaoyugan/enchanted_ui/') }) {
+            throw new GradleException('Unrelocated EnchantedUI classes leaked into the Fabric jar')
+        }
+        if (entries.any { it.startsWith('assets/enchanted_ui/') }) {
+            throw new GradleException('Standalone EnchantedUI assets leaked into the Fabric jar')
+        }
     }
 }
 
@@ -55,4 +83,8 @@ loom {
             runDir('runs/server')
         }
     }
+}
+
+tasks.named('check').configure {
+    dependsOn tasks.named('verifyEmbeddedEui')
 }
