@@ -62,13 +62,9 @@ NeoForge：
 
 ### 手动配置
 
-* 编辑：
+* 编辑：` .minecraft/config/veinmine.json `
 
-` .minecraft/config/veinmine.json `
-
-* 对于专用服务端，配置文件位于：
-
-`<服务端目录>/config/veinmine.json`
+* 对于专用服务端，配置文件位于：`<服务端目录>/config/veinmine.json`
 
 * 使用 `/veinmine reload` 命令重新加载配置文件。
 
