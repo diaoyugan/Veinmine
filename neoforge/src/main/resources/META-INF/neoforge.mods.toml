@@ -10,7 +10,7 @@ logoFile = "assets/${mod_id}/icon.png"
 
 authors = "钓鱼竿呀(diaoyugan), momo(HarukaB, aka AYARI on modrinth)"
 
-description = "Allow you to mine multiple blocks at the same time"
+description = "Mine connected blocks more efficiently"
 
 # ===== 联系信息（fabric 的 contact 对应）=====
 displayURL = "https://modrinth.com/mod/veinmine"

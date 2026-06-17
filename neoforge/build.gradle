@@ -4,6 +4,20 @@ plugins {
     id 'com.gradleup.shadow'
 }
 
+def unpackEuiForDev = tasks.register('unpackEuiForDev', Copy) {
+    from zipTree(rootProject.file(eui_location))
+    include 'top/diaoyugan/enchanted_ui/**'
+    into layout.buildDirectory.dir('devRuntime/enchantedUi')
+}
+
+sourceSets {
+    euiDev {
+        java.srcDirs = []
+        resources.srcDirs = []
+        output.dir(unpackEuiForDev.map { it.destinationDir }, builtBy: unpackEuiForDev)
+    }
+}
+
 neoForge {
     version = neoforge_version
     // Automatically enable neoforge AccessTransformers if the file exists
@@ -29,6 +43,7 @@ neoForge {
     mods {
         "${mod_id}" {
             sourceSet sourceSets.main
+            sourceSet sourceSets.euiDev
         }
     }
 }
@@ -41,7 +56,6 @@ configurations {
 
 dependencies {
     compileOnly files(rootProject.file(eui_location))
-    runtimeOnly files(rootProject.file(eui_location))
     enchantedUiEmbed files(rootProject.file(eui_location))
 }
 
