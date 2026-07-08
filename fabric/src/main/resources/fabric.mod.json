@@ -19,13 +19,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "top.diaoyugan.veinmine.Veinmine"
+      "top.diaoyugan.veinmine.fabric.Veinmine"
     ],
     "client": [
-      "top.diaoyugan.veinmine.client.VeinmineClient"
+      "top.diaoyugan.veinmine.fabric.client.VeinmineClient"
     ],
     "modmenu": [
-      "top.diaoyugan.veinmine.client.configScreen.ModMenuIntegration"
+      "top.diaoyugan.veinmine.fabric.client.configScreen.ModMenuIntegration"
     ]
   },
   "mixins": [
