@@ -9,13 +9,13 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import top.diaoyugan.enchanted_ui.api.client.gui.EnchantedUI;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIBottomBar;
+import top.diaoyugan.enchanted_ui.api.client.gui.UIConfigScreenPreset;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIForm;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIFormSpec;
 import top.diaoyugan.enchanted_ui.api.client.gui.UILocalization;
+import top.diaoyugan.enchanted_ui.api.client.gui.UISidebarConfigScreen;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIScreenStyle;
-import top.diaoyugan.enchanted_ui.api.client.gui.UITabbedScreen;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIUnsavedChangesPrompt;
 import top.diaoyugan.enchanted_ui.api.client.gui.UIWidget;
 import top.diaoyugan.veinmine.client.inputs.KeyBinding;
@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ConfigScreen extends UITabbedScreen {
+public class ConfigScreen extends UISidebarConfigScreen {
 
     private static final UILocalization.ColorLabels COLOR_LABELS = new UILocalization.ColorLabels(
             Component.translatable("vm.config.renderRed"),
@@ -50,44 +50,51 @@ public class ConfigScreen extends UITabbedScreen {
     private final int entryMinChar = 3;
 
     public ConfigScreen(Screen parent) {
-        super(parent, Component.translatable("vm.config.screen.title"));
+        super(
+                parent,
+                Component.translatable("vm.config.screen.title"),
+                Component.translatable("vm.config.screen.title")
+        );
         this.parent = parent;
         this.draft = DraftConfig.from(items);
-        sidebarTitle(Component.translatable("vm.config.screen.title"));
-        unsavedChangesPrompt(UIUnsavedChangesPrompt.of(
+    }
+
+    @Override
+    protected void buildConfig(UIConfigScreenPreset.Builder builder) {
+        builder.unsavedChangesPrompt(UIUnsavedChangesPrompt.of(
                 Component.translatable("vm.config.unsaved.title"),
                 List.of(Component.translatable("vm.config.unsaved.message")),
                 Component.translatable("vm.config.unsaved.discard"),
                 Component.translatable("vm.config.unsaved.cancel")
         ));
 
-        tab(10, 30, 20,
+        builder.formPage(
                 Component.translatable("vm.config.screen.main"),
-                EnchantedUI.formPage(200, mainPage()));
-        tab(10, 54, 20,
+                mainPage());
+        builder.formPage(
                 Component.translatable("vm.config.screen.search_logic"),
-                EnchantedUI.formPage(200, searchLogicPage()));
-        tab(10, 78, 20,
+                searchLogicPage());
+        builder.formPage(
                 Component.translatable("vm.config.screen.toolsandprotect"),
-                EnchantedUI.formPage(200, toolsAndProtectPage()));
-        tab(10, 102, 20,
+                toolsAndProtectPage());
+        builder.formPage(
                 Component.translatable("vm.config.screen.highlights"),
-                EnchantedUI.formPage(200, highlightsPage()));
-        tab(10, 126, 20,
+                highlightsPage());
+        builder.formPage(
                 Component.translatable("vm.config.screen.keysAndBinding"),
-                EnchantedUI.formPage(200, keysAndBindingsPage()));
-        tab(10, 150, 20,
+                keysAndBindingsPage());
+        builder.formPage(
                 Component.translatable("vm.config.screen.final_resort"),
                 Style.EMPTY.withColor(ChatFormatting.RED),
-                EnchantedUI.formPage(200, advancedPage()));
+                advancedPage());
 
-        style(UIScreenStyle.builder()
+        builder.style(UIScreenStyle.builder()
                 .bottomBarBlur(true)
                 .bottomBarBackgroundColor(0x55101010)
                 .bottomBarSeparatorColor(0x44FFFFFF)
                 .build());
 
-        bottomBar(UIBottomBar.saveAndCloseWithExtra(
+        builder.bottomBar(UIBottomBar.saveAndCloseWithExtra(
                 Component.translatable("vm.config.close"),
                 Component.translatable("vm.config.save_and_exit"),
                 this::saveDraft,
@@ -113,7 +120,6 @@ public class ConfigScreen extends UITabbedScreen {
             form.title(Component.translatable("vm.config.ignored_blocks"));
             serverOption(form.editableDropdownList(
                     Component.translatable("vm.config.ignored_blocks"),
-                    200,
                     () -> draft.ignoredBlocks,
                     entries -> {
                         draft.ignoredBlocks.clear();
@@ -235,7 +241,6 @@ public class ConfigScreen extends UITabbedScreen {
             form.title(Component.translatable("vm.config.protected_tools"));
             serverOption(form.editableDropdownList(
                     Component.translatable("vm.config.protected_tools"),
-                    200,
                     () -> draft.protectedTools,
                     entries -> {
                         draft.protectedTools.clear();
