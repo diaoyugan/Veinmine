@@ -1,13 +1,10 @@
 package top.diaoyugan.veinmine.client.inputs;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
+import top.diaoyugan.enchanted_ui.api.client.input.CombinationKeyBinding;
 import top.diaoyugan.veinmine.client.configScreen.ConfigScreen;
 import top.diaoyugan.veinmine.utils.Utils;
-
-import java.util.Set;
 
 public final class KeyHandler {
 
@@ -16,18 +13,7 @@ public final class KeyHandler {
     private KeyHandler() {}
 
     public static void clientTick(Minecraft minecraft) {
-        Window window = minecraft.getWindow();
-
-        Set<Integer> keys = Utils.getConfig().configScreenKey;
-
-        boolean pressed = true;
-
-        for (int key : keys) {
-            if (!InputConstants.isKeyDown(window, key)) {
-                pressed = false;
-                break;
-            }
-        }
+        boolean pressed = CombinationKeyBinding.deserialize(Utils.getConfig().configScreenKey).isDown();
 
         if (pressed &&
                 !wasPressed &&
