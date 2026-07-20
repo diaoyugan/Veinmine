@@ -289,13 +289,10 @@ public class ConfigScreen extends UISidebarConfigScreen {
                     Component.translatable("key.vm.switch"),
                     () -> draft.activationKey,
                     value -> draft.activationKey = value,
-                    () -> draft.activationKey.getDisplayName(),
-                    KeyBinding.ACTIVATION_KEY,
-                    false,
                     KEY_BINDING_MESSAGES
             ).tooltip(Component.translatable("vm.config.keybinds.tooltip"));
 
-            form.serializedCombinationKeyBinding(
+            form.keyCombination(
                     Component.translatable("vm.config.config_screen_keys"),
                     () -> draft.configScreenKey,
                     value -> {

@@ -28,6 +28,7 @@ dependencies {
 tasks.named('shadowJar').configure {
     configurations = [project.configurations.enchantedUiEmbed]
     archiveClassifier = ''
+    exclude 'LICENSE'
     relocate(
             'top.diaoyugan.enchanted_ui',
             'top.diaoyugan.veinmine.internal.enchantedui'
@@ -38,16 +39,31 @@ tasks.named('jar').configure {
     archiveClassifier = 'plain'
 }
 
+tasks.named('processResources').configure {
+    from(rootProject.file('LICENSE')) {
+        rename 'LICENSE', "LICENSE_${mod_id}"
+    }
+    from(zipTree(rootProject.file(eui_location))) {
+        include 'LICENSE'
+        rename 'LICENSE', 'LICENSE_enchanted_ui'
+    }
+}
+
 tasks.named('assemble').configure {
     dependsOn tasks.named('shadowJar')
 }
 
+def veinmineLicenseEntry = "LICENSE_${project.property('mod_id')}".toString()
+
 tasks.register('verifyEmbeddedEui') {
     dependsOn tasks.named('shadowJar')
+    inputs.file(tasks.named('shadowJar').flatMap { it.archiveFile })
     doLast {
-        def entries = []
-        zipTree(tasks.named('shadowJar').get().archiveFile.get().asFile).visit {
-            if (!it.directory) entries.add(it.relativePath.pathString)
+        def entries = new HashSet<String>()
+        new java.util.zip.ZipFile(tasks.named('shadowJar').get().archiveFile.get().asFile).withCloseable { archive ->
+            archive.entries().each { entry ->
+                if (!entry.directory) entries.add(entry.name)
+            }
         }
         if (!entries.any { it.startsWith('top/diaoyugan/veinmine/internal/enchantedui/') }) {
             throw new GradleException('Relocated EnchantedUI classes are missing from the Fabric jar')
@@ -57,6 +73,15 @@ tasks.register('verifyEmbeddedEui') {
         }
         if (entries.any { it.startsWith('assets/enchanted_ui/') }) {
             throw new GradleException('Standalone EnchantedUI assets leaked into the Fabric jar')
+        }
+        if (!entries.contains(veinmineLicenseEntry)) {
+            throw new GradleException("Veinmine license ${veinmineLicenseEntry} is missing from the Fabric jar; found ${entries.findAll { it.startsWith('LICENSE') }}")
+        }
+        if (!entries.contains('LICENSE_enchanted_ui')) {
+            throw new GradleException('EnchantedUI license is missing from the Fabric jar')
+        }
+        if (entries.contains('LICENSE')) {
+            throw new GradleException('Unqualified duplicate LICENSE is present in the Fabric jar')
         }
     }
 }
