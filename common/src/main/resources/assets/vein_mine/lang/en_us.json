@@ -3,6 +3,10 @@
   "modmenu.descriptionTranslation.vein_mine": "Mine connected blocks more efficiently",
   "modmenu.summaryTranslation.vein_mine": "Mine connected blocks more efficiently",
 
+  "modmenu.nameTranslation.veinmine_bundled_enchanted_ui": "Enchanted UI",
+  "modmenu.descriptionTranslation.veinmine_bundled_enchanted_ui": "The relocated Enchanted UI framework bundled internally with Vein Mine.",
+  "modmenu.summaryTranslation.veinmine_bundled_enchanted_ui": "A relocated EUI for Vein Mine.",
+
   "key.category.vein_mine.bindings": "Vein Mine",
   "key.vm.switch": "Vein Mining Key",
 

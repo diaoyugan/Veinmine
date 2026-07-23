@@ -4,7 +4,7 @@ plugins {
     id 'com.gradleup.shadow'
 }
 
-def unpackEuiForDev = tasks.register('unpackEuiForDev', Copy) {
+def unpackEuiForDev = tasks.register('unpackEuiForDev', Sync) {
     from zipTree(rootProject.file(eui_location))
     include 'top/diaoyugan/enchanted_ui/**'
     into layout.buildDirectory.dir('devRuntime/enchantedUi')
@@ -29,6 +29,7 @@ neoForge {
         configureEach {
             systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
             ideName = "NeoForge ${it.name.capitalize()} (${project.path})"
+            taskBefore unpackEuiForDev
         }
 
         client {
@@ -46,6 +47,8 @@ neoForge {
             sourceSet sourceSets.euiDev
         }
     }
+
+    ideSyncTask unpackEuiForDev
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -57,6 +60,10 @@ configurations {
 dependencies {
     compileOnly files(rootProject.file(eui_location))
     enchantedUiEmbed files(rootProject.file(eui_location))
+}
+
+tasks.named('compileJava').configure {
+    dependsOn unpackEuiForDev
 }
 
 tasks.named('jar').configure {
