@@ -24,9 +24,7 @@ import top.diaoyugan.veinmine.config.ConfigItems;
 import top.diaoyugan.veinmine.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ConfigScreen extends UISidebarConfigScreen {
 
@@ -291,13 +289,10 @@ public class ConfigScreen extends UISidebarConfigScreen {
                     Component.translatable("key.vm.switch"),
                     () -> draft.activationKey,
                     value -> draft.activationKey = value,
-                    () -> draft.activationKey.getDisplayName(),
-                    KeyBinding.ACTIVATION_KEY,
-                    false,
                     KEY_BINDING_MESSAGES
             ).tooltip(Component.translatable("vm.config.keybinds.tooltip"));
 
-            form.combinationKeyBinding(
+            form.keyCombination(
                     Component.translatable("vm.config.config_screen_keys"),
                     () -> draft.configScreenKey,
                     value -> {
@@ -417,7 +412,7 @@ public class ConfigScreen extends UISidebarConfigScreen {
         private int alpha;
         private boolean useHoldInsteadOfToggle;
         private InputConstants.Key activationKey;
-        private final Set<Integer> configScreenKey = new HashSet<>();
+        private final List<String> configScreenKey = new ArrayList<>();
         private List<String> ignoredBlocks;
         private List<String> protectedTools;
 

@@ -46,11 +46,14 @@ repositories {
 
 sourcesJar {
     from(rootProject.file('LICENSE')) {
+        rename { "LICENSE_${mod_id}" }
     }
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from(rootProject.file('LICENSE')) {
+        rename { "LICENSE_${mod_id}" }
     }
 
     manifest {

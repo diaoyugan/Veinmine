@@ -26,7 +26,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+    //implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
     compileOnly files(rootProject.file(eui_location))
     runtimeOnly files(rootProject.file(eui_location))
     enchantedUiEmbed files(rootProject.file(eui_location))
@@ -64,6 +64,7 @@ tasks.named('processResources').configure {
 tasks.named('shadowJar').configure {
     configurations = [project.configurations.enchantedUiEmbed]
     archiveClassifier = ''
+    exclude 'LICENSE'
     relocate(
             'top.diaoyugan.enchanted_ui',
             'top.diaoyugan.veinmine.internal.enchantedui'
@@ -74,12 +75,25 @@ tasks.named('jar').configure {
     archiveClassifier = 'plain'
 }
 
+tasks.named('processResources').configure {
+    from(rootProject.file('LICENSE')) {
+        rename 'LICENSE', "LICENSE_${mod_id}"
+    }
+    from(zipTree(rootProject.file(eui_location))) {
+        include 'LICENSE'
+        rename 'LICENSE', 'LICENSE_enchanted_ui'
+    }
+}
+
 tasks.named('assemble').configure {
     dependsOn tasks.named('shadowJar')
 }
 
+def veinmineLicenseEntry = "LICENSE_${project.property('mod_id')}".toString()
+
 tasks.register('verifyEmbeddedEui') {
     dependsOn tasks.named('shadowJar')
+    inputs.file(tasks.named('shadowJar').flatMap { it.archiveFile })
     doLast {
         def listZipEntries = { File archive ->
             def names = []

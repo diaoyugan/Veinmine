@@ -66,8 +66,12 @@ public class Config {
         try (Reader reader = Files.newBufferedReader(configFilePath)) {
             ConfigItems loadedConfig = jsonProcessor.fromJson(reader, ConfigItems.class);
             if (loadedConfig != null) {
+                boolean migrated = ConfigMigration.migrate(loadedConfig);
                 configItems = loadedConfig;
                 IntrusiveConfig.load(configItems);
+                if (migrated) {
+                    save();
+                }
             } else {
                 // Handle null case
                 configItems = new ConfigItems();
