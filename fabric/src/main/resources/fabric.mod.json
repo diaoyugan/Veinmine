@@ -28,6 +28,11 @@
       "top.diaoyugan.veinmine.client.configScreen.ModMenuIntegration"
     ]
   },
+  "jars": [
+    {
+      "file": "META-INF/jars/veinmine-bundled-enchanted-ui.jar"
+    }
+  ],
   "mixins": [
     "${mod_id}.mixins.json",
     "${mod_id}.fabric.mixins.json"

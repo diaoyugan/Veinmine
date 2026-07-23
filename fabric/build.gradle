@@ -15,6 +15,13 @@ configurations {
     enchantedUiEmbed
 }
 
+sourceSets {
+    bundledEnchantedUi
+}
+
+def bundledEnchantedUiModId = 'veinmine_bundled_enchanted_ui'
+def bundledEnchantedUiJarName = 'veinmine-bundled-enchanted-ui.jar'
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
@@ -23,6 +30,35 @@ dependencies {
     compileOnly files(rootProject.file(eui_location))
     runtimeOnly files(rootProject.file(eui_location))
     enchantedUiEmbed files(rootProject.file(eui_location))
+    runtimeOnly sourceSets.bundledEnchantedUi.output
+}
+
+tasks.named(sourceSets.bundledEnchantedUi.processResourcesTaskName).configure {
+    filesMatching('fabric.mod.json') {
+        expand(
+                eui_version: project.eui_version,
+                mod_id: project.mod_id
+        )
+    }
+    from('src/main/resources/eui_icon.png') {
+        into 'assets/vein_mine'
+    }
+}
+
+def bundledEnchantedUiMetadataJar = tasks.register('bundledEnchantedUiMetadataJar', Jar) {
+    group = 'build'
+    description = 'Builds the metadata-only nested mod used to show bundled Enchanted UI in Mod Menu.'
+    archiveFileName = bundledEnchantedUiJarName
+    destinationDirectory = layout.buildDirectory.dir('generated/bundledEnchantedUi')
+    from(sourceSets.bundledEnchantedUi.output)
+}
+
+tasks.named('processResources').configure {
+    dependsOn bundledEnchantedUiMetadataJar
+    exclude 'eui_icon.png'
+    from(bundledEnchantedUiMetadataJar.flatMap { it.archiveFile }) {
+        into 'META-INF/jars'
+    }
 }
 
 tasks.named('shadowJar').configure {
@@ -59,12 +95,29 @@ tasks.register('verifyEmbeddedEui') {
     dependsOn tasks.named('shadowJar')
     inputs.file(tasks.named('shadowJar').flatMap { it.archiveFile })
     doLast {
-        def entries = new HashSet<String>()
-        new java.util.zip.ZipFile(tasks.named('shadowJar').get().archiveFile.get().asFile).withCloseable { archive ->
-            archive.entries().each { entry ->
-                if (!entry.directory) entries.add(entry.name)
+        def listZipEntries = { File archive ->
+            def names = []
+            new java.util.zip.ZipFile(archive).withCloseable { zip ->
+                zip.entries().each { entry ->
+                    if (!entry.directory) names.add(entry.name)
+                }
+            }
+            names
+        }
+        def readZipEntry = { File archive, String path ->
+            new java.util.zip.ZipFile(archive).withCloseable { zip ->
+                def entry = zip.getEntry(path)
+                if (entry == null) {
+                    throw new GradleException("Missing ${path} in ${archive.name}")
+                }
+                zip.getInputStream(entry).withCloseable { input ->
+                    input.getText('UTF-8')
+                }
             }
         }
+
+        def shadowJarFile = tasks.named('shadowJar').get().archiveFile.get().asFile
+        def entries = listZipEntries(shadowJarFile)
         if (!entries.any { it.startsWith('top/diaoyugan/veinmine/internal/enchantedui/') }) {
             throw new GradleException('Relocated EnchantedUI classes are missing from the Fabric jar')
         }
@@ -74,14 +127,75 @@ tasks.register('verifyEmbeddedEui') {
         if (entries.any { it.startsWith('assets/enchanted_ui/') }) {
             throw new GradleException('Standalone EnchantedUI assets leaked into the Fabric jar')
         }
-        if (!entries.contains(veinmineLicenseEntry)) {
-            throw new GradleException("Veinmine license ${veinmineLicenseEntry} is missing from the Fabric jar; found ${entries.findAll { it.startsWith('LICENSE') }}")
+
+        def nestedJarPath = "META-INF/jars/${bundledEnchantedUiJarName}".toString()
+        if (!entries.contains(nestedJarPath)) {
+            throw new GradleException("Bundled Enchanted UI metadata jar is missing at ${nestedJarPath}")
         }
-        if (!entries.contains('LICENSE_enchanted_ui')) {
-            throw new GradleException('EnchantedUI license is missing from the Fabric jar')
+
+        def mainMetadata = new groovy.json.JsonSlurper().parseText(
+                readZipEntry(shadowJarFile, 'fabric.mod.json')
+        )
+        if (mainMetadata.jars != [[file: nestedJarPath]]) {
+            throw new GradleException('Fabric metadata does not declare the bundled Enchanted UI metadata jar')
         }
-        if (entries.contains('LICENSE')) {
-            throw new GradleException('Unqualified duplicate LICENSE is present in the Fabric jar')
+
+        def nestedJarFile = bundledEnchantedUiMetadataJar.get().archiveFile.get().asFile
+        def developmentNestedJarFile = layout.buildDirectory
+                .file("resources/main/${nestedJarPath}")
+                .get()
+                .asFile
+        if (!developmentNestedJarFile.isFile()) {
+            throw new GradleException(
+                    "Bundled Enchanted UI metadata jar is missing from IDE resources at ${nestedJarPath}"
+            )
+        }
+        if (java.nio.file.Files.mismatch(nestedJarFile.toPath(), developmentNestedJarFile.toPath()) != -1) {
+            throw new GradleException('IDE resources contain a different bundled Enchanted UI metadata jar')
+        }
+
+        def nestedEntries = listZipEntries(nestedJarFile)
+        def nestedMetadata = new groovy.json.JsonSlurper().parseText(
+                readZipEntry(nestedJarFile, 'fabric.mod.json')
+        )
+        def developmentResourcesDir = layout.buildDirectory
+                .dir('resources/bundledEnchantedUi')
+                .get()
+                .asFile
+        def developmentMetadataFile = new File(developmentResourcesDir, 'fabric.mod.json')
+        if (!developmentMetadataFile.isFile()) {
+            throw new GradleException('Bundled Enchanted UI metadata is missing from the IDE source set')
+        }
+        if (!sourceSets.main.runtimeClasspath.files.contains(developmentResourcesDir)) {
+            throw new GradleException('Bundled Enchanted UI IDE source set is missing from runtimeClasspath')
+        }
+        def developmentMetadata = new groovy.json.JsonSlurper().parse(developmentMetadataFile)
+        if (developmentMetadata != nestedMetadata) {
+            throw new GradleException('IDE and nested JAR use different bundled Enchanted UI metadata')
+        }
+
+        def nestedIconPath = nestedMetadata.icon
+        def allowedNestedEntries = [
+                'META-INF/MANIFEST.MF',
+                'fabric.mod.json',
+                nestedIconPath
+        ] as Set
+        if (nestedEntries.toSet() != allowedNestedEntries) {
+            throw new GradleException(
+                    "Bundled Enchanted UI metadata jar contains unexpected files: ${nestedEntries}"
+            )
+        }
+        if (nestedMetadata.id != bundledEnchantedUiModId) {
+            throw new GradleException('Bundled Enchanted UI metadata uses the wrong mod id')
+        }
+        if (nestedMetadata.containsKey('entrypoints')) {
+            throw new GradleException('Bundled Enchanted UI metadata jar must not provide entrypoints')
+        }
+        if (nestedMetadata.custom?.modmenu?.parent != project.mod_id) {
+            throw new GradleException('Bundled Enchanted UI Mod Menu parent must point to Vein Mine')
+        }
+        if (!(nestedMetadata.custom?.modmenu?.badges ?: []).contains('library')) {
+            throw new GradleException('Bundled Enchanted UI Mod Menu metadata is missing the library badge')
         }
     }
 }
@@ -90,6 +204,14 @@ loom {
     def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
     if (aw.exists()) {
         accessWidenerPath.set(aw)
+    }
+    mods {
+        "vein_mine" {
+            sourceSet sourceSets.main
+        }
+        "veinmine_bundled_enchanted_ui" {
+            sourceSet sourceSets.bundledEnchantedUi
+        }
     }
 //    mixin {
 //        defaultRefmapName.set("${mod_id}.refmap.json")

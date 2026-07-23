@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "veinmine_bundled_enchanted_ui",
+  "version": "${eui_version}",
+  "name": "Enchanted UI",
+  "description": "The relocated Enchanted UI framework bundled internally with Vein Mine.",
+  "authors": [
+    "钓鱼竿呀(diaoyugan)",
+    "momo(HarukaB,aka AYARI on modrinth)"
+  ],
+  "contact": {
+    "sources": "https://github.com/diaoyugan/EnchantedUI",
+    "issues": "https://github.com/diaoyugan/EnchantedUI/issues",
+    "email": "diaoyugan666@qq.com"
+  },
+  "license": "MPL-2.0",
+  "icon": "assets/${mod_id}/eui_icon.png",
+  "environment": "client",
+  "custom": {
+    "modmenu": {
+      "parent": "${mod_id}",
+      "badges": [
+        "library"
+      ],
+      "update_checker": false
+    }
+  }
+}
