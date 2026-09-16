@@ -1,10 +1,8 @@
 package top.diaoyugan.veinmine.client.render;
 
 import net.minecraft.client.renderer.rendertype.LayeringTransform;
-import net.minecraft.client.renderer.rendertype.OutputTarget;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import top.diaoyugan.veinmine.mixin.RenderTypeInvoker;
 
 import java.util.Objects;
@@ -21,7 +19,6 @@ public final class CustomRenderTypes {
 
         RenderSetup setup = RenderSetup.builder(Objects.requireNonNull(CustomRenderPipeline.LINES_NO_DEPTH))
                 .setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
-                .setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)
                 .createRenderSetup();
 
         LINES_NO_DEPTH = RenderTypeInvoker.callCreate("lines_no_depth", setup);

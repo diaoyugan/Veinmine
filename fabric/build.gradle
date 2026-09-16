@@ -34,11 +34,13 @@ dependencies {
 }
 
 tasks.named(sourceSets.bundledEnchantedUi.processResourcesTaskName).configure {
+    def expandProps = [
+            eui_version: project.eui_version,
+            mod_id: project.mod_id
+    ]
+    inputs.properties(expandProps)
     filesMatching('fabric.mod.json') {
-        expand(
-                eui_version: project.eui_version,
-                mod_id: project.mod_id
-        )
+        expand expandProps
     }
     from('src/main/resources/eui_icon.png') {
         into 'assets/vein_mine'
@@ -64,6 +66,7 @@ tasks.named('processResources').configure {
 tasks.named('shadowJar').configure {
     configurations = [project.configurations.enchantedUiEmbed]
     archiveClassifier = ''
+    exclude 'LICENSE'
     relocate(
             'top.diaoyugan.enchanted_ui',
             'top.diaoyugan.veinmine.internal.enchantedui'
@@ -74,12 +77,25 @@ tasks.named('jar').configure {
     archiveClassifier = 'plain'
 }
 
+tasks.named('processResources').configure {
+    from(rootProject.file('LICENSE')) {
+        rename 'LICENSE', "LICENSE_${mod_id}"
+    }
+    from(zipTree(rootProject.file(eui_location))) {
+        include 'LICENSE'
+        rename 'LICENSE', 'LICENSE_enchanted_ui'
+    }
+}
+
 tasks.named('assemble').configure {
     dependsOn tasks.named('shadowJar')
 }
 
+def veinmineLicenseEntry = "LICENSE_${project.property('mod_id')}".toString()
+
 tasks.register('verifyEmbeddedEui') {
     dependsOn tasks.named('shadowJar')
+    inputs.file(tasks.named('shadowJar').flatMap { it.archiveFile })
     doLast {
         def listZipEntries = { File archive ->
             def names = []
@@ -173,6 +189,9 @@ tasks.register('verifyEmbeddedEui') {
         }
         if (nestedMetadata.id != bundledEnchantedUiModId) {
             throw new GradleException('Bundled Enchanted UI metadata uses the wrong mod id')
+        }
+        if (nestedMetadata.version != project.eui_version) {
+            throw new GradleException('Bundled Enchanted UI metadata version does not match eui_version')
         }
         if (nestedMetadata.containsKey('entrypoints')) {
             throw new GradleException('Bundled Enchanted UI metadata jar must not provide entrypoints')

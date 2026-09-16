@@ -1,8 +1,8 @@
 package top.diaoyugan.veinmine.client.inputs;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
 import top.diaoyugan.veinmine.Constants;
 
 public class KeyBinding {
@@ -17,6 +17,6 @@ public class KeyBinding {
 
     /** 默认键 */
     public static int defaultActivationKey() {
-        return GLFW.GLFW_KEY_GRAVE_ACCENT;
+        return InputConstants.KEY_GRAVE;
     }
 }

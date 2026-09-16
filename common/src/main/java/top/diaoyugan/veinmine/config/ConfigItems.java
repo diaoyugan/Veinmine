@@ -1,13 +1,11 @@
 package top.diaoyugan.veinmine.config;
 
-
-import com.mojang.blaze3d.platform.InputConstants;
-
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ConfigItems { // Default configuration
-    private final int version = 1; // Config file version, modify after config format change, not used now
+    public int version = 2; // Config file version, modify after config format change
 
     public boolean useIntrusiveCode = true;
     public int searchRadius = 1;
@@ -32,8 +30,5 @@ public class ConfigItems { // Default configuration
     public int alpha = 255;
     public boolean useHoldInsteadOfToggle = false;
 
-    public Set<Integer> configScreenKey = new HashSet<>(
-            Set.of(InputConstants.KEY_V, InputConstants.KEY_M)
-    );
-
+    public List<String> configScreenKey = List.of("key.keyboard.v", "key.keyboard.m");
 }
