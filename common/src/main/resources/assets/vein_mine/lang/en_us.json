@@ -7,6 +7,8 @@
   "modmenu.descriptionTranslation.veinmine_bundled_enchanted_ui": "The relocated Enchanted UI framework bundled internally with Vein Mine.",
   "modmenu.summaryTranslation.veinmine_bundled_enchanted_ui": "A relocated EUI for Vein Mine.",
 
+  "neoforge.screen.mods.info.description.vein_mine": "Mine connected blocks more efficiently",
+
   "key.category.vein_mine.bindings": "Vein Mine",
   "key.vm.switch": "Vein Mining Key",
 
