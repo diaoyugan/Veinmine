@@ -7,7 +7,7 @@ import top.diaoyugan.veinmine.utils.Utils;
 
 import java.util.UUID;
 
-public class PlayerDisconnect {
+public class FabricPlayerDisconnect {
     public static void register(){
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
         ServerPlayer player = handler.player;

@@ -9,7 +9,7 @@ import top.diaoyugan.veinmine.client.keybinding.FabricKeyBinding;
 import top.diaoyugan.veinmine.client.render.FabricOutlineRenderHook;
 import top.diaoyugan.veinmine.networking.keypacket.KeyResponsePacket;
 
-public class VeinmineClient implements ClientModInitializer {
+public class FabricVeinmineClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {

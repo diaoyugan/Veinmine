@@ -30,9 +30,15 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
+      - name: Build Universal JAR
+        run: ./gradlew :universal:buildUniversal --no-daemon
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with: 
           name: veinmine-all.zip
-          path: build/libs/*.jar
+          path: |
+            fabric/build/libs/*fabric*.jar
+            neoforge/build/libs/*neoforge*.jar
+            universal/build/libs/*-universal.jar
 

@@ -1,0 +1,114 @@
+// Minecraft 26.3 uses the same unobfuscated names on both loaders.
+// Merge the finished shaded artifacts so Enchanted UI relocation is preserved.
+evaluationDependsOn(':fabric')
+evaluationDependsOn(':neoforge')
+
+def loaderJars = [project(':fabric'), project(':neoforge')].collect {
+    it.tasks.named('shadowJar').flatMap { task -> task.archiveFile }
+}
+def mergedDirectory = layout.buildDirectory.dir('generated/universal')
+
+def mergeUniversalContents = tasks.register('mergeUniversalContents') {
+    dependsOn ':fabric:shadowJar', ':neoforge:shadowJar'
+    inputs.files(loaderJars)
+    outputs.dir(mergedDirectory)
+    doLast {
+        def destination = mergedDirectory.get().asFile
+        delete destination
+        destination.mkdirs()
+        def owners = [:]
+        loaderJars.each { jarProvider ->
+            def jarFile = jarProvider.get().asFile
+            new java.util.zip.ZipFile(jarFile).withCloseable { archive ->
+                archive.entries().each { entry ->
+                    if (entry.directory || entry.name == 'META-INF/MANIFEST.MF') return
+                    def output = new File(destination, entry.name)
+                    if (!output.toPath().normalize().startsWith(destination.toPath().normalize())) {
+                        throw new GradleException("Invalid archive path: ${entry.name}")
+                    }
+                    byte[] content = archive.getInputStream(entry).withCloseable { it.readAllBytes() }
+                    if (output.exists()) {
+                        // Never silently select one loader's implementation of a shared class.
+                        if (!Arrays.equals(output.bytes, content)) {
+                            throw new GradleException("Conflicting universal JAR entry ${entry.name}: ${owners[entry.name]} and ${jarFile.name}")
+                        }
+                    } else {
+                        output.parentFile.mkdirs()
+                        output.bytes = content
+                        owners[entry.name] = jarFile.name
+                    }
+                }
+            }
+        }
+    }
+}
+
+def universalJar = tasks.register('universalJar', Jar) {
+    group = 'build'
+    description = 'Builds one distributable JAR for Fabric and NeoForge.'
+    dependsOn mergeUniversalContents
+    from mergedDirectory
+    archiveBaseName = "${mod_name}-${minecraft_version}"
+    archiveVersion = project.version.toString()
+    archiveClassifier = 'universal'
+    destinationDirectory = layout.buildDirectory.dir('libs')
+    duplicatesStrategy = DuplicatesStrategy.FAIL
+    manifest.attributes(
+            'Specification-Title': mod_name,
+            'Specification-Version': project.version.toString(),
+            'Implementation-Title': mod_name,
+            'Implementation-Version': project.version.toString(),
+            'Built-On-Minecraft': minecraft_version
+    )
+}
+
+tasks.register('verifyUniversalJar') {
+    group = 'verification'
+    description = 'Checks that the universal artifact preserves both loader artifacts.'
+    dependsOn universalJar, ':fabric:verifyEmbeddedEui', ':neoforge:verifyEmbeddedEui'
+    inputs.file(universalJar.flatMap { it.archiveFile })
+    inputs.files(loaderJars)
+    doLast {
+        new java.util.zip.ZipFile(universalJar.get().archiveFile.get().asFile).withCloseable { universal ->
+            def names = universal.entries().findAll { !it.directory }.collect { it.name }
+            if (names.size() != names.toSet().size()) {
+                throw new GradleException('Duplicate entries in the universal JAR')
+            }
+            ['fabric.mod.json', 'META-INF/neoforge.mods.toml',
+             'vein_mine.mixins.json', 'vein_mine.fabric.mixins.json', 'vein_mine.neoforge.mixins.json',
+             'top/diaoyugan/veinmine/FabricVeinmine.class',
+             'top/diaoyugan/veinmine/Veinmine.class'].each { path ->
+                if (!names.contains(path)) throw new GradleException("Missing universal entry: ${path}")
+            }
+            loaderJars.each { jarProvider ->
+                new java.util.zip.ZipFile(jarProvider.get().asFile).withCloseable { loader ->
+                    loader.entries().each { entry ->
+                        if (entry.directory || entry.name == 'META-INF/MANIFEST.MF') return
+                        def mergedEntry = universal.getEntry(entry.name)
+                        if (mergedEntry == null) throw new GradleException("Missing loader entry: ${entry.name}")
+                        byte[] expected = loader.getInputStream(entry).withCloseable { it.readAllBytes() }
+                        byte[] actual = universal.getInputStream(mergedEntry).withCloseable { it.readAllBytes() }
+                        if (!Arrays.equals(expected, actual)) {
+                            throw new GradleException("Changed loader entry: ${entry.name}")
+                        }
+                    }
+                }
+            }
+            logger.lifecycle("Verified universal JAR: ${universalJar.get().archiveFile.get().asFile}")
+        }
+    }
+}
+
+// Keep this opt-in: a root `build` must only build the loader-specific projects.
+// Do not apply the base plugin or register build/assemble/check lifecycle tasks here.
+tasks.register('buildUniversal') {
+    group = 'build'
+    description = 'Builds and verifies the optional Fabric/NeoForge universal JAR.'
+    dependsOn tasks.named('verifyUniversalJar')
+}
+
+tasks.register('clean', Delete) {
+    group = 'build'
+    description = 'Deletes the universal project build directory.'
+    delete layout.buildDirectory
+}

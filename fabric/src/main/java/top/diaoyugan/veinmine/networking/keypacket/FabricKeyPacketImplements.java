@@ -4,7 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
-public class KeyPacketImplements implements ModInitializer {
+public class FabricKeyPacketImplements implements ModInitializer {
 
     private static void receive(
             KeyPressPacket payload,
@@ -26,7 +26,7 @@ public class KeyPacketImplements implements ModInitializer {
                         ServerPlayNetworking.registerReceiver(
                                 handler,
                                 KeyPressPacket.ID,
-                                KeyPacketImplements::receive
+                                FabricKeyPacketImplements::receive
                         )
         );
     }
