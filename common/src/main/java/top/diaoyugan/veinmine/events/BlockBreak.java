@@ -72,6 +72,13 @@ public class BlockBreak {
 
             BlockState targetState = player.level().getBlockState(pos);
             if (!SmartVein.matchesTarget(originalState, targetState)) continue;
+            if (!player.preventsBlockDrops()) {
+                // destroyBlock removes the block even when it can't drop anything (e.g. the tool just broke)
+                if (!player.hasCorrectToolForDrops(targetState)) break;
+                // Both loaders run this before the origin block's own drop check and tool damage,
+                // so leave the tool alive for the origin block
+                if (Utils.wouldBreakTool(player, pos, targetState)) break;
+            }
 
             player.gameMode.destroyBlock(pos);
         }

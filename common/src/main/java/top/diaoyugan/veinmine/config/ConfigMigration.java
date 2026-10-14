@@ -44,7 +44,7 @@ final class ConfigMigration {
     }
 
     private static String fromLegacyGlfwPrintableKey(int key) {
-        if (key < 32 || key > 126) {
+        if (key < 32 || key > 126 || !isClientInputAvailable()) {
             return Integer.toString(key);
         }
 
@@ -55,5 +55,17 @@ final class ConfigMigration {
         }
 
         return InputConstants.Type.KEYBOARD.getOrCreate(scanCode).getName();
+    }
+
+    // Dedicated servers ship neither LWJGL nor InputConstants; configScreenKey is client-only there anyway.
+    private static boolean isClientInputAvailable() {
+        ClassLoader loader = ConfigMigration.class.getClassLoader();
+        try {
+            Class.forName("org.lwjgl.sdl.SDLKeyboard", false, loader);
+            Class.forName("com.mojang.blaze3d.platform.InputConstants", false, loader);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 }
