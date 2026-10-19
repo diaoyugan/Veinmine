@@ -75,6 +75,9 @@ public class BlockBreak {
 
         if (targetState.getBlock() != originalState.getBlock()) return 0;
 
+        // These legacy breaks bypass the player break event; check permissions before spawning drops.
+        if (world instanceof ServerLevel serverWorld && !serverWorld.mayInteract(player, targetPos)) return 0;
+
         if (shouldDropItems(player, targetState, world, targetPos)) {
             Block.dropResources(targetState, world, targetPos, world.getBlockEntity(targetPos), player, player.getMainHandItem());
         }
