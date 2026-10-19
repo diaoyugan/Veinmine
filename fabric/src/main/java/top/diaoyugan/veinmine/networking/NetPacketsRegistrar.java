@@ -40,6 +40,7 @@ public final class NetPacketsRegistrar {
         BlockPos pos = payload.blockPos();
         ServerPlayer player = context.player();
         ServerLevel world = (ServerLevel) player.level();
+        if (!player.isWithinBlockInteractionRange(pos, 1.0)) return;
 
         UUID playerId = player.getUUID();
 
