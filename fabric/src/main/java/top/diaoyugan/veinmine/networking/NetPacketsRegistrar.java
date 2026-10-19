@@ -40,6 +40,8 @@ public final class NetPacketsRegistrar {
         BlockPos pos = payload.blockPos();
         ServerPlayer player = context.player();
         ServerLevel world = (ServerLevel) player.level();
+        // Same reach check vanilla applies to block breaking; also keeps far positions from loading chunks
+        if (!player.isWithinBlockInteractionRange(pos, 1.0)) return;
 
         UUID playerId = player.getUUID();
 

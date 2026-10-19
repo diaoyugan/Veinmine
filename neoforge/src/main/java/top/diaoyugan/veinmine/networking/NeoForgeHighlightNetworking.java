@@ -38,6 +38,8 @@ public final class NeoForgeHighlightNetworking {
                     boolean currentState = Utils.getVeinMineSwitchState(player);
 
                     var pos = msg.blockPos();
+                    // Same reach check vanilla applies to block breaking; also keeps far positions from loading chunks
+                    if (!player.isWithinBlockInteractionRange(pos, 1.0)) return;
 
                     if (lastState != null
                             && pos.equals(lastPos)
@@ -47,6 +49,7 @@ public final class NeoForgeHighlightNetworking {
 
                     LAST_POS.put(playerId, pos);
                     LAST_PROCESSED_STATE.put(playerId, currentState);
+                    if (!currentState) return;
 
                     ArrayList<BlockPos> result = new ArrayList<>();
                     var blocks = SmartVein.findBlocks(level, pos);
