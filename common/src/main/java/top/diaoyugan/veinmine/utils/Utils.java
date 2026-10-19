@@ -74,16 +74,6 @@ public class Utils {
         return cost;
     }
 
-    // True if mining the block at targetPos would use up the last durability of the main-hand tool
-    public static boolean wouldBreakTool(Player player, BlockPos targetPos, BlockState targetState) {
-        ItemStack stack = player.getMainHandItem();
-        Tool tool = stack.get(DataComponents.TOOL);
-        if (!stack.isDamageableItem() || tool == null || tool.damagePerBlock() <= 0) return false;
-        if (targetState.getDestroySpeed(player.level(), targetPos) == 0.0F) return false;
-
-        return stack.getMaxDamage() - stack.getDamageValue() <= tool.damagePerBlock();
-    }
-
     public static boolean hasEnoughDurability(Player player, int cost) {
         ItemStack tool = player.getMainHandItem();
         if (isToolProtected(tool)) {
