@@ -1,3 +1,8 @@
+import groovy.json.JsonSlurper
+
+import java.nio.file.Files
+import java.util.zip.ZipFile
+
 plugins {
     id 'multiloader-loader'
     id 'net.fabricmc.fabric-loom'
@@ -99,7 +104,7 @@ tasks.register('verifyEmbeddedEui') {
     doLast {
         def listZipEntries = { File archive ->
             def names = []
-            new java.util.zip.ZipFile(archive).withCloseable { zip ->
+            new ZipFile(archive).withCloseable { zip ->
                 zip.entries().each { entry ->
                     if (!entry.directory) names.add(entry.name)
                 }
@@ -107,7 +112,7 @@ tasks.register('verifyEmbeddedEui') {
             names
         }
         def readZipEntry = { File archive, String path ->
-            new java.util.zip.ZipFile(archive).withCloseable { zip ->
+            new ZipFile(archive).withCloseable { zip ->
                 def entry = zip.getEntry(path)
                 if (entry == null) {
                     throw new GradleException("Missing ${path} in ${archive.name}")
@@ -135,7 +140,7 @@ tasks.register('verifyEmbeddedEui') {
             throw new GradleException("Bundled Enchanted UI metadata jar is missing at ${nestedJarPath}")
         }
 
-        def mainMetadata = new groovy.json.JsonSlurper().parseText(
+        def mainMetadata = new JsonSlurper().parseText(
                 readZipEntry(shadowJarFile, 'fabric.mod.json')
         )
         if (mainMetadata.jars != [[file: nestedJarPath]]) {
@@ -152,12 +157,12 @@ tasks.register('verifyEmbeddedEui') {
                     "Bundled Enchanted UI metadata jar is missing from IDE resources at ${nestedJarPath}"
             )
         }
-        if (java.nio.file.Files.mismatch(nestedJarFile.toPath(), developmentNestedJarFile.toPath()) != -1) {
+        if (Files.mismatch(nestedJarFile.toPath(), developmentNestedJarFile.toPath()) != -1) {
             throw new GradleException('IDE resources contain a different bundled Enchanted UI metadata jar')
         }
 
         def nestedEntries = listZipEntries(nestedJarFile)
-        def nestedMetadata = new groovy.json.JsonSlurper().parseText(
+        def nestedMetadata = new JsonSlurper().parseText(
                 readZipEntry(nestedJarFile, 'fabric.mod.json')
         )
         def developmentResourcesDir = layout.buildDirectory
@@ -171,7 +176,7 @@ tasks.register('verifyEmbeddedEui') {
         if (!sourceSets.main.runtimeClasspath.files.contains(developmentResourcesDir)) {
             throw new GradleException('Bundled Enchanted UI IDE source set is missing from runtimeClasspath')
         }
-        def developmentMetadata = new groovy.json.JsonSlurper().parse(developmentMetadataFile)
+        def developmentMetadata = new JsonSlurper().parse(developmentMetadataFile)
         if (developmentMetadata != nestedMetadata) {
             throw new GradleException('IDE and nested JAR use different bundled Enchanted UI metadata')
         }
@@ -222,17 +227,10 @@ loom {
 //        defaultRefmapName.set("${mod_id}.refmap.json")
 //    }
     runs {
-        client {
-            client()
-            setConfigName('Fabric Client')
-            ideConfigGenerated(true)
-            runDir('runs/client')
-        }
-        server {
-            server()
-            setConfigName('Fabric Server')
-            ideConfigGenerated(true)
-            runDir('runs/server')
+        configureEach {
+            generateRunConfig = true
+            // Generate IDEA Application configurations instead of Gradle task wrappers.
+            preferGradleTask = false
         }
     }
 }

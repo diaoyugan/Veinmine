@@ -4,8 +4,7 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [],
   "client": [
-    "RenderTypeInvoker",
-    "RenderPipelinesInvoker"
+    "RenderTypeInvoker"
   ],
   "server": [],
   "injectors": {

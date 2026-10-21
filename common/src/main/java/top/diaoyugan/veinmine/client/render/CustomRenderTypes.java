@@ -17,7 +17,7 @@ public final class CustomRenderTypes {
     public static void init() {
         if (LINES_NO_DEPTH != null) return;
 
-        RenderSetup setup = RenderSetup.builder(Objects.requireNonNull(CustomRenderPipeline.LINES_NO_DEPTH))
+        RenderSetup setup = RenderSetup.nonOitBuilder(Objects.requireNonNull(CustomRenderPipeline.LINES_NO_DEPTH))
                 .setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
                 .createRenderSetup();
 

@@ -278,7 +278,7 @@ public class ConfigScreen extends UISidebarConfigScreen {
                     () -> draft.alpha,
                     value -> draft.alpha = value,
                     true
-            );
+            ).a().percentageDecimalPlaces(0);
         };
     }
 
@@ -446,8 +446,8 @@ public class ConfigScreen extends UISidebarConfigScreen {
         }
     }
     @Override
-    public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float delta) {
-        super.extractRenderState(g, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor g) {
+        super.extractRenderState(g);
 
         String euiText = "'Enchanted UI' Framework Dev (built-in)";
 
