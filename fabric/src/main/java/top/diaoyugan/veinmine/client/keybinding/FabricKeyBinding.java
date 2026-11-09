@@ -13,7 +13,7 @@ public class FabricKeyBinding {
 
     public static void registerKeyBinding() {
         int keyCode = KeyBinding.defaultActivationKey();
-        InputConstants.Key key = InputConstants.getKey(new KeyEvent(keyCode, 0, 0));
+        InputConstants.Key key = InputConstants.getKey(new KeyEvent(keyCode, 0, 0,false));
 
 
         KeyBinding.ACTIVATION_KEY = KeyMappingHelper.registerKeyMapping(
