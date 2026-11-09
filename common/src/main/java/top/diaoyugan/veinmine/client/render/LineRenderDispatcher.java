@@ -2,18 +2,43 @@ package top.diaoyugan.veinmine.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 public final class LineRenderDispatcher {
+    private LineRenderDispatcher() {}
+
+    public static void drawAll(
+            VertexConsumer consumer,
+            PoseStack.Pose pose,
+            List<BlockOutlineBuilder.Line> lines,
+            LineRenderProfile.Style style
+    ) {
+        for (BlockOutlineBuilder.Line line : lines) {
+            draw(consumer, pose, line, style);
+        }
+    }
+
     public static void draw(
-            VertexConsumer c,
+            VertexConsumer consumer,
             PoseStack.Pose pose,
             BlockOutlineBuilder.Line line,
-            LineStyles style
+            LineRenderProfile.Style style
     ) {
-        switch (style) {
-            case LineStyles.THIN_LINES -> LineRender.drawThin(c, pose, line);
-            case LineStyles.RIBBON_THICK_LINES -> LineRender.drawThick(c, pose, line);
-            case LineStyles.OLD_TRIANGLES -> LineRender.drawQuadLine(c, pose, line, 0.02f);
-        }
+        Vec3 from = line.from();
+        Vec3 to = line.to();
+        Vec3 normal = to.subtract(from).normalize();
+        BlockOutlineBuilder.Color color = line.color();
+
+        consumer.addVertex(pose.pose(), (float) from.x, (float) from.y, (float) from.z)
+                .setColor(color.r(), color.g(), color.b(), color.a())
+                .setNormal((float) normal.x, (float) normal.y, (float) normal.z)
+                .setLineWidth(style.width);
+
+        consumer.addVertex(pose.pose(), (float) to.x, (float) to.y, (float) to.z)
+                .setColor(color.r(), color.g(), color.b(), color.a())
+                .setNormal((float) normal.x, (float) normal.y, (float) normal.z)
+                .setLineWidth(style.width);
     }
 }

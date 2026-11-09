@@ -2,6 +2,7 @@ package top.diaoyugan.veinmine.client.render;
 
 import net.fabricmc.fabric.api.client.rendering.v1.FeatureRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.SubmitRenderPhases;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import top.diaoyugan.veinmine.client.highlight.ClientHighlightState;
 import top.diaoyugan.veinmine.config.IntrusiveConfig;
@@ -10,52 +11,43 @@ import top.diaoyugan.veinmine.utils.Utils;
 import java.util.List;
 
 public final class FabricOutlineRenderHook {
-    private static boolean rendVanillaBlockOutline = true;
+    private static boolean renderVanillaBlockOutline = true;
+
+    private FabricOutlineRenderHook() {}
 
     public static void init() {
         FeatureRendererRegistry.register(SeeThroughOutlineRenderer.TYPE, SeeThroughOutlineRenderer::new);
-        LevelRenderEvents.COLLECT_SUBMITS.register(ctx -> {
-            rendVanillaBlockOutline = true;
-            if (!Utils.getConfig().enableHighlights) return;
-            if (!ClientHighlightState.SHOW_HIGHLIGHT) return;
+        LevelRenderEvents.COLLECT_SUBMITS.register(FabricOutlineRenderHook::submitHighlights);
+        LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register((context, state) -> renderVanillaBlockOutline);
+    }
 
-            boolean intrusive = IntrusiveConfig.isEnabled();
-            LineRenderProfile profile = RenderProfiles.of(intrusive);
+    private static void submitHighlights(LevelRenderContext context) {
+        renderVanillaBlockOutline = true;
+        if (!Utils.getConfig().enableHighlights || !ClientHighlightState.SHOW_HIGHLIGHT) return;
 
-            List<BlockOutlineBuilder.Line> lines = BlockOutlineBuilder.buildLines(
-                    ctx.gameRenderer().mainCamera(),
-                    ClientHighlightState.HIGHLIGHTED_BLOCKS,
-                    UtilsColorHelper.fromConfig()
+        List<BlockOutlineBuilder.Line> lines = BlockOutlineBuilder.buildLines(
+                context.gameRenderer().mainCamera(),
+                ClientHighlightState.HIGHLIGHTED_BLOCKS,
+                UtilsColorHelper.fromConfig()
+        );
+        if (lines.isEmpty()) return;
+
+        boolean seeThrough = IntrusiveConfig.isEnabled();
+        LineRenderProfile profile = RenderProfiles.of(seeThrough);
+        renderVanillaBlockOutline = false;
+
+        if (seeThrough) {
+            context.submitNodeCollector().submitCustom(
+                    SubmitRenderPhases.SEE_THROUGH_NAME_TAGS,
+                    new SeeThroughOutlineRenderer.Submit(context.poseStack().last().copy(), profile, lines)
             );
+            return;
+        }
 
-            if (lines.isEmpty()) return;
-
-            rendVanillaBlockOutline = false;
-
-            if (intrusive) {
-                ctx.submitNodeCollector().submitCustom(
-                        SubmitRenderPhases.SEE_THROUGH_NAME_TAGS,
-                        new SeeThroughOutlineRenderer.Submit(ctx.poseStack().last().copy(), profile, lines)
-                );
-                return;
-            }
-
-            ctx.submitNodeCollector().submitCustomGeometry(
-                    ctx.poseStack(),
-                    profile.type(),
-                    (pose, consumer) -> {
-                        for (BlockOutlineBuilder.Line line : lines) {
-                            LineRenderDispatcher.draw(
-                                    consumer,
-                                    pose,
-                                    line,
-                                    profile.style()
-                            );
-                        }
-                    }
-            );
-        });
-        LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register((ctx,state)
-                -> rendVanillaBlockOutline);
+        context.submitNodeCollector().submitCustomGeometry(
+                context.poseStack(),
+                profile.type(),
+                (pose, consumer) -> LineRenderDispatcher.drawAll(consumer, pose, lines, profile.style())
+        );
     }
 }
