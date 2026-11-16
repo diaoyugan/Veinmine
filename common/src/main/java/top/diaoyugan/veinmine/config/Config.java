@@ -14,19 +14,21 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Config {
     private final Path configFilePath = Paths.get("config/veinmine.json");
     private final Gson jsonProcessor = new GsonBuilder().setPrettyPrinting().create();
-    private ConfigItems configItems = new ConfigItems();
+    private final AtomicLong revision = new AtomicLong();
+    private volatile ConfigItems configItems = new ConfigItems();
+    private volatile MiningSettings miningSettings = MiningSettings.from(configItems);
 
-    private static Config instance;
+    private static class Holder {
+        private static final Config INSTANCE = new Config();
+    }
 
     public static Config getInstance() {
-        if (instance == null) {
-            instance = new Config();
-        }
-        return instance;
+        return Holder.INSTANCE;
     }
 
     private Config() {
@@ -53,6 +55,8 @@ public class Config {
             jsonProcessor.toJson(configItems, writer);
         } catch (Exception e) {
             Logger.throwLog(LoggerLevels.ERROR, "Failed to save the configuration", e);
+        } finally {
+            publishMiningRules();
         }
     }
 
@@ -84,6 +88,8 @@ public class Config {
         } catch (IOException e) {
             Logger.throwLog(LoggerLevels.ERROR, "Failed to read the configuration file, using the default configuration",e);
             configItems = new ConfigItems();
+        } finally {
+            publishMiningRules();
         }
     }
 
@@ -91,5 +97,26 @@ public class Config {
         return configItems;
     }
 
+    public long revision() {
+        return revision.get();
+    }
 
+    public MiningRules miningRules() {
+        return miningSettings.rules();
+    }
+
+    MiningSettings miningSettings() {
+        return miningSettings;
+    }
+
+    private void publishMiningRules() {
+        miningSettings = MiningSettings.from(configItems);
+        revision.incrementAndGet();
+    }
+
+    record MiningSettings(ConfigItems.ServerRuleMode mode, MiningRules rules) {
+        private static MiningSettings from(ConfigItems config) {
+            return new MiningSettings(config.serverRuleMode, MiningRules.from(config));
+        }
+    }
 }

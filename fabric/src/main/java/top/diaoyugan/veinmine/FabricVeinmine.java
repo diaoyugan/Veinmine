@@ -1,7 +1,6 @@
 package top.diaoyugan.veinmine;
 
 import net.fabricmc.api.ModInitializer;
-
 import top.diaoyugan.veinmine.events.FabricPlayerBreakBlock;
 import top.diaoyugan.veinmine.events.FabricPlayerDisconnect;
 import top.diaoyugan.veinmine.networking.PayloadRegistrar;

@@ -27,50 +27,38 @@ Vein Mine 是一个轻量、快速跟进新版本的 Minecraft 模组，可帮�
 
 ### 工具保护
 
-* 防止工具意外损坏。
-* 可配置的耐久度保护阈值。
-* 支持自定义受保护工具列表。
+* 设置受保护的工具和最低保留耐久。耐久不足时取消后续连锁挖掘。
+* 受保护的工具和连锁忽略方块都可以搜索勾选，也可以手动添加 ID。
 
-### 多人游戏友好
+### 多人游戏
 
-* 服务端统一管理配置。
-* 客户端设置自动遵循服务器规则。
-* 在多人游戏环境中保持一致的行为表现。
+* 服务器支持同步时，玩家可以使用自己的工具保护设置和忽略方块列表。
+* 服主可以直接采用玩家设置、追加服务器规则，或让所有玩家使用服务器的规则。
 
 ### 高亮预览
 
 * 实时高亮显示目标方块。
-* 在破坏前预览即将被连锁采集的方块。
+* 在挖掘前预览搜索找到的方块。
 
 ## 配置
 
-### 1.4.0+
-
-使用默认快捷键打开配置界面：
-
-`V + M`
-
-### 旧版本
-
-Fabric：
-
-安装 **Mod Menu**，然后在 **Mods** 菜单中打开 Vein Mine。
-
-NeoForge：
-
-在 **Mods** 菜单中打开 Vein Mine。
+默认按 `V + M` 打开配置界面。
 
 ### 手动配置
 
-* 编辑：` .minecraft/config/veinmine.json `
+* 在对应的游戏或服务端目录中编辑 `config/veinmine.json`。
+* 局域网房主可以在「高级选项」中切换「多人规则」。专用服务器可编辑 `config/veinmine.json` 里的 `serverRuleMode`，再用 `/veinmine reload` 加载。
+* 具体用法和各项默认值见[配置文档](config_docs/config_zh_cn.md)。
 
-* 对于专用服务端，配置文件位于：`<服务端目录>/config/veinmine.json`
+### 自动测试
 
-* 使用 `/veinmine reload` 命令重新加载配置文件。
+在仓库根目录运行下面的命令，可以测试单人、局域网和专用服务器。把参数里的路径换成已有的 `eula.txt`，文件内须有 `eula=true`。示例中的路径相对于测试模块目录。
 
-* 所有配置项的详细说明请参阅：
+```
+.\gradlew.bat --configure-on-demand :fabric:check :fabric:runClientGameTest '-PveinmineTestEulaFile=runs/server/eula.txt'
+```
 
-* [配置文档](https://github.com/diaoyugan/Veinmine/blob/master/config_docs/config_zh_cn.md)
+测试用离线账号在本机联机，访客有单独的配置目录。测试世界和日志在 `fabric/build/run/clientGameTest`。
 
 ## 控制
 

@@ -2,11 +2,7 @@
 English | [简体中文](https://github.com/diaoyugan/Veinmine/blob/master/readme_zhcn.md)
 ## Introduction
 
-Vein Mine is a lightweight, fast-updating vein mining mod for Minecraft that allows players to efficiently mine connected blocks of the same type.
-
-Whether you’re mining ores, chopping trees, harvesting crops, or gathering building materials, Vein Mine helps you do it faster while remaining highly configurable and multiplayer-friendly.
-
-Unlike many vein mining mods, Vein Mine provides advanced block matching options, allowing players and server owners to precisely control which blocks should be considered part of the same vein.
+With vein mining enabled, breaking one block can also collect nearby blocks that match it. Use it to mine ores, chop trees, or harvest crops, and choose which blocks count as a match.
 
 ## Features
 
@@ -25,44 +21,37 @@ Unlike many vein mining mods, Vein Mine provides advanced block matching options
 
 ### Tool Protection
 
-* Prevent tools from breaking unexpectedly.
-* Configurable durability protection threshold.
-* Custom protected tool list support.
+* Choose which tools to protect and how much durability they should keep. If the chain would leave less than that, you only break the first block.
+* Search for tools and blocks to add to your lists, or enter their IDs directly.
 
-### Multiplayer Friendly
+### Multiplayer
 
-* Server-controlled configuration.
-* Client settings automatically respect server rules.
-* Consistent behavior across multiplayer environments.
+* On servers that support syncing, players can choose which tools to protect and which blocks to skip in chain search.
+* Server owners can use players' settings, add their own rules, or apply the same rules to everyone.
 
 ### Highlighting
 
-* Real-time target highlighting.
-* Preview exactly which blocks will be mined before breaking them.
+* See which blocks the search finds before you mine. The chain may still stop if your tool is low on durability.
 
 ## Configuration
 
-### 1.4.0+
-
-Open the configuration screen using: ```V + M``` (default)
-
-### Older Versions
-
-For Fabric: Install [**Mod Menu**](https://modrinth.com/mod/modmenu) and open Vein Mine through the **Mods** menu.
-
-For NeoForge: Open Vein Mine through the **Mods** menu
+Press `V + M` to open the settings with the default keybind.
 
 ### Manual Configuration
 
-* Edit: ```.minecraft/config/veinmine.json```
+* Edit `config/veinmine.json` in the relevant game or server directory.
+* LAN hosts can change **Server Rules** under **Advanced**. On a dedicated server, edit `serverRuleMode` in `config/veinmine.json` and run `/veinmine reload`.
+* See the [Configuration Guide](config_docs/config_en_us.md) for instructions and default values.
 
-* For dedicated servers, the configuration file located in ```<your server's path>/config/veinmine.json```
+### Automated Tests
 
-* Use `/veinmine reload` command to reload configuration from file.
+Run the command below from the repository root to test singleplayer, LAN, and dedicated-server play. Pass the path to an existing `eula.txt` with `eula=true`. The example path is relative to the test module.
 
-* For detailed explanations of all available options, see:
+```
+.\gradlew.bat --configure-on-demand :fabric:check :fabric:runClientGameTest '-PveinmineTestEulaFile=runs/server/eula.txt'
+```
 
-* [Configuration Guide](https://github.com/diaoyugan/Veinmine/blob/master/config_docs/config_en_us.md)
+The tests connect on the same machine with offline profiles and a separate settings folder for each guest. Find the test worlds and logs under `fabric/build/run/clientGameTest`.
 
 ## Controls
 

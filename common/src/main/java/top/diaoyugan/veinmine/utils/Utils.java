@@ -3,7 +3,6 @@ package top.diaoyugan.veinmine.utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.level.block.state.BlockState;
 import top.diaoyugan.veinmine.config.Config;
@@ -12,28 +11,10 @@ import top.diaoyugan.veinmine.config.ConfigItems;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 public class Utils {
     private static final Map<UUID, Boolean> playerVeinMineSwitchState = new HashMap<>();
-    private static final Set<String> DEFAULT_PROTECTED_TOOLS = Set.of(
-            "minecraft:golden_pickaxe",
-            "minecraft:golden_axe",
-            "minecraft:golden_shovel",
-            "minecraft:golden_sword",
-            "minecraft:golden_hoe",
-            "minecraft:diamond_pickaxe",
-            "minecraft:diamond_axe",
-            "minecraft:diamond_shovel",
-            "minecraft:diamond_sword",
-            "minecraft:diamond_hoe",
-            "minecraft:netherite_pickaxe",
-            "minecraft:netherite_axe",
-            "minecraft:netherite_shovel",
-            "minecraft:netherite_sword",
-            "minecraft:netherite_hoe"
-    );
 
     public static ConfigItems getConfig() {
         return Config.getInstance().getConfigItems();
@@ -74,20 +55,4 @@ public class Utils {
         return cost;
     }
 
-    public static boolean hasEnoughDurability(Player player, int cost) {
-        ItemStack tool = player.getMainHandItem();
-        if (isToolProtected(tool)) {
-            return tool.getMaxDamage() - tool.getDamageValue() - getConfig().durabilityThreshold >= cost;
-        }
-        return true;
-    }
-
-    public static boolean isToolProtected(ItemStack tool) {
-        String toolName = tool.getItem().toString();
-        if (getConfig().protectAllDefaultValuableTools) {
-            return DEFAULT_PROTECTED_TOOLS.contains(toolName)
-                    || getConfig().protectedTools.contains(toolName);
-        }
-        return getConfig().protectedTools.contains(toolName);
-    }
 }

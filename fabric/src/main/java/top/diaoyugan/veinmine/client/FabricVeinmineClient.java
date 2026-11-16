@@ -15,6 +15,7 @@ public class FabricVeinmineClient implements ClientModInitializer {
     public void onInitializeClient() {
 
         FabricHighlightNetworking.onInitialize();
+        ClientTickEvents.END_CLIENT_TICK.register(FabricMiningPreferences::sync);
         ClientTickEvents.END_CLIENT_TICK.register(FabricKeyHandler::tickEvent);
         ClientTickEvents.END_CLIENT_TICK.register(KeyHandler::clientTick);
 

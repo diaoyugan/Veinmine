@@ -6,6 +6,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import top.diaoyugan.veinmine.config.Config;
+import top.diaoyugan.veinmine.config.ServerMiningRules;
 import top.diaoyugan.veinmine.networking.highlightingpacket.BlockHighlightRequest;
 import top.diaoyugan.veinmine.networking.highlightingpacket.BlockHighlightResponse;
 import top.diaoyugan.veinmine.networking.keypacket.KeyPressPacket;
@@ -13,7 +15,11 @@ import top.diaoyugan.veinmine.networking.keypacket.KeyResponsePacket;
 import top.diaoyugan.veinmine.utils.SmartVein;
 import top.diaoyugan.veinmine.utils.Utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public final class NetPacketsRegistrar {
     private NetPacketsRegistrar() {}
@@ -27,14 +33,19 @@ public final class NetPacketsRegistrar {
         PayloadTypeRegistry.serverboundPlay().register(BlockHighlightRequest.ID, BlockHighlightRequest.CODEC);
         PayloadTypeRegistry.clientboundPlay().register(BlockHighlightResponse.ID, BlockHighlightResponse.CODEC);
 
-        // Register C2S receiver for BlockHighlightRequest when a player connection initializes.
-        ServerPlayConnectionEvents.INIT.register((handler, server) ->
-                ServerPlayNetworking.registerReceiver(handler, BlockHighlightRequest.ID, NetPacketsRegistrar::handleBlockHighlightRequest)
-        );
+        PayloadTypeRegistry.serverboundPlay().register(MiningPreferencesPacket.ID, MiningPreferencesPacket.CODEC);
+        ServerPlayConnectionEvents.INIT.register((handler, server) -> {
+            ServerPlayNetworking.registerReceiver(handler, BlockHighlightRequest.ID, NetPacketsRegistrar::handleBlockHighlightRequest);
+            ServerPlayNetworking.registerReceiver(handler, MiningPreferencesPacket.ID, (payload, context) -> {
+                UUID playerId = context.player().getUUID();
+                if (ServerMiningRules.updatePreferences(playerId, payload.rules())) clearLastStates(playerId);
+            });
+        });
     }
 
-    private static final Map<UUID, BlockPos> LAST_POS = new HashMap<>();
-    private static final Map<UUID, Boolean> LAST_PROCESSED_STATE = new HashMap<>();
+    private static final Map<UUID, HighlightQuery> LAST_QUERY = new HashMap<>();
+
+    private record HighlightQuery(BlockPos pos, ServerLevel world, boolean active, long configRevision) {}
 
     private static void handleBlockHighlightRequest(BlockHighlightRequest payload, ServerPlayNetworking.Context context) {
         BlockPos pos = payload.blockPos();
@@ -45,33 +56,18 @@ public final class NetPacketsRegistrar {
 
         UUID playerId = player.getUUID();
 
-        BlockPos lastPos = LAST_POS.get(playerId);
-        Boolean lastState = LAST_PROCESSED_STATE.get(playerId);
-
         boolean currentState = Utils.getVeinMineSwitchState(player);
+        HighlightQuery query = new HighlightQuery(pos, world, currentState, Config.getInstance().revision());
+        if (query.equals(LAST_QUERY.put(playerId, query))) return;
 
-        if (lastState != null
-                && pos.equals(lastPos)
-                && currentState == lastState) {
-            return;
-        }
-
-        LAST_POS.put(playerId, pos);
-        LAST_PROCESSED_STATE.put(playerId, currentState);
-
-        Set<BlockPos> newGlowingBlocks = new HashSet<>();
-
-        if (Utils.getVeinMineSwitchState(player)) {
-            List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos);
-
-            if (blocksToBreak != null) {
-                newGlowingBlocks.addAll(blocksToBreak);
-                ServerPlayNetworking.send(player, new BlockHighlightResponse(new ArrayList<>(newGlowingBlocks)));
-            }
+        if (currentState) {
+            var rules = ServerMiningRules.forPlayer(player);
+            List<BlockPos> blocksToBreak = SmartVein.findBlocks(world, pos, world.getBlockState(pos), rules::ignoresBlock);
+            ServerPlayNetworking.send(player, new BlockHighlightResponse(
+                    blocksToBreak == null ? new ArrayList<>() : new ArrayList<>(blocksToBreak)));
         }
     }
     public static void clearLastStates(UUID playerId){
-        LAST_PROCESSED_STATE.remove(playerId);
-        LAST_POS.remove(playerId);
+        LAST_QUERY.remove(playerId);
     }
 }

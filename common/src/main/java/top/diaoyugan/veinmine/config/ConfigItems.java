@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ConfigItems { // Default configuration
-    public int version = 2; // Config file version, modify after config format change
+    public int version = ConfigMigration.CURRENT_VERSION;
 
     public boolean useIntrusiveCode = true;
     public int searchRadius = 1;
@@ -18,6 +18,7 @@ public class ConfigItems { // Default configuration
     public boolean distinguishDyedBlockColors = true;
     public boolean distinguishDeepslateOres = false;
     public boolean bridgeOneBlockGap = false;
+    public ServerRuleMode serverRuleMode = ServerRuleMode.CLIENT;
     public boolean highlightBlocksMessage = true;
     public boolean protectTools = true;
     public Set<String> protectedTools = new HashSet<>();
@@ -31,4 +32,6 @@ public class ConfigItems { // Default configuration
     public boolean useHoldInsteadOfToggle = false;
 
     public List<String> configScreenKey = List.of("key.keyboard.v", "key.keyboard.m");
+
+    public enum ServerRuleMode { CLIENT, APPEND, OVERRIDE }
 }

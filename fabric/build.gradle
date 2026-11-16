@@ -235,6 +235,34 @@ loom {
     }
 }
 
+def acceptedTestEula = providers.gradleProperty('veinmineTestEulaFile')
+        .map { file(it).readLines().any { line -> line.trim() == 'eula=true' } }
+        .getOrElse(false)
+
+fabricApi {
+    configureTests {
+        createSourceSet = true
+        modId = 'vein_mine_test'
+        enableGameTests = false
+        enableClientGameTests = true
+        eula = acceptedTestEula
+        username = 'VeinMineHost'
+    }
+}
+
+def guestLaunchConfig = net.fabricmc.loom.LoomGradleExtension.get(project).files.devLauncherConfig
+loom.runs.named('clientGameTest') {
+    systemProperties.put('veinmine.gametest.launchConfig', guestLaunchConfig.absolutePath)
+}
+
+tasks.named('runClientGameTest').configure {
+    doFirst {
+        if (!acceptedTestEula) {
+            throw new GradleException('Pass -PveinmineTestEulaFile to an existing eula.txt with eula=true to run the dedicated-server scenario.')
+        }
+    }
+}
+
 tasks.named('check').configure {
-    dependsOn tasks.named('verifyEmbeddedEui')
+    dependsOn tasks.named('verifyEmbeddedEui'), tasks.named('gametestClasses')
 }

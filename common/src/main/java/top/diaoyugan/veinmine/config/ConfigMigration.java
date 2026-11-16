@@ -8,18 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class ConfigMigration {
-    private static final int CURRENT_VERSION = 2;
+    static final int CURRENT_VERSION = 3;
 
     private ConfigMigration() {}
 
     static boolean migrate(ConfigItems config) {
-        if (config.version >= CURRENT_VERSION) {
-            return false;
+        boolean changed = config.version < CURRENT_VERSION;
+        if (config.version < 2) {
+            migrateLegacyConfigScreenKeys(config);
         }
-
-        migrateLegacyConfigScreenKeys(config);
-        config.version = CURRENT_VERSION;
-        return true;
+        if (changed) {
+            config.version = CURRENT_VERSION;
+        }
+        if (config.serverRuleMode == null) {
+            config.serverRuleMode = ConfigItems.ServerRuleMode.CLIENT;
+            changed = true;
+        }
+        return changed;
     }
 
     private static void migrateLegacyConfigScreenKeys(ConfigItems config) {

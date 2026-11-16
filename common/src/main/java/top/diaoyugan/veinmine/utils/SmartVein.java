@@ -10,8 +10,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import top.diaoyugan.veinmine.utils.logging.Logger;
-import top.diaoyugan.veinmine.utils.logging.LoggerLevels;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -23,6 +21,7 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 public class SmartVein {
     private static final BlockPos[] OFFSETS = createOffsets();
@@ -33,22 +32,18 @@ public class SmartVein {
     private static final Map<Block, Optional<Identifier>> DYED_FAMILY_CACHE = new ConcurrentHashMap<>();
     private static final Map<Block, Optional<Identifier>> ORE_FAMILY_CACHE = new ConcurrentHashMap<>();
 
-    static {
-        try {
-            Utils.getConfig().ignoredBlocks.add("minecraft:air");
-        } catch (Exception exception) {
-            if (!(exception instanceof UnsupportedOperationException)) {
-                Logger.throwLog(LoggerLevels.ERROR, String.valueOf(exception), exception.fillInStackTrace());
-            }
-        }
-    }
-
     public static List<BlockPos> findBlocks(Level world, BlockPos startPos) {
         return findBlocks(world, startPos, world.getBlockState(startPos));
     }
 
     public static List<BlockPos> findBlocks(Level world, BlockPos startPos, BlockState targetState) {
-        if (isIgnoredTargetType(targetState.getBlock()) || !Utils.getConfig().useBFS) {
+        return findBlocks(world, startPos, targetState, Utils.getConfig().ignoredBlocks::contains);
+    }
+
+    public static List<BlockPos> findBlocks(Level world, BlockPos startPos, BlockState targetState,
+                                           Predicate<String> ignoredBlocks) {
+        if (targetState.isAir()) return List.of();
+        if (isIgnoredTargetType(targetState.getBlock(), ignoredBlocks) || !Utils.getConfig().useBFS) {
             return findBlocksInCube(world, startPos, targetState);
         }
         return findConnectedBlocks(world, startPos, targetState);
@@ -138,10 +133,9 @@ public class SmartVein {
         return targetFamily.isPresent() && targetFamily.equals(dyedFamily(candidateBlock));
     }
 
-    private static boolean isIgnoredTargetType(Block targetBlock) {
-        Set<String> ignoredBlocks = Utils.getConfig().ignoredBlocks;
+    private static boolean isIgnoredTargetType(Block targetBlock, Predicate<String> ignoredBlocks) {
         Identifier targetId = BuiltInRegistries.BLOCK.getKey(targetBlock);
-        if (ignoredBlocks.contains(targetId.toString())) return true;
+        if (ignoredBlocks.test(targetId.toString())) return true;
 
         if (!Utils.getConfig().distinguishDeepslateOres) {
             Optional<Identifier> oreFamily = oreFamily(targetBlock);
@@ -151,8 +145,8 @@ public class SmartVein {
                         normalOreId.getNamespace(),
                         "deepslate_" + normalOreId.getPath()
                 );
-                if (ignoredBlocks.contains(normalOreId.toString())
-                        || ignoredBlocks.contains(deepslateOreId.toString())) {
+                if (ignoredBlocks.test(normalOreId.toString())
+                        || ignoredBlocks.test(deepslateOreId.toString())) {
                     return true;
                 }
             }
@@ -167,7 +161,7 @@ public class SmartVein {
                                 familyId.getNamespace(),
                                 color.getName() + "_" + familyId.getPath()
                         ).toString())
-                        .anyMatch(ignoredBlocks::contains);
+                        .anyMatch(ignoredBlocks);
             }
         }
         return false;

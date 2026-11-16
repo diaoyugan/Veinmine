@@ -22,17 +22,23 @@
   "vm.config.screen.search_logic": "Search Logic",
   "vm.config.screen.highlights": "Highlights",
   "vm.config.server_managed.tooltip": "This option is managed by the server",
+  "vm.config.server_rule_mode": "Server Rules",
+  "vm.config.server_rule_mode.tooltip": "Choose how player settings and server rules are used together.",
+  "vm.config.server_rule_mode.disabled": "You can change this when hosting a world.",
+  "vm.config.server_rule_mode.client": "Use Player Settings",
+  "vm.config.server_rule_mode.append": "Add Server Rules",
+  "vm.config.server_rule_mode.override": "Use Server Settings",
 
   "vm.config.translation_note": "§7The translation may not be 100% accurate. \nIf you have any suggestions, please give us feedback.\nWant to help translate this mod? Contribute on GitHub or contact us!",
 
   "vm.config.search_radius": "Range Radius",
-  "vm.config.search_radius.tooltip": "Range mode search radius\n1 means 8 blocks in all directions\nplus 9 blocks in each layer and the center block",
+  "vm.config.search_radius.tooltip": "How far to look from the first block in each direction.\nA radius of 1 checks a 3 × 3 × 3 area.",
 
   "vm.config.bfs_limit": "Chain Limit",
   "vm.config.bfs_limit.tooltip": "Max blocks in chain search",
 
   "vm.config.ignored_blocks": "Chain Ignore List",
-  "vm.config.ignored_blocks.tooltip": "Blocks ignored in chain search\nFormat: namespace:path",
+  "vm.config.ignored_blocks.tooltip": "Use range search when you start mining from a block on this list.",
 
   "vm.config.use_bfs": "Chain Search",
   "vm.config.use_bfs.tooltip": "Enable or disable chain search\nIf disabled, range search will be used for all blocks",
@@ -41,7 +47,7 @@
   "vm.config.use_radius_search.tooltip": "Enable or disable range search\nIf disabled, range search will not be used",
 
   "vm.config.use_radius_search_when_reach_bfs_limit": "Switch to Range on Limit",
-  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "Switch to range search when 'Chain Limit' is reached",
+  "vm.config.use_radius_search_when_reach_bfs_limit.tooltip": "Use range search when the chain is too large.\nRequires range search to be on.",
 
   "vm.config.distinguish_crop_maturity": "Distinguish Crop Maturity",
   "vm.config.distinguish_crop_maturity.tooltip": "Only match crops with the same mature or immature state",
@@ -52,21 +58,21 @@
   "vm.config.bridge_one_block_gap": "Bridge One-Block Gaps",
   "vm.config.bridge_one_block_gap.tooltip": "Allow vein mining to bridge one-block gaps between matching blocks",
 
-  "vm.warn.breakthroughs": "Tool is about to break. Vein mining stopped.",
+  "vm.warn.breakthroughs": "Too little tool durability to continue vein mining.",
 
   "vm.config.screen.toolsandprotect": "Tools & Protection",
 
   "vm.config.protect_tools": "Tool Protection",
-  "vm.config.protect_tools.tooltip": "Stop vein mining before tool breaks",
+  "vm.config.protect_tools.tooltip": "Stop vein mining if it would leave a protected tool below the minimum durability.\nThe server may also require tool protection.",
 
   "vm.config.protected_tools": "Protected Tools",
-  "vm.config.protected_tools.tooltip": "Tools that trigger protection\nFormat: namespace:path",
+  "vm.config.protected_tools.tooltip": "Choose which tools to protect.",
 
   "vm.config.protect_allValuable_tools": "Protect Valuable Tools",
-  "vm.config.protect_allValuable_tools.tooltip": "Protect gold, diamond, and netherite tools by default",
+  "vm.config.protect_allValuable_tools.tooltip": "Include vanilla gold, diamond, and netherite pickaxes, axes, shovels, swords, and hoes when tool protection is on.",
 
-  "vm.config.durability_threshold": "Durability Threshold",
-  "vm.config.durability_threshold.tooltip": "Trigger protection below this durability",
+  "vm.config.durability_threshold": "Minimum Durability",
+  "vm.config.durability_threshold.tooltip": "How much durability a protected tool should have left after vein mining.",
 
   "vm.config.value.block": "%d Blocks",
   "vm.config.value.durability": "%d Dur.",
@@ -121,6 +127,14 @@
   "vm.config.screen.add": "Add",
   "vm.config.screen.duplicate_entry": "This entry already exists.",
   "vm.config.screen.empty_list": "No entries configured.",
+  "vm.config.picker.search": "Search by name or ID",
+  "vm.config.picker.requires_world": "You can add IDs here. Join a world to browse the full list.",
+  "vm.config.picker.id": "Enter an ID (namespace:path)",
+  "vm.config.picker.add_id": "Add ID",
+  "vm.config.picker.invalid_id": "Enter a valid ID, such as minecraft:stone.",
+  "vm.config.picker.unknown": "Item or Block Not Found",
+  "vm.config.picker.show_selected": "Show selected",
+  "vm.config.picker.show_all": "Show all",
   "vm.config.screen.least_characters": "This entry must be at least %d characters.",
 
   "vm.config.unsaved.title": "Discard unsaved changes?",

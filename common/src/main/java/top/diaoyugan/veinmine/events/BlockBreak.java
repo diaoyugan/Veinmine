@@ -2,6 +2,7 @@ package top.diaoyugan.veinmine.events;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,12 +10,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import top.diaoyugan.veinmine.config.ConfigItems;
+import top.diaoyugan.veinmine.config.ServerMiningRules;
 import top.diaoyugan.veinmine.utils.Messages;
 import top.diaoyugan.veinmine.utils.SmartVein;
 import top.diaoyugan.veinmine.utils.Utils;
@@ -35,9 +37,10 @@ public class BlockBreak {
         if (!VEIN_MINING_PLAYERS.add(player.getUUID())) return;
 
         try {
-            List<BlockPos> blocks = SmartVein.findBlocks(world, pos, state);
+            var rules = ServerMiningRules.forPlayer(serverPlayer);
+            List<BlockPos> blocks = SmartVein.findBlocks(world, pos, state, rules::ignoresBlock);
             if (blocks == null || blocks.isEmpty()) return;
-            if (!checkDurabilityAndWarn(player, pos, blocks)) return;
+            if (!checkDurabilityAndWarn(serverPlayer, pos, blocks, rules)) return;
 
             breakBlocks(serverPlayer, pos, state, blocks);
             moveDropsToCenter(serverWorld, pos, computeAABB(blocks));
@@ -46,18 +49,19 @@ public class BlockBreak {
         }
     }
 
-    private static boolean checkDurabilityAndWarn(Player player, BlockPos centerPos, List<BlockPos> blocks) {
-        ConfigItems config = Utils.getConfig();
-        if (!config.protectTools || player.hasInfiniteMaterials()) return true;
+    private static boolean checkDurabilityAndWarn(ServerPlayer player, BlockPos centerPos, List<BlockPos> blocks,
+                                                  ServerMiningRules.Effective rules) {
+        if (player.hasInfiniteMaterials()) return true;
 
+        ItemStack tool = player.getMainHandItem();
+        int minimum = rules.requiredDurability(BuiltInRegistries.ITEM.getKey(tool.getItem()).toString());
+        if (minimum < 0) return true;
         int totalCost = Utils.calculateTotalDurabilityCost(blocks, centerPos, player);
-        if (Utils.hasEnoughDurability(player, totalCost)) return true;
+        if (tool.getMaxDamage() - tool.getDamageValue() - minimum >= totalCost) return true;
 
-        if (player instanceof ServerPlayer serverPlayer) {
-            Component msg = Component.translatable("vm.warn.breakthroughs")
-                    .withStyle(style -> style.applyFormat(ChatFormatting.RED));
-            Messages.sendMessage(serverPlayer, msg, false);
-        }
+        Component msg = Component.translatable("vm.warn.breakthroughs")
+                .withStyle(style -> style.applyFormat(ChatFormatting.RED));
+        Messages.sendMessage(player, msg, false);
         return false;
     }
 

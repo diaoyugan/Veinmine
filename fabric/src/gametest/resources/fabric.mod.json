@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "vein_mine_test",
+  "version": "1.0.0",
+  "name": "Vein Mine Integration Tests",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-client-gametest": [
+      "top.diaoyugan.veinmine.gametest.MiningRulesGameTest"
+    ]
+  },
+  "mixins": ["vein_mine_test.mixins.json"],
+  "depends": {
+    "vein_mine": "*",
+    "fabric-client-gametest-api-v1": "*"
+  }
+}

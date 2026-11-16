@@ -5,6 +5,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -21,10 +22,13 @@ import top.diaoyugan.enchanted_ui.api.client.gui.UIWidget;
 import top.diaoyugan.veinmine.client.inputs.KeyBinding;
 import top.diaoyugan.veinmine.config.Config;
 import top.diaoyugan.veinmine.config.ConfigItems;
+import top.diaoyugan.veinmine.config.ConfigItems.ServerRuleMode;
 import top.diaoyugan.veinmine.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 public class ConfigScreen extends UISidebarConfigScreen {
 
@@ -45,7 +49,7 @@ public class ConfigScreen extends UISidebarConfigScreen {
     private final Screen parent;
     private final ConfigItems items = Utils.getConfig();
     private final DraftConfig draft;
-    private final int entryMinChar = 3;
+    private List<Object> savedDraft;
 
     public ConfigScreen(Screen parent) {
         super(
@@ -55,6 +59,7 @@ public class ConfigScreen extends UISidebarConfigScreen {
         );
         this.parent = parent;
         this.draft = DraftConfig.from(items);
+        this.savedDraft = draft.snapshot();
     }
 
     @Override
@@ -108,31 +113,7 @@ public class ConfigScreen extends UISidebarConfigScreen {
             addMainToggles(form);
             addMainSliders(form);
             form.space(4);
-//            form.title(Component.translatable("vm.config.ignored_blocks"));
-//            form.textArea(
-//                    Component.translatable("vm.config.ignored_blocks"),
-//                    30,
-//                    () -> draft.ignoredBlocksText,
-//                    value -> draft.ignoredBlocksText = value
-//            ).setTooltip(Tooltip.create(Component.translatable("vm.config.ignored_blocks.tooltip")));
-            form.title(Component.translatable("vm.config.ignored_blocks"));
-            serverOption(form.editableDropdownList(
-                    Component.translatable("vm.config.ignored_blocks"),
-                    () -> draft.ignoredBlocks,
-                    entries -> {
-                        draft.ignoredBlocks.clear();
-                        draft.ignoredBlocks.addAll(entries);
-                    },
-                    Component.translatable("vm.config.screen.add_entry"),
-                    Component.translatable("vm.config.screen.add"),
-                    3,
-                    value -> value.length() < entryMinChar ?
-                            Component.translatable("vm.config.screen.least_characters", entryMinChar)
-                            : null,
-                    false,
-                    Component.translatable("vm.config.screen.duplicate_entry"),
-                    Component.translatable("vm.config.screen.empty_list")
-            ).tooltip(Component.translatable("vm.config.ignored_blocks.tooltip")));
+            addPickerButton(form, "vm.config.ignored_blocks", draft.ignoredBlocks, RegistryPickerScreen.Kind.BLOCKS);
         };
     }
 
@@ -213,19 +194,19 @@ public class ConfigScreen extends UISidebarConfigScreen {
     private UIFormSpec toolsAndProtectPage() {
         return form -> {
             form.title(Component.translatable("vm.config.screen.toolsandprotect"));
-            serverOption(form.toggle(
+            form.toggle(
                     Component.translatable("vm.config.protect_tools"),
                     () -> draft.protectTools,
                     value -> draft.protectTools = value
-            ).tooltip(Component.translatable("vm.config.protect_tools.tooltip")));
+            ).tooltip(Component.translatable("vm.config.protect_tools.tooltip"));
 
-            serverOption(form.toggle(
+            form.toggle(
                     Component.translatable("vm.config.protect_allValuable_tools"),
                     () -> draft.protectAllDefaultValuableTools,
                     value -> draft.protectAllDefaultValuableTools = value
-            ).tooltip(Component.translatable("vm.config.protect_allValuable_tools.tooltip")));
+            ).tooltip(Component.translatable("vm.config.protect_allValuable_tools.tooltip"));
 
-            serverOption(form.intSlider(
+            form.intSlider(
                     Component.translatable("vm.config.durability_threshold"),
                     1,
                     256,
@@ -233,27 +214,10 @@ public class ConfigScreen extends UISidebarConfigScreen {
                     value -> draft.durabilityThreshold = value,
                     false
             ).setCustomValueKey("vm.config.value.durability")
-                    .tooltip(Component.translatable("vm.config.durability_threshold.tooltip")));
+                    .tooltip(Component.translatable("vm.config.durability_threshold.tooltip"));
 
             form.space(4);
-            form.title(Component.translatable("vm.config.protected_tools"));
-            serverOption(form.editableDropdownList(
-                    Component.translatable("vm.config.protected_tools"),
-                    () -> draft.protectedTools,
-                    entries -> {
-                        draft.protectedTools.clear();
-                        draft.protectedTools.addAll(entries);
-                    },
-                    Component.translatable("vm.config.screen.add_entry"),
-                    Component.translatable("vm.config.screen.add"),
-                    3,
-                    value -> value.length() < entryMinChar ?
-                            Component.translatable("vm.config.screen.least_characters", entryMinChar)
-                            : null,
-                    false,
-                    Component.translatable("vm.config.screen.duplicate_entry"),
-                    Component.translatable("vm.config.screen.empty_list")
-            ).tooltip(Component.translatable("vm.config.protected_tools.tooltip")));
+            addPickerButton(form, "vm.config.protected_tools", draft.protectedTools, RegistryPickerScreen.Kind.TOOLS);
         };
     }
 
@@ -326,7 +290,54 @@ public class ConfigScreen extends UISidebarConfigScreen {
                     () -> draft.bridgeOneBlockGap,
                     value -> draft.bridgeOneBlockGap = value
             ).tooltip(Component.translatable("vm.config.bridge_one_block_gap.tooltip")));
+
+            var modeButton = CycleButton.<ServerRuleMode>builder(
+                    mode -> Component.translatable(
+                            "vm.config.server_rule_mode." + mode.name().toLowerCase(Locale.ROOT)),
+                    draft.serverRuleMode
+            ).withValues(ServerRuleMode.values()).create(
+                    form.layout().x(), form.layout().y(), form.contentWidth(), 20,
+                    Component.translatable("vm.config.server_rule_mode"),
+                    (button, mode) -> draft.serverRuleMode = mode
+            );
+            form.widget(modeButton, 20)
+                    .tooltip(Component.translatable("vm.config.server_rule_mode.tooltip"))
+                    .disabledTooltip(Component.translatable("vm.config.server_rule_mode.disabled"))
+                    .activeIf(this::canEditServerRuleMode);
         };
+    }
+
+    private boolean canEditServerRuleMode() {
+        Minecraft client = Minecraft.getInstance();
+        return client.getConnection() == null || client.hasSingleplayerServer();
+    }
+
+    private void addPickerButton(
+            UIForm form,
+            String titleKey,
+            List<String> draftEntries,
+            RegistryPickerScreen.Kind kind
+    ) {
+        Component title = Component.translatable(titleKey);
+        form.button(title, () -> {
+            minecraft.setScreenAndShow(new RegistryPickerScreen(
+                    this, title, kind, minecraft.level != null, draftEntries, selected -> {
+                        draftEntries.clear();
+                        draftEntries.addAll(selected);
+                    }
+            ));
+        }).tooltip(Component.translatable(titleKey + ".tooltip"));
+    }
+
+    @Override
+    public boolean hasUnsavedChanges() {
+        return super.hasUnsavedChanges() || !savedDraft.equals(draft.snapshot());
+    }
+
+    @Override
+    public void markAllClean() {
+        super.markAllClean();
+        savedDraft = draft.snapshot();
     }
 
     private void serverOption(UIWidget widget) {
@@ -350,6 +361,9 @@ public class ConfigScreen extends UISidebarConfigScreen {
         items.distinguishDyedBlockColors = draft.distinguishDyedBlockColors;
         items.distinguishDeepslateOres = draft.distinguishDeepslateOres;
         items.bridgeOneBlockGap = draft.bridgeOneBlockGap;
+        if (canEditServerRuleMode()) {
+            items.serverRuleMode = draft.serverRuleMode;
+        }
         items.highlightBlocksMessage = draft.highlightBlocksMessage;
         items.protectTools = draft.protectTools;
         items.durabilityThreshold = draft.durabilityThreshold;
@@ -367,8 +381,7 @@ public class ConfigScreen extends UISidebarConfigScreen {
         items.protectedTools.clear();
         items.protectedTools.addAll(draft.protectedTools);
 
-        items.configScreenKey.clear();
-        items.configScreenKey.addAll(draft.configScreenKey);
+        items.configScreenKey = new ArrayList<>(draft.configScreenKey);
 
         KeyBinding.ACTIVATION_KEY.setKey(draft.activationKey);
         KeyMapping.resetMapping();
@@ -385,11 +398,6 @@ public class ConfigScreen extends UISidebarConfigScreen {
         minecraft.setScreenAndShow(resetScreen);
     }
 
-    @Override
-    public void onClose() {
-        minecraft.setScreenAndShow(parent);
-    }
-
     private static final class DraftConfig {
         private boolean useIntrusiveCode;
         private int searchRadius;
@@ -401,6 +409,7 @@ public class ConfigScreen extends UISidebarConfigScreen {
         private boolean distinguishDyedBlockColors;
         private boolean distinguishDeepslateOres;
         private boolean bridgeOneBlockGap;
+        private ServerRuleMode serverRuleMode;
         private boolean highlightBlocksMessage;
         private boolean protectTools;
         private int durabilityThreshold;
@@ -416,6 +425,18 @@ public class ConfigScreen extends UISidebarConfigScreen {
         private List<String> ignoredBlocks;
         private List<String> protectedTools;
 
+        // EUI rebuilds its form snapshots when Minecraft returns from a child screen.
+        private List<Object> snapshot() {
+            return List.of(
+                    useIntrusiveCode, searchRadius, BFSLimit, useBFS, useRadiusSearch,
+                    useRadiusSearchWhenReachBFSLimit, distinguishCropMaturity, distinguishDyedBlockColors,
+                    distinguishDeepslateOres, bridgeOneBlockGap, serverRuleMode, highlightBlocksMessage,
+                    protectTools, durabilityThreshold, protectAllDefaultValuableTools,
+                    enableHighlights, red, green, blue, alpha, useHoldInsteadOfToggle, activationKey,
+                    new ArrayList<>(configScreenKey), new HashSet<>(ignoredBlocks), new HashSet<>(protectedTools)
+            );
+        }
+
         private static DraftConfig from(ConfigItems items) {
             DraftConfig draft = new DraftConfig();
             draft.useIntrusiveCode = items.useIntrusiveCode;
@@ -428,6 +449,7 @@ public class ConfigScreen extends UISidebarConfigScreen {
             draft.distinguishDyedBlockColors = items.distinguishDyedBlockColors;
             draft.distinguishDeepslateOres = items.distinguishDeepslateOres;
             draft.bridgeOneBlockGap = items.bridgeOneBlockGap;
+            draft.serverRuleMode = items.serverRuleMode;
             draft.highlightBlocksMessage = items.highlightBlocksMessage;
             draft.protectTools = items.protectTools;
             draft.durabilityThreshold = items.durabilityThreshold;
