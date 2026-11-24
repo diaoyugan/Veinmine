@@ -4,10 +4,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import net.minecraft.commands.CommandPermissionLevels;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.permissions.Permissions;
 import top.diaoyugan.veinmine.config.Config;
 import top.diaoyugan.veinmine.utils.logging.Logger;
 import top.diaoyugan.veinmine.utils.logging.LoggerLevels;
@@ -16,13 +16,9 @@ import top.diaoyugan.veinmine.utils.logging.LoggerLevels;
 public class Command {
     public static void registerAll(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("veinmine")
-                .requires(src ->
-                        src.permissions()
-                                .hasPermission(Permissions.COMMANDS_ADMIN))
+                .requires(Commands.hasPermission(CommandPermissionLevels.LEVEL_ADMINS))
                 .then(Commands.literal("reload")
-                        .requires(src ->
-                                src.permissions()
-                                        .hasPermission(Permissions.COMMANDS_ADMIN))
+                        .requires(Commands.hasPermission(CommandPermissionLevels.LEVEL_ADMINS))
                         .executes(Command::reload)));
     }
 

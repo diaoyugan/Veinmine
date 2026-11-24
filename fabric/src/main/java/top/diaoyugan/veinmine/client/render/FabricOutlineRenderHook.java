@@ -2,8 +2,8 @@ package top.diaoyugan.veinmine.client.render;
 
 import net.fabricmc.fabric.api.client.rendering.v1.FeatureRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.SubmitRenderPhases;
-import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelSubmitContext;
 import top.diaoyugan.veinmine.client.highlight.ClientHighlightState;
 import top.diaoyugan.veinmine.config.IntrusiveConfig;
 import top.diaoyugan.veinmine.utils.Utils;
@@ -21,7 +21,7 @@ public final class FabricOutlineRenderHook {
         LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register((context, state) -> renderVanillaBlockOutline);
     }
 
-    private static void submitHighlights(LevelRenderContext context) {
+    private static void submitHighlights(LevelSubmitContext context) {
         renderVanillaBlockOutline = true;
         if (!Utils.getConfig().enableHighlights || !ClientHighlightState.SHOW_HIGHLIGHT) return;
 
