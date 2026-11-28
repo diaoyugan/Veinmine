@@ -18,6 +18,7 @@ import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,6 +26,7 @@ import net.minecraft.server.players.NameAndId;
 import net.minecraft.server.players.UserWhiteListEntry;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -99,6 +101,7 @@ public final class MiningRulesGameTest implements FabricClientGameTest {
             checkMining(server, HOST, Blocks.COBBLESTONE, 12, false);
             checkMining(server, HOST, Blocks.COBBLESTONE, 25, false, true);
             checkMining(server, HOST, Blocks.COBBLESTONE, 26, true, true);
+            checkMining(server, HOST, Blocks.COBBLESTONE, 32, false, true, Integer.MAX_VALUE);
             checkAir(server, HOST);
 
             context.runOnClient(client -> savePreferences(false, 24, STONE));
@@ -271,6 +274,12 @@ public final class MiningRulesGameTest implements FabricClientGameTest {
 
     private static void checkMining(TestServerContext server, String name, Block block,
                                     int remainingDurability, boolean expectChain, boolean centerBlockPending) {
+        checkMining(server, name, block, remainingDurability, expectChain, centerBlockPending, 1);
+    }
+
+    private static void checkMining(TestServerContext server, String name, Block block,
+                                    int remainingDurability, boolean expectChain, boolean centerBlockPending,
+                                    int damagePerBlock) {
         server.runOnServer(mc -> {
             ServerPlayer player = mc.getPlayerList().getPlayerByName(name);
             player.gameMode.changeGameModeForPlayer(GameType.SURVIVAL);
@@ -280,6 +289,11 @@ public final class MiningRulesGameTest implements FabricClientGameTest {
             BlockPos neighbor = origin.east();
             ItemStack pickaxe = new ItemStack(Items.IRON_PICKAXE);
             pickaxe.setDamageValue(pickaxe.getMaxDamage() - remainingDurability);
+            Tool tool = pickaxe.get(DataComponents.TOOL);
+            if (tool.damagePerBlock() != damagePerBlock) {
+                pickaxe.set(DataComponents.TOOL, new Tool(tool.rules(), tool.defaultMiningSpeed(), damagePerBlock,
+                        tool.canDestroyBlocksInCreative()));
+            }
             player.getInventory().setSelectedItem(pickaxe);
             level.setBlockAndUpdate(origin, block.defaultBlockState());
             level.setBlockAndUpdate(neighbor, block.defaultBlockState());
@@ -293,7 +307,8 @@ public final class MiningRulesGameTest implements FabricClientGameTest {
             }
             boolean chained = level.getBlockState(neighbor).isAir();
             level.setBlockAndUpdate(neighbor, Blocks.AIR.defaultBlockState());
-            check(chained == expectChain, name + " chain result for " + block + " at durability " + remainingDurability);
+            check(chained == expectChain, name + " chain result for " + block + " at durability " + remainingDurability
+                    + " and damage per block " + damagePerBlock);
         });
     }
 

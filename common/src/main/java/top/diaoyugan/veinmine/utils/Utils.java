@@ -35,7 +35,7 @@ public class Utils {
         playerVeinMineSwitchState.remove(playerId);
     }
 
-    public static int calculateTotalDurabilityCost(
+    public static long calculateTotalDurabilityCost(
             List<BlockPos> blocksToBreak,
             BlockPos centerPos,
             Player player,
@@ -44,7 +44,7 @@ public class Utils {
         Tool tool = player.getMainHandItem().get(DataComponents.TOOL);
         if (tool == null || tool.damagePerBlock() <= 0) return 0;
 
-        int cost = 0;
+        long cost = 0;
         for (BlockPos targetPos : blocksToBreak) {
             if (!centerBlockPending && targetPos.equals(centerPos)) continue;
 

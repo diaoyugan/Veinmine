@@ -66,8 +66,9 @@ public class BlockBreak {
         ItemStack tool = player.getMainHandItem();
         int minimum = rules.requiredDurability(BuiltInRegistries.ITEM.getKey(tool.getItem()).toString());
         if (minimum < 0) return true;
-        int totalCost = Utils.calculateTotalDurabilityCost(blocks, centerPos, player, centerBlockPending);
-        if (tool.getMaxDamage() - tool.getDamageValue() - minimum >= totalCost) return true;
+        long totalCost = Utils.calculateTotalDurabilityCost(blocks, centerPos, player, centerBlockPending);
+        long durabilityBudget = (long) tool.getMaxDamage() - tool.getDamageValue() - minimum;
+        if (durabilityBudget >= totalCost) return true;
 
         Component msg = Component.translatable("vm.warn.breakthroughs")
                 .withStyle(style -> style.applyFormat(ChatFormatting.RED));
