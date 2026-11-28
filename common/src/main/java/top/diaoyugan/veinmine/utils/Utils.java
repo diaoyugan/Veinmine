@@ -38,14 +38,15 @@ public class Utils {
     public static int calculateTotalDurabilityCost(
             List<BlockPos> blocksToBreak,
             BlockPos centerPos,
-            Player player
+            Player player,
+            boolean centerBlockPending
     ) {
         Tool tool = player.getMainHandItem().get(DataComponents.TOOL);
         if (tool == null || tool.damagePerBlock() <= 0) return 0;
 
         int cost = 0;
         for (BlockPos targetPos : blocksToBreak) {
-            if (targetPos.equals(centerPos)) continue;
+            if (!centerBlockPending && targetPos.equals(centerPos)) continue;
 
             BlockState targetState = player.level().getBlockState(targetPos);
             if (targetState.getDestroySpeed(player.level(), targetPos) != 0.0F) {

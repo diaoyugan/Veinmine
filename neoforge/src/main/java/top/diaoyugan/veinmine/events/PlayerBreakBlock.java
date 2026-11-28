@@ -30,7 +30,7 @@ public class PlayerBreakBlock {
         }
 
         BlockState state = event.getState();
-        BlockBreak.onBlockBreak(level, player, pos, state, null);
+        BlockBreak.beforeBlockBreak(level, player, pos, state);
     }
 }
 

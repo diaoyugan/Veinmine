@@ -7,6 +7,7 @@ import top.diaoyugan.veinmine.client.inputs.FabricKeyHandler;
 import top.diaoyugan.veinmine.client.inputs.KeyHandler;
 import top.diaoyugan.veinmine.client.keybinding.FabricKeyBinding;
 import top.diaoyugan.veinmine.client.render.FabricOutlineRenderHook;
+import top.diaoyugan.veinmine.networking.MiningPreferencesPacket;
 import top.diaoyugan.veinmine.networking.keypacket.KeyResponsePacket;
 
 public class FabricVeinmineClient implements ClientModInitializer {
@@ -15,7 +16,8 @@ public class FabricVeinmineClient implements ClientModInitializer {
     public void onInitializeClient() {
 
         FabricHighlightNetworking.onInitialize();
-        ClientTickEvents.END_CLIENT_TICK.register(FabricMiningPreferences::sync);
+        ClientTickEvents.END_CLIENT_TICK.register(client -> ClientMiningPreferences.sync(client,
+                connection -> ClientPlayNetworking.canSend(MiningPreferencesPacket.ID), ClientPlayNetworking::send));
         ClientTickEvents.END_CLIENT_TICK.register(FabricKeyHandler::tickEvent);
         ClientTickEvents.END_CLIENT_TICK.register(KeyHandler::clientTick);
 

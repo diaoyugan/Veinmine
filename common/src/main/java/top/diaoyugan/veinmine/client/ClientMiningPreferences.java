@@ -1,30 +1,33 @@
 package top.diaoyugan.veinmine.client;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import top.diaoyugan.veinmine.config.Config;
 import top.diaoyugan.veinmine.networking.MiningPreferencesPacket;
 
-final class FabricMiningPreferences {
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+public final class ClientMiningPreferences {
     private static ClientPacketListener sentConnection;
     private static long sentRevision;
 
-    private FabricMiningPreferences() {}
+    private ClientMiningPreferences() {}
 
-    static void sync(Minecraft client) {
+    public static void sync(Minecraft client, Predicate<ClientPacketListener> canSend,
+                            Consumer<MiningPreferencesPacket> send) {
         ClientPacketListener connection = client.getConnection();
         if (connection == null) {
             sentConnection = null;
             return;
         }
-        if (!ClientPlayNetworking.canSend(MiningPreferencesPacket.ID)) return;
+        if (!canSend.test(connection)) return;
 
         Config config = Config.getInstance();
         long revision = config.revision();
         if (connection == sentConnection && revision == sentRevision) return;
 
-        ClientPlayNetworking.send(new MiningPreferencesPacket(config.miningRules()));
+        send.accept(new MiningPreferencesPacket(config.miningRules()));
         sentConnection = connection;
         sentRevision = revision;
     }

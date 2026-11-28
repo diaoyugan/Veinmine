@@ -5,10 +5,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import top.diaoyugan.veinmine.Constants;
-import top.diaoyugan.veinmine.networking.NeoForgeHighlightNetworking;
-import top.diaoyugan.veinmine.utils.Utils;
-
-import java.util.UUID;
+import top.diaoyugan.veinmine.networking.ServerMiningNetworking;
 
 @EventBusSubscriber(modid = Constants.ID)
 public class PlayerDisconnect {
@@ -18,9 +15,7 @@ public class PlayerDisconnect {
     @SubscribeEvent
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            UUID playerId = player.getUUID();
-            Utils.clearVeinMineState(playerId);
-            NeoForgeHighlightNetworking.clearLastStates(playerId);
+            ServerMiningNetworking.onPlayerDisconnect(player.getUUID());
         }
     }
 }

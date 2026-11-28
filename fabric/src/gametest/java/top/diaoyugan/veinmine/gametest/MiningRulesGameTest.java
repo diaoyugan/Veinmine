@@ -32,6 +32,7 @@ import top.diaoyugan.veinmine.client.configScreen.ConfigScreen;
 import top.diaoyugan.veinmine.config.Config;
 import top.diaoyugan.veinmine.config.ConfigItems.ServerRuleMode;
 import top.diaoyugan.veinmine.config.ServerMiningRules;
+import top.diaoyugan.veinmine.events.BlockBreak;
 import top.diaoyugan.veinmine.networking.MiningPreferencesPacket;
 import top.diaoyugan.veinmine.utils.SmartVein;
 import top.diaoyugan.veinmine.utils.Utils;
@@ -96,6 +97,8 @@ public final class MiningRulesGameTest implements FabricClientGameTest {
             }));
             checkMining(server, HOST, Blocks.STONE, 32, false);
             checkMining(server, HOST, Blocks.COBBLESTONE, 12, false);
+            checkMining(server, HOST, Blocks.COBBLESTONE, 25, false, true);
+            checkMining(server, HOST, Blocks.COBBLESTONE, 26, true, true);
             checkAir(server, HOST);
 
             context.runOnClient(client -> savePreferences(false, 24, STONE));
@@ -263,6 +266,11 @@ public final class MiningRulesGameTest implements FabricClientGameTest {
 
     private static void checkMining(TestServerContext server, String name, Block block,
                                     int remainingDurability, boolean expectChain) {
+        checkMining(server, name, block, remainingDurability, expectChain, false);
+    }
+
+    private static void checkMining(TestServerContext server, String name, Block block,
+                                    int remainingDurability, boolean expectChain, boolean centerBlockPending) {
         server.runOnServer(mc -> {
             ServerPlayer player = mc.getPlayerList().getPlayerByName(name);
             player.gameMode.changeGameModeForPlayer(GameType.SURVIVAL);
@@ -275,7 +283,14 @@ public final class MiningRulesGameTest implements FabricClientGameTest {
             player.getInventory().setSelectedItem(pickaxe);
             level.setBlockAndUpdate(origin, block.defaultBlockState());
             level.setBlockAndUpdate(neighbor, block.defaultBlockState());
-            check(player.gameMode.destroyBlock(origin), name + " can break the first " + block);
+            if (centerBlockPending) {
+                // Exercise the shared before-break path used by NeoForge.
+                BlockBreak.beforeBlockBreak(level, player, origin, block.defaultBlockState());
+                check(level.getBlockState(origin).is(block), "the before-break handler leaves the first block in place");
+                level.setBlockAndUpdate(origin, Blocks.AIR.defaultBlockState());
+            } else {
+                check(player.gameMode.destroyBlock(origin), name + " can break the first " + block);
+            }
             boolean chained = level.getBlockState(neighbor).isAir();
             level.setBlockAndUpdate(neighbor, Blocks.AIR.defaultBlockState());
             check(chained == expectChain, name + " chain result for " + block + " at durability " + remainingDurability);

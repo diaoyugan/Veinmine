@@ -56,7 +56,7 @@ The tests connect on the same machine with offline profiles and a separate setti
 ## Controls
 
 * ~ (default): Toggle Vein Mine
-* V + M (default): Open Configuration Screen (1.4.0+)
+* V + M (default): Open Configuration Screen (1.4.1+)
 
 ## Notes
 

@@ -32,31 +32,41 @@ public class BlockBreak {
     private static final Set<UUID> VEIN_MINING_PLAYERS = ConcurrentHashMap.newKeySet();
 
     public static void onBlockBreak(Level world, Player player, BlockPos pos, BlockState state, BlockEntity entity) {
-        if (!(world instanceof ServerLevel serverWorld) || !(player instanceof ServerPlayer serverPlayer)) return;
+        if (world instanceof ServerLevel serverWorld && player instanceof ServerPlayer serverPlayer) {
+            mineConnectedBlocks(serverWorld, serverPlayer, pos, state, false);
+        }
+    }
+
+    public static void beforeBlockBreak(ServerLevel world, ServerPlayer player, BlockPos pos, BlockState state) {
+        mineConnectedBlocks(world, player, pos, state, true);
+    }
+
+    private static void mineConnectedBlocks(ServerLevel world, ServerPlayer player, BlockPos pos, BlockState state,
+                                           boolean centerBlockPending) {
         if (!getVeinMineSwitchState(player)) return;
         if (!VEIN_MINING_PLAYERS.add(player.getUUID())) return;
 
         try {
-            var rules = ServerMiningRules.forPlayer(serverPlayer);
+            var rules = ServerMiningRules.forPlayer(player);
             List<BlockPos> blocks = SmartVein.findBlocks(world, pos, state, rules::ignoresBlock);
             if (blocks == null || blocks.isEmpty()) return;
-            if (!checkDurabilityAndWarn(serverPlayer, pos, blocks, rules)) return;
+            if (!checkDurabilityAndWarn(player, pos, blocks, rules, centerBlockPending)) return;
 
-            breakBlocks(serverPlayer, pos, state, blocks);
-            moveDropsToCenter(serverWorld, pos, computeAABB(blocks));
+            breakBlocks(player, pos, state, blocks);
+            moveDropsToCenter(world, pos, computeAABB(blocks));
         } finally {
             VEIN_MINING_PLAYERS.remove(player.getUUID());
         }
     }
 
     private static boolean checkDurabilityAndWarn(ServerPlayer player, BlockPos centerPos, List<BlockPos> blocks,
-                                                  ServerMiningRules.Effective rules) {
+                                                  ServerMiningRules.Effective rules, boolean centerBlockPending) {
         if (player.hasInfiniteMaterials()) return true;
 
         ItemStack tool = player.getMainHandItem();
         int minimum = rules.requiredDurability(BuiltInRegistries.ITEM.getKey(tool.getItem()).toString());
         if (minimum < 0) return true;
-        int totalCost = Utils.calculateTotalDurabilityCost(blocks, centerPos, player);
+        int totalCost = Utils.calculateTotalDurabilityCost(blocks, centerPos, player, centerBlockPending);
         if (tool.getMaxDamage() - tool.getDamageValue() - minimum >= totalCost) return true;
 
         Component msg = Component.translatable("vm.warn.breakthroughs")
